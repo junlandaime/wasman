@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk Akun - Wasman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {"50":"#ecfdf5","100":"#d1fae5","200":"#a7f3d0","300":"#6ee7b7","400":"#34d399","500":"#10b981","600":"#059669","700":"#047857","800":"#065f46","900":"#064e3b"},
+                        secondary: {"50":"#f0fdf4","100":"#dcfce7","200":"#bbf7d0","300":"#86efac","400":"#4ade80","500":"#22c55e","600":"#16a34a","700":"#15803d","800":"#166534","900":"#14532d"},
+                        accent: {"50":"#fffbeb","100":"#fef3c7","200":"#fde68a","300":"#fcd34d","400":"#fbbf24","500":"#f59e0b","600":"#d97706","700":"#b45309","800":"#92400e","900":"#78350f"},
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .bottom-nav-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+    </style>
+</head>
+<body class="h-full bg-slate-50 font-sans text-gray-800 antialiased flex flex-col justify-between" 
+      x-data="{
+          identifier: 'ahmad.hidayat@gmail.com',
+          password: 'password123',
+          showPassword: false,
+          rememberMe: true,
+          isLoading: false,
+          loginSuccess: false,
+          showForgotModal: false,
+          forgotEmail: '',
+          forgotSuccess: false,
+          
+          fillDemo(role) {
+              if (role === 'household') {
+                  this.identifier = 'ahmad.hidayat@gmail.com';
+                  this.password = 'password123';
+              } else if (role === 'community') {
+                  this.identifier = 'bank.berseri@wasman.id';
+                  this.password = 'password123';
+              } else if (role === 'factory') {
+                  this.identifier = 'admin@plastikdaurulang.co.id';
+                  this.password = 'password123';
+              }
+          },
+
+          handleLogin() {
+              this.isLoading = true;
+              setTimeout(() => {
+                  this.isLoading = false;
+                  this.loginSuccess = true;
+                  setTimeout(() => {
+                      // Redirect to index or respective dashboard
+                      window.location.href = '../index.html';
+                  }, 1200);
+              }, 800);
+          }
+      }">
+
+    <!-- Top Navigation Utility Bar -->
+    <header class="w-full max-w-5xl mx-auto px-4 pt-4 pb-2 flex items-center justify-between">
+        <a href="../index.html" class="inline-flex items-center gap-2 text-xs md:text-sm font-medium text-gray-500 hover:text-primary-600 transition-colors bg-white px-3 py-1.5 rounded-full border border-gray-200 shadow-sm">
+            <i class="fas fa-arrow-left text-xs"></i>
+            <span>Kembali ke Menu Mockup</span>
+        </a>
+        <div class="flex items-center gap-2 text-xs text-gray-500">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span>Wasman v1.0.0</span>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 flex items-center justify-center px-4 py-6 md:py-10">
+        <div class="w-full max-w-md">
+
+            <!-- App Brand Header -->
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-primary-600 to-primary-400 shadow-lg shadow-primary-500/30 text-white mb-3 transform hover:scale-105 transition-transform duration-200">
+                    <i class="fas fa-recycle text-2xl"></i>
+                </div>
+                <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">Wasman</h1>
+                <p class="text-xs md:text-sm text-gray-500 mt-1">Platform Pengelolaan Sampah Berbasis Komunitas</p>
+            </div>
+
+            <!-- Login Card -->
+            <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/60 border border-gray-100 overflow-hidden transition-all duration-300">
+                
+                <!-- Illustration & Banner Section -->
+                <div class="bg-gradient-to-br from-primary-600 via-primary-700 to-emerald-800 p-6 text-white relative overflow-hidden">
+                    <div class="absolute -right-6 -bottom-8 opacity-15 pointer-events-none">
+                        <i class="fas fa-leaf text-9xl"></i>
+                    </div>
+                    <div class="relative z-10">
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/20 text-white text-xs font-medium backdrop-blur-sm mb-2">
+                            <i class="fas fa-shield-halved text-accent-300"></i>
+                            <span>Portal Akses Aman</span>
+                        </div>
+                        <h2 class="text-xl font-bold tracking-tight">Selamat Datang Kembali</h2>
+                        <p class="text-primary-100 text-xs mt-1 leading-relaxed">
+                            Masuk untuk memantau jadwal penjemputan, pencatatan timbangan, dan transaksi sirkular sampah.
+                        </p>
+                    </div>
+
+                    <!-- Small Badges Illustration -->
+                    <div class="grid grid-cols-3 gap-2 mt-4 pt-3 border-t border-white/10 text-center">
+                        <div class="bg-white/10 rounded-lg p-1.5 backdrop-blur-xs">
+                            <i class="fas fa-house text-emerald-200 text-xs block mb-0.5"></i>
+                            <span class="text-[10px] text-white/90">Warga</span>
+                        </div>
+                        <div class="bg-white/10 rounded-lg p-1.5 backdrop-blur-xs">
+                            <i class="fas fa-people-carry-box text-emerald-200 text-xs block mb-0.5"></i>
+                            <span class="text-[10px] text-white/90">Komunitas</span>
+                        </div>
+                        <div class="bg-white/10 rounded-lg p-1.5 backdrop-blur-xs">
+                            <i class="fas fa-industry text-emerald-200 text-xs block mb-0.5"></i>
+                            <span class="text-[10px] text-white/90">Pabrik</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Section -->
+                <div class="p-6 sm:p-8">
+                    
+                    <!-- Alert Message on Success -->
+                    <div x-show="loginSuccess" x-cloak 
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0 transform -translate-y-2"
+                         x-transition:enter-end="opacity-100 transform translate-y-0"
+                         class="mb-5 p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center gap-3 text-emerald-800 text-sm">
+                        <div class="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white shrink-0">
+                            <i class="fas fa-check text-xs"></i>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-xs text-emerald-900">Login Berhasil!</p>
+                            <p class="text-[11px] text-emerald-700">Mengarahkan ke dashboard Anda...</p>
+                        </div>
+                    </div>
+
+                    <form @submit.prevent="handleLogin" class="space-y-4">
+                        <!-- Email / Phone Input -->
+                        <div>
+                            <label for="identifier" class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                Email atau Nomor WhatsApp
+                            </label>
+                            <div class="relative rounded-xl shadow-xs">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <input type="text" 
+                                       id="identifier" 
+                                       x-model="identifier" 
+                                       required
+                                       placeholder="nama@email.com atau 0812xxxx"
+                                       class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition duration-150">
+                            </div>
+                        </div>
+
+                        <!-- Password Input -->
+                        <div>
+                            <div class="flex items-center justify-between mb-1.5">
+                                <label for="password" class="block text-xs font-semibold text-gray-700">
+                                    Kata Sandi
+                                </label>
+                                <button type="button" 
+                                        @click="showForgotModal = true"
+                                        class="text-xs font-medium text-primary-600 hover:text-primary-700 hover:underline">
+                                    Lupa Password?
+                                </button>
+                            </div>
+                            <div class="relative rounded-xl shadow-xs">
+                                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                    <i class="fas fa-lock"></i>
+                                </div>
+                                <input :type="showPassword ? 'text' : 'password'" 
+                                       id="password" 
+                                       x-model="password" 
+                                       required
+                                       placeholder="Masukkan kata sandi"
+                                       class="w-full pl-10 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-800 placeholder-gray-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition duration-150">
+                                <button type="button" 
+                                        @click="showPassword = !showPassword" 
+                                        class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 transition-colors focus:outline-none">
+                                    <i class="fas" :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Remember Me -->
+                        <div class="flex items-center justify-between pt-1">
+                            <label class="flex items-center cursor-pointer select-none">
+                                <input type="checkbox" 
+                                       x-model="rememberMe" 
+                                       class="w-4 h-4 rounded text-primary-600 border-gray-300 focus:ring-primary-500 focus:ring-offset-0 transition">
+                                <span class="ml-2 text-xs text-gray-600 font-medium">Ingat Saya</span>
+                            </label>
+                            <span class="text-[11px] text-gray-400 flex items-center gap-1">
+                                <i class="fas fa-lock text-[10px]"></i> SSL Aman
+                            </span>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="pt-2">
+                            <button type="submit" 
+                                    :disabled="isLoading || loginSuccess"
+                                    class="w-full flex items-center justify-center gap-2 py-3 px-4 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white text-sm font-semibold rounded-xl shadow-md shadow-primary-600/25 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all duration-150 disabled:opacity-75 cursor-pointer">
+                                <template x-if="isLoading">
+                                    <span class="inline-flex items-center gap-2">
+                                        <i class="fas fa-circle-notch fa-spin text-sm"></i>
+                                        <span>Memverifikasi...</span>
+                                    </span>
+                                </template>
+                                <template x-if="!isLoading">
+                                    <span class="inline-flex items-center gap-2">
+                                        <span>Masuk</span>
+                                        <i class="fas fa-arrow-right text-xs"></i>
+                                    </span>
+                                </template>
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Divider -->
+                    <div class="relative my-6">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-200"></div>
+                        </div>
+                        <div class="relative flex justify-center text-xs">
+                            <span class="bg-white px-3 text-gray-400 font-medium uppercase tracking-wider text-[11px]">atau</span>
+                        </div>
+                    </div>
+
+                    <!-- Register Link / Button -->
+                    <div>
+                        <a href="register.html" 
+                           class="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-white hover:bg-primary-50 active:bg-primary-100 text-primary-700 font-semibold text-sm rounded-xl border-2 border-primary-200 hover:border-primary-300 transition-all duration-150 group">
+                            <i class="fas fa-user-plus text-xs group-hover:scale-110 transition-transform"></i>
+                            <span>Daftar Akun Baru</span>
+                        </a>
+                    </div>
+
+                    <!-- Demo Quick Login Helper (Helpful for Prototype Testing) -->
+                    <div class="mt-6 pt-5 border-t border-dashed border-gray-200">
+                        <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider text-center mb-2.5">
+                            <i class="fas fa-flask mr-1 text-primary-500"></i> Pilih Akun Demo
+                        </p>
+                        <div class="grid grid-cols-3 gap-1.5">
+                            <button type="button" 
+                                    @click="fillDemo('household')" 
+                                    class="py-1.5 px-2 text-[11px] font-medium bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg border border-emerald-200/60 transition text-center truncate">
+                                Rumah Tangga
+                            </button>
+                            <button type="button" 
+                                    @click="fillDemo('community')" 
+                                    class="py-1.5 px-2 text-[11px] font-medium bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg border border-blue-200/60 transition text-center truncate">
+                                Komunitas
+                            </button>
+                            <button type="button" 
+                                    @click="fillDemo('factory')" 
+                                    class="py-1.5 px-2 text-[11px] font-medium bg-amber-50 text-amber-700 hover:bg-amber-100 rounded-lg border border-amber-200/60 transition text-center truncate">
+                                Pabrik
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Page Footer -->
+            <div class="mt-8 text-center text-xs text-gray-500 space-y-1">
+                <p class="font-medium text-gray-600">Platform Pengelolaan Sampah Berbasis Komunitas</p>
+                <p class="text-gray-400 text-[11px]">&copy; 2026 Wasman Indonesia &bull; Menuju Indonesia Bebas Sampah</p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Forgot Password Modal -->
+    <div x-show="showForgotModal" x-cloak 
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-xs"
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-gray-100" 
+             @click.away="showForgotModal = false"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100">
+            
+            <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3">
+                <i class="fas fa-key text-xl"></i>
+            </div>
+            
+            <h3 class="text-base font-bold text-gray-800 text-center">Reset Kata Sandi</h3>
+            <p class="text-xs text-gray-500 text-center mt-1">
+                Masukkan email atau nomor telepon yang terdaftar. Kami akan mengirimkan tautan pemulihan.
+            </p>
+
+            <div x-show="!forgotSuccess" class="mt-4 space-y-3">
+                <input type="text" 
+                       x-model="forgotEmail" 
+                       placeholder="Email atau nomor WhatsApp" 
+                       class="w-full px-3.5 py-2 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none">
+                
+                <div class="flex gap-2">
+                    <button type="button" 
+                            @click="showForgotModal = false" 
+                            class="w-1/2 py-2 text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition">
+                        Batal
+                    </button>
+                    <button type="button" 
+                            @click="forgotSuccess = true" 
+                            class="w-1/2 py-2 text-xs font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-xl shadow-xs transition">
+                        Kirim Tautan
+                    </button>
+                </div>
+            </div>
+
+            <div x-show="forgotSuccess" class="mt-4 text-center">
+                <div class="p-3 bg-emerald-50 text-emerald-800 rounded-xl text-xs mb-3">
+                    <i class="fas fa-paper-plane mr-1 text-emerald-600"></i>
+                    Instruksi reset telah dikirim! Silakan periksa inbox email atau WhatsApp Anda.
+                </div>
+                <button type="button" 
+                        @click="showForgotModal = false; forgotSuccess = false" 
+                        class="w-full py-2 text-xs font-semibold text-white bg-primary-600 hover:bg-primary-700 rounded-xl transition">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

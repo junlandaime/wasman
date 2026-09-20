@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kategori Sampah - Admin Wasman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="h-full flex text-gray-800" x-data="{ mobileMenuOpen: false, catModalOpen: false }">
+
+    <!-- Sidebar and Topbar (truncated for brevity, assumes standard structure) -->
+    <!-- Desktop Sidebar -->
+    <aside class="hidden md:flex flex-col w-64 bg-white border-r border-gray-200 fixed h-full z-20">
+        <div class="p-4 border-b border-gray-200 flex items-center gap-3">
+            <div class="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center"><i class="fas fa-shield-halved text-white text-sm"></i></div>
+            <div><span class="font-bold text-gray-800 text-lg block">Wasman</span><span class="text-xs text-rose-600 font-medium">Administrator</span></div>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-6">
+            <div><a href="dashboard.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50"><i class="fas fa-home w-5 text-center"></i> Dashboard</a></div>
+            <div>
+                <a href="waste-categories.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-rose-50 text-rose-700 font-medium"><i class="fas fa-layer-group w-5 text-center"></i> Kategori Sampah</a>
+                <a href="waste-materials.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50"><i class="fas fa-box w-5 text-center"></i> Material Sampah</a>
+            </div>
+        </div>
+    </aside>
+
+    <main class="flex-1 md:ml-64 pb-16 md:pb-0 flex flex-col min-h-screen">
+        <header class="bg-white shadow-sm border-b border-rose-100 sticky top-0 z-30">
+            <div class="flex items-center justify-between px-4 h-14 md:h-16">
+                <div class="flex md:hidden items-center gap-2"><div class="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center"><i class="fas fa-shield-halved text-white text-sm"></i></div><span class="font-bold">Admin</span></div>
+                <div class="hidden md:flex items-center gap-2 text-sm"><span class="text-gray-400">Master Data</span><i class="fas fa-chevron-right text-[10px]"></i><span class="font-bold">Kategori Sampah</span></div>
+            </div>
+        </header>
+
+        <div class="flex-1 p-4 md:p-6 space-y-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-bold text-gray-900">Kategori Sampah</h1>
+                <button @click="catModalOpen = true" class="bg-rose-600 hover:bg-rose-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                    <i class="fas fa-plus"></i> <span class="hidden sm:inline">Tambah Kategori</span>
+                </button>
+            </div>
+
+            <!-- Grid Categories -->
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center relative group">
+                    <div class="w-12 h-12 mx-auto bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xl mb-3"><i class="fas fa-leaf"></i></div>
+                    <h3 class="font-bold text-gray-900">Organik</h3>
+                    <p class="text-xs text-gray-500 mt-1">1 Material</p>
+                    <div class="mt-3 pt-3 border-t border-gray-50 flex justify-between items-center">
+                        <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">Aktif</span>
+                        <div class="flex gap-2">
+                            <button class="text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <div class="w-12 h-12 mx-auto bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl mb-3"><i class="fas fa-bottle-water"></i></div>
+                    <h3 class="font-bold text-gray-900">Plastik</h3>
+                    <p class="text-xs text-gray-500 mt-1">2 Material</p>
+                    <div class="mt-3 pt-3 border-t border-gray-50 flex justify-between items-center">
+                        <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">Aktif</span>
+                        <div class="flex gap-2"><button class="text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button></div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <div class="w-12 h-12 mx-auto bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-xl mb-3"><i class="fas fa-newspaper"></i></div>
+                    <h3 class="font-bold text-gray-900">Kertas & Kardus</h3>
+                    <p class="text-xs text-gray-500 mt-1">2 Material</p>
+                    <div class="mt-3 pt-3 border-t border-gray-50 flex justify-between items-center">
+                        <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">Aktif</span>
+                        <div class="flex gap-2"><button class="text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button></div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <div class="w-12 h-12 mx-auto bg-gray-200 text-gray-700 rounded-full flex items-center justify-center text-xl mb-3"><i class="fas fa-wrench"></i></div>
+                    <h3 class="font-bold text-gray-900">Logam</h3>
+                    <p class="text-xs text-gray-500 mt-1">2 Material</p>
+                    <div class="mt-3 pt-3 border-t border-gray-50 flex justify-between items-center">
+                        <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">Aktif</span>
+                        <div class="flex gap-2"><button class="text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button></div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <div class="w-12 h-12 mx-auto bg-cyan-100 text-cyan-600 rounded-full flex items-center justify-center text-xl mb-3"><i class="fas fa-wine-glass"></i></div>
+                    <h3 class="font-bold text-gray-900">Kaca</h3>
+                    <p class="text-xs text-gray-500 mt-1">1 Material</p>
+                    <div class="mt-3 pt-3 border-t border-gray-50 flex justify-between items-center">
+                        <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">Aktif</span>
+                        <div class="flex gap-2"><button class="text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button></div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <div class="w-12 h-12 mx-auto bg-pink-100 text-pink-600 rounded-full flex items-center justify-center text-xl mb-3"><i class="fas fa-shirt"></i></div>
+                    <h3 class="font-bold text-gray-900">Tekstil</h3>
+                    <p class="text-xs text-gray-500 mt-1">1 Material</p>
+                    <div class="mt-3 pt-3 border-t border-gray-50 flex justify-between items-center">
+                        <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">Aktif</span>
+                        <div class="flex gap-2"><button class="text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button></div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <div class="w-12 h-12 mx-auto bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-xl mb-3"><i class="fas fa-microchip"></i></div>
+                    <h3 class="font-bold text-gray-900">Elektronik</h3>
+                    <p class="text-xs text-gray-500 mt-1">1 Material</p>
+                    <div class="mt-3 pt-3 border-t border-gray-50 flex justify-between items-center">
+                        <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">Aktif</span>
+                        <div class="flex gap-2"><button class="text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button></div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center opacity-75">
+                    <div class="w-12 h-12 mx-auto bg-stone-200 text-stone-600 rounded-full flex items-center justify-center text-xl mb-3"><i class="fas fa-trash"></i></div>
+                    <h3 class="font-bold text-gray-900">Residu</h3>
+                    <p class="text-xs text-gray-500 mt-1">0 Material</p>
+                    <div class="mt-3 pt-3 border-t border-gray-50 flex justify-between items-center">
+                        <span class="text-[10px] bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full font-medium">Nonaktif</span>
+                        <div class="flex gap-2"><button class="text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button></div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <div class="w-12 h-12 mx-auto bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xl mb-3"><i class="fas fa-skull-crossbones"></i></div>
+                    <h3 class="font-bold text-gray-900">B3/Berbahaya</h3>
+                    <p class="text-xs text-gray-500 mt-1">2 Material</p>
+                    <div class="mt-3 pt-3 border-t border-gray-50 flex justify-between items-center">
+                        <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">Aktif</span>
+                        <div class="flex gap-2"><button class="text-gray-400 hover:text-blue-600"><i class="fas fa-edit"></i></button></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Form Kategori -->
+    <div x-show="catModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:p-0">
+            <div x-show="catModalOpen" class="fixed inset-0 bg-gray-900 bg-opacity-50" @click="catModalOpen = false"></div>
+            <div class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md w-full relative z-10">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">Tambah Kategori</h3>
+                    <div class="space-y-4">
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Nama Kategori</label><input type="text" class="w-full border rounded-lg p-2 text-sm focus:border-rose-500 focus:ring-rose-500" placeholder="Contoh: Plastik"></div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><label class="block text-sm font-medium text-gray-700 mb-1">Ikon (FontAwesome)</label><input type="text" class="w-full border rounded-lg p-2 text-sm focus:border-rose-500 focus:ring-rose-500" placeholder="fa-bottle-water"></div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Warna</label>
+                                <select class="w-full border rounded-lg p-2 text-sm">
+                                    <option>blue (Biru)</option>
+                                    <option>green (Hijau)</option>
+                                    <option>amber (Kuning)</option>
+                                    <option>red (Merah)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div><label class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label><textarea class="w-full border rounded-lg p-2 text-sm focus:border-rose-500 focus:ring-rose-500" rows="2"></textarea></div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 flex gap-2 justify-end">
+                    <button @click="catModalOpen = false" class="px-4 py-2 border rounded-lg bg-white text-gray-700 text-sm font-medium">Batal</button>
+                    <button class="px-4 py-2 bg-rose-600 text-white rounded-lg text-sm font-medium">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Nav -->
+    <nav class="md:hidden fixed bottom-0 w-full bg-white border-t border-gray-200 z-40 bottom-nav-safe">
+        <div class="flex justify-around items-center h-16">
+            <a href="dashboard.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600"><i class="fas fa-home text-xl mb-1"></i><span class="text-[10px] font-medium">Beranda</span></a>
+            <a href="waste-categories.html" class="flex flex-col items-center justify-center w-full h-full text-rose-600"><i class="fas fa-database text-xl mb-1"></i><span class="text-[10px] font-medium">Data</span></a>
+            <button @click="mobileMenuOpen = !mobileMenuOpen" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600"><i class="fas fa-bars text-xl mb-1"></i><span class="text-[10px] font-medium">Menu</span></button>
+        </div>
+    </nav>
+</body>
+</html>

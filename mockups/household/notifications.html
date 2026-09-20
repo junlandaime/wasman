@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifikasi - Wasman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {"50":"#ecfdf5","100":"#d1fae5","200":"#a7f3d0","300":"#6ee7b7","400":"#34d399","500":"#10b981","600":"#059669","700":"#047857","800":"#065f46","900":"#064e3b"},
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .bottom-nav-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+    </style>
+</head>
+<body class="h-full flex flex-col md:flex-row text-gray-800">
+
+    <!-- Mobile Top Bar -->
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30 md:hidden">
+        <div class="flex items-center justify-between px-4 h-14">
+            <div class="flex items-center gap-2">
+                <a href="dashboard.html" class="p-2 -ml-2 text-gray-600">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <span class="font-bold text-gray-800 text-lg">Notifikasi</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Desktop Sidebar -->
+    <aside class="hidden md:flex flex-col w-60 bg-white border-r border-gray-200 sticky top-0 h-screen z-20">
+        <div class="p-4 border-b border-gray-200 flex items-center gap-2">
+            <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                <i class="fas fa-recycle text-white text-sm"></i>
+            </div>
+            <span class="font-bold text-gray-800 text-xl">Wasman</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+            <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-4">Menu Utama</div>
+            <a href="dashboard.html" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium">
+                <i class="fas fa-home w-5 text-center"></i> Dashboard
+            </a>
+            <a href="schedule.html" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium">
+                <i class="fas fa-calendar w-5 text-center"></i> Jadwal Angkut
+            </a>
+            <a href="collections-index.html" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium">
+                <i class="fas fa-truck w-5 text-center"></i> Riwayat Angkut
+            </a>
+            
+            <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-6">Informasi</div>
+            <a href="education.html" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium">
+                <i class="fas fa-book-open w-5 text-center"></i> Edukasi
+            </a>
+            <a href="notifications.html" class="flex items-center gap-3 px-3 py-2 bg-primary-50 text-primary-700 rounded-lg font-medium">
+                <i class="fas fa-bell w-5 text-center"></i> Notifikasi
+            </a>
+            
+            <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-6">Akun</div>
+            <a href="profile.html" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium">
+                <i class="fas fa-user w-5 text-center"></i> Profil
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 min-w-0 pb-20 md:pb-0 h-screen overflow-y-auto" x-data="{ tab: 'semua' }">
+        <!-- Desktop Header -->
+        <header class="hidden md:flex bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10 px-8 h-16 items-center justify-between">
+            <div class="flex items-center text-sm">
+                <a href="dashboard.html" class="text-gray-500 hover:text-gray-700">Dashboard</a>
+                <i class="fas fa-chevron-right mx-2 text-gray-400 text-xs"></i>
+                <span class="text-gray-900 font-medium">Notifikasi</span>
+            </div>
+        </header>
+
+        <div class="p-4 md:p-8 max-w-2xl mx-auto">
+            
+            <div class="flex justify-between items-center mb-6 hidden md:flex">
+                <h1 class="text-2xl font-bold text-gray-900">Notifikasi</h1>
+                <button class="text-sm font-medium text-primary-600 hover:text-primary-700">Tandai Semua Dibaca</button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex items-center justify-between mb-4 border-b border-gray-200">
+                <div class="flex space-x-6">
+                    <button @click="tab = 'semua'" :class="tab === 'semua' ? 'border-primary-500 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700'" class="whitespace-nowrap pb-3 border-b-2 font-medium text-sm transition-colors">
+                        Semua
+                    </button>
+                    <button @click="tab = 'belum'" :class="tab === 'belum' ? 'border-primary-500 text-primary-600' : 'border-transparent text-gray-500 hover:text-gray-700'" class="whitespace-nowrap pb-3 border-b-2 font-medium text-sm transition-colors">
+                        Belum Dibaca (2)
+                    </button>
+                </div>
+                <button class="text-sm font-medium text-primary-600 hover:text-primary-700 md:hidden pb-3">Tandai Semua</button>
+            </div>
+
+            <!-- Notification List -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 divide-y divide-gray-100 overflow-hidden">
+                
+                <!-- Unread Notif 1 -->
+                <a href="collections-show.html" class="block p-4 bg-primary-50 border-l-4 border-primary-500 hover:bg-primary-100/50 transition-colors" x-show="tab === 'semua' || tab === 'belum'">
+                    <div class="flex gap-4">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 mt-1">
+                            <i class="fas fa-calendar-check"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-1">
+                                <h4 class="text-sm font-bold text-gray-900">Permintaan Disetujui</h4>
+                                <span class="text-xs text-gray-500 whitespace-nowrap ml-2">2 jam lalu</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Permintaan angkut khusus (WAS-20260919-001) Anda telah disetujui dan dijadwalkan pada 19 Sep 2026.</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Unread Notif 2 -->
+                <a href="schedule.html" class="block p-4 bg-primary-50 border-l-4 border-primary-500 hover:bg-primary-100/50 transition-colors" x-show="tab === 'semua' || tab === 'belum'">
+                    <div class="flex gap-4">
+                        <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center shrink-0 mt-1">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-1">
+                                <h4 class="text-sm font-bold text-gray-900">Pengingat Jadwal Angkut</h4>
+                                <span class="text-xs text-gray-500 whitespace-nowrap ml-2">Kemarin</span>
+                            </div>
+                            <p class="text-sm text-gray-600">Besok adalah jadwal pengangkutan sampah Organik di wilayah Anda. Siapkan sampah Anda di depan rumah.</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Read Notif 1 -->
+                <a href="collections-show.html" class="block p-4 border-l-4 border-transparent hover:bg-gray-50 transition-colors" x-show="tab === 'semua'">
+                    <div class="flex gap-4">
+                        <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0 mt-1">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-1">
+                                <h4 class="text-sm font-medium text-gray-900">Pengangkutan Selesai</h4>
+                                <span class="text-xs text-gray-400 whitespace-nowrap ml-2">15 Sep</span>
+                            </div>
+                            <p class="text-sm text-gray-500">Terima kasih! Sampah reguler Anda (2.5 kg) telah diangkut. Anda mendapatkan 25 Poin.</p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Read Notif 2 -->
+                <a href="education.html" class="block p-4 border-l-4 border-transparent hover:bg-gray-50 transition-colors" x-show="tab === 'semua'">
+                    <div class="flex gap-4">
+                        <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center shrink-0 mt-1">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-1">
+                                <h4 class="text-sm font-medium text-gray-900">Tips Hari Ini</h4>
+                                <span class="text-xs text-gray-400 whitespace-nowrap ml-2">12 Sep</span>
+                            </div>
+                            <p class="text-sm text-gray-500">Tahukah Anda? Membilas botol plastik sebelum dibuang dapat meningkatkan nilai daur ulangnya.</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Empty State (Hidden) -->
+            <div class="text-center py-12 hidden">
+                <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-bell-slash text-2xl text-gray-400"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900">Tidak ada notifikasi</h3>
+                <p class="text-gray-500 mt-1">Anda sudah membaca semua notifikasi.</p>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Mobile Bottom Navigation (Highlighting Beranda per request if it acts like a sub-page of home, but usually we just keep the active tab where the user came from. Based on prompt: "active: Beranda - with bell highlighted". Since there's no bell in bottom nav, I'll set Beranda active) -->
+    <nav class="md:hidden fixed bottom-0 w-full bg-white border-t border-gray-200 z-30 bottom-nav-safe">
+        <div class="flex justify-around items-center h-16">
+            <a href="dashboard.html" class="flex flex-col items-center justify-center w-full h-full text-primary-600">
+                <i class="fas fa-home text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Beranda</span>
+            </a>
+            <a href="schedule.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600">
+                <i class="fas fa-calendar text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Jadwal</span>
+            </a>
+            <a href="collections-index.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600">
+                <i class="fas fa-truck text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Angkut</span>
+            </a>
+            <a href="education.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600">
+                <i class="fas fa-book-open text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Edukasi</span>
+            </a>
+            <a href="profile.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600">
+                <i class="fas fa-user text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Profil</span>
+            </a>
+        </div>
+    </nav>
+
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edukasi - Wasman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {"50":"#ecfdf5","100":"#d1fae5","200":"#a7f3d0","300":"#6ee7b7","400":"#34d399","500":"#10b981","600":"#059669","700":"#047857","800":"#065f46","900":"#064e3b"},
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .bottom-nav-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+    </style>
+</head>
+<body class="h-full flex flex-col md:flex-row text-gray-800">
+
+    <!-- Mobile Top Bar -->
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30 md:hidden">
+        <div class="flex items-center justify-between px-4 h-14">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-recycle text-white text-sm"></i>
+                </div>
+                <span class="font-bold text-gray-800 text-lg">Wasman</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="notifications.html" class="relative p-2">
+                    <i class="fas fa-bell text-gray-500"></i>
+                </a>
+                <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
+                    <span class="text-primary-700 text-xs font-bold">AH</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Desktop Sidebar -->
+    <aside class="hidden md:flex flex-col w-60 bg-white border-r border-gray-200 sticky top-0 h-screen z-20">
+        <div class="p-4 border-b border-gray-200 flex items-center gap-2">
+            <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                <i class="fas fa-recycle text-white text-sm"></i>
+            </div>
+            <span class="font-bold text-gray-800 text-xl">Wasman</span>
+        </div>
+        <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+            <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-4">Menu Utama</div>
+            <a href="dashboard.html" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium">
+                <i class="fas fa-home w-5 text-center"></i> Dashboard
+            </a>
+            <a href="schedule.html" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium">
+                <i class="fas fa-calendar w-5 text-center"></i> Jadwal Angkut
+            </a>
+            <a href="collections-index.html" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium">
+                <i class="fas fa-truck w-5 text-center"></i> Riwayat Angkut
+            </a>
+            
+            <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-6">Informasi</div>
+            <a href="education.html" class="flex items-center gap-3 px-3 py-2 bg-primary-50 text-primary-700 rounded-lg font-medium">
+                <i class="fas fa-book-open w-5 text-center"></i> Edukasi
+            </a>
+            <a href="notifications.html" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium">
+                <i class="fas fa-bell w-5 text-center"></i> Notifikasi
+            </a>
+            
+            <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-6">Akun</div>
+            <a href="profile.html" class="flex items-center gap-3 px-3 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-lg font-medium">
+                <i class="fas fa-user w-5 text-center"></i> Profil
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 min-w-0 pb-20 md:pb-0 h-screen overflow-y-auto" x-data="{ tab: 'pemilahan' }">
+        <!-- Desktop Header -->
+        <header class="hidden md:flex bg-white shadow-sm border-b border-gray-200 sticky top-0 z-10 px-8 h-16 items-center justify-between">
+            <div class="flex items-center text-sm">
+                <a href="dashboard.html" class="text-gray-500 hover:text-gray-700">Dashboard</a>
+                <i class="fas fa-chevron-right mx-2 text-gray-400 text-xs"></i>
+                <span class="text-gray-900 font-medium">Edukasi</span>
+            </div>
+            <div class="w-64">
+                <div class="relative">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" placeholder="Cari artikel..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500">
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <div class="bg-primary-600 text-white">
+            <div class="max-w-5xl mx-auto px-4 py-8 md:p-8 flex flex-col md:flex-row items-center gap-6">
+                <div class="flex-1">
+                    <h1 class="text-2xl md:text-3xl font-bold mb-2">Panduan Pengelolaan Sampah</h1>
+                    <p class="text-primary-100 text-sm md:text-base">Pelajari cara memilah dan mengelola sampah dari rumah tangga dengan benar untuk lingkungan yang lebih baik.</p>
+                </div>
+                <div class="w-24 h-24 bg-white/10 rounded-full flex items-center justify-center shrink-0">
+                    <i class="fas fa-leaf text-4xl text-primary-200"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 md:p-8 max-w-5xl mx-auto space-y-6">
+            
+            <!-- Mobile Search -->
+            <div class="md:hidden relative">
+                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input type="text" placeholder="Cari artikel edukasi..." class="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 shadow-sm">
+            </div>
+
+            <!-- Tabs -->
+            <div class="overflow-x-auto pb-2 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
+                <div class="flex gap-2">
+                    <button @click="tab = 'semua'" :class="tab === 'semua' ? 'bg-primary-600 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'" class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors">Semua</button>
+                    <button @click="tab = 'pemilahan'" :class="tab === 'pemilahan' ? 'bg-primary-600 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'" class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors">Pemilahan</button>
+                    <button @click="tab = 'pengurangan'" :class="tab === 'pengurangan' ? 'bg-primary-600 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'" class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors">Pengurangan</button>
+                    <button @click="tab = 'daur_ulang'" :class="tab === 'daur_ulang' ? 'bg-primary-600 text-white' : 'bg-white text-gray-600 border border-gray-200 hover:bg-gray-50'" class="whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors">Daur Ulang</button>
+                </div>
+            </div>
+
+            <!-- Featured Article -->
+            <a href="#" class="block bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group">
+                <div class="md:flex">
+                    <div class="md:w-1/3 h-48 md:h-auto bg-blue-100 relative overflow-hidden flex items-center justify-center">
+                        <i class="fas fa-recycle text-6xl text-blue-300 group-hover:scale-110 transition-transform duration-500"></i>
+                        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-md text-xs font-bold text-blue-700">
+                            Pilihan Editor
+                        </div>
+                    </div>
+                    <div class="p-5 md:p-6 md:w-2/3 flex flex-col justify-center">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">Pemilahan</span>
+                            <span class="w-1 h-1 rounded-full bg-gray-300"></span>
+                            <span class="text-xs text-gray-500"><i class="far fa-clock mr-1"></i> 5 menit baca</span>
+                        </div>
+                        <h2 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">Panduan Lengkap Memilah Sampah Plastik di Rumah</h2>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">Tidak semua plastik sama. Kenali 7 jenis kode plastik dan bagaimana cara memilahnya agar memiliki nilai ekonomi dan mudah didaur ulang.</p>
+                        <span class="text-sm font-bold text-primary-600">Baca selengkapnya &rarr;</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                
+                <!-- Card 1 -->
+                <a href="#" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group flex flex-col">
+                    <div class="h-40 bg-emerald-100 flex items-center justify-center relative overflow-hidden">
+                        <i class="fas fa-apple-alt text-5xl text-emerald-300 group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-600">Daur Ulang</span>
+                            <span class="text-xs text-gray-500 ml-auto"><i class="far fa-clock mr-1"></i> 3 menit</span>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">Cara Membuat Kompos dari Sisa Dapur</h3>
+                        <p class="text-sm text-gray-600 line-clamp-2 mb-4 flex-1">Jangan buang sisa makanan Anda. Ubah menjadi pupuk kompos berkualitas untuk tanaman di rumah dengan cara mudah ini.</p>
+                    </div>
+                </a>
+
+                <!-- Card 2 -->
+                <a href="#" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group flex flex-col">
+                    <div class="h-40 bg-amber-100 flex items-center justify-center relative overflow-hidden">
+                        <i class="fas fa-box text-5xl text-amber-300 group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-600">Pemilahan</span>
+                            <span class="text-xs text-gray-500 ml-auto"><i class="far fa-clock mr-1"></i> 4 menit</span>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">Tips Melipat Kardus agar Menghemat Ruang</h3>
+                        <p class="text-sm text-gray-600 line-clamp-2 mb-4 flex-1">Kardus bekas belanja online menumpuk? Pelajari cara melipat dan menyimpannya sebelum dijemput oleh petugas.</p>
+                    </div>
+                </a>
+
+                <!-- Card 3 -->
+                <a href="#" class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow group flex flex-col">
+                    <div class="h-40 bg-purple-100 flex items-center justify-center relative overflow-hidden">
+                        <i class="fas fa-shopping-bag text-5xl text-purple-300 group-hover:scale-110 transition-transform duration-500"></i>
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-600">Pengurangan</span>
+                            <span class="text-xs text-gray-500 ml-auto"><i class="far fa-clock mr-1"></i> 2 menit</span>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2 group-hover:text-primary-600 transition-colors">5 Langkah Memulai Gaya Hidup Minim Sampah</h3>
+                        <p class="text-sm text-gray-600 line-clamp-2 mb-4 flex-1">Langkah-langkah sederhana yang bisa Anda mulai hari ini untuk mengurangi produksi sampah harian di rumah.</p>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="md:hidden fixed bottom-0 w-full bg-white border-t border-gray-200 z-30 bottom-nav-safe">
+        <div class="flex justify-around items-center h-16">
+            <a href="dashboard.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600">
+                <i class="fas fa-home text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Beranda</span>
+            </a>
+            <a href="schedule.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600">
+                <i class="fas fa-calendar text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Jadwal</span>
+            </a>
+            <a href="collections-index.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600">
+                <i class="fas fa-truck text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Angkut</span>
+            </a>
+            <a href="education.html" class="flex flex-col items-center justify-center w-full h-full text-primary-600">
+                <i class="fas fa-book-open text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Edukasi</span>
+            </a>
+            <a href="profile.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600">
+                <i class="fas fa-user text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Profil</span>
+            </a>
+        </div>
+    </nav>
+
+</body>
+</html>

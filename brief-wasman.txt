@@ -1,0 +1,509 @@
+# Brief Platform Pengelolaan Sampah
+
+## 1. Latar Belakang
+
+Diperlukan sebuah platform digital untuk mengelola ekosistem pengumpulan dan pengolahan sampah yang melibatkan tiga stakeholder utama:
+
+1. Rumah tangga sebagai penghasil sampah.
+2. Komunitas sebagai pengangkut dan pengumpul sampah.
+3. Pabrik pengolah sampah sebagai penerima dan pengolah sampah.
+
+Platform ini tidak hanya berfungsi sebagai sistem penjadwalan pengangkutan, tetapi juga sebagai media edukasi, koordinasi logistik, pencatatan transaksi, dan pengembangan ekonomi sirkular.
+
+Konsep ekonomi sirkular memungkinkan sampah yang telah dipilah untuk diperlakukan sebagai material bernilai. Rumah tangga dapat memperoleh uang atau poin, komunitas memperoleh pendapatan dari jasa pengangkutan dan pengumpulan, sedangkan pabrik mendapatkan bahan baku yang lebih terukur dan mudah dilacak.
+
+## 2. Tujuan Platform
+
+Platform ini bertujuan untuk:
+
+- Mendorong rumah tangga memilah sampah dari sumbernya.
+- Menyediakan edukasi pengelolaan sampah yang praktis.
+- Mengatur jadwal pengangkutan reguler agar sampah tidak menumpuk.
+- Memfasilitasi permintaan pengangkutan khusus.
+- Membantu komunitas mengelola rute dan kapasitas pengangkutan.
+- Menghubungkan komunitas dengan pabrik pengolah sampah.
+- Mencatat berat, jenis, kualitas, dan asal sampah.
+- Menciptakan sistem insentif bagi rumah tangga dan komunitas.
+- Meningkatkan transparansi transaksi dalam rantai pengelolaan sampah.
+- Membangun ekosistem ekonomi sirkular berbasis komunitas.
+
+Program pemilahan dari sumber perlu menjadi bagian penting karena kualitas bahan daur ulang sangat bergantung pada pemisahan sampah sejak dari rumah tangga. Sistem digital dapat menggabungkan edukasi, jadwal pengangkutan, dan insentif agar partisipasi warga lebih konsisten. [epa](https://www.epa.gov/circulareconomy/recycling-toolkit)
+
+## 3. Stakeholder dan Peran
+
+### A. Rumah Tangga
+
+Rumah tangga berperan sebagai penghasil dan pemilah sampah.
+
+Fitur yang dibutuhkan:
+
+- Registrasi alamat dan jumlah anggota rumah tangga.
+- Informasi jenis sampah yang dapat dikumpulkan.
+- Panduan pemilahan sampah.
+- Edukasi pengurangan dan pengolahan sampah.
+- Informasi jadwal angkut reguler.
+- Pengajuan pengangkutan khusus.
+- Permintaan penjemputan sampah bernilai ekonomi.
+- Pencatatan berat dan jenis sampah.
+- Riwayat penyerahan sampah.
+- Perolehan uang, poin, voucher, atau potongan biaya layanan.
+- Notifikasi jadwal pengangkutan.
+- Penilaian terhadap layanan komunitas.
+
+Rumah tangga sebaiknya dapat memilih kategori sampah sebelum mengajukan pengangkutan, misalnya:
+
+- Sampah organik.
+- Plastik.
+- Kertas dan kardus.
+- Logam.
+- Kaca.
+- Tekstil.
+- Elektronik rumah tangga.
+- Sampah residu.
+- Sampah berbahaya atau khusus.
+
+### B. Komunitas Pengangkut Sampah
+
+Komunitas menjadi penghubung antara rumah tangga dan pabrik pengolah sampah.
+
+Fitur yang dibutuhkan:
+
+- Pendaftaran komunitas dan anggota pengangkut.
+- Pengaturan wilayah layanan.
+- Penyusunan jadwal angkut reguler.
+- Persetujuan atau penolakan permintaan khusus.
+- Pengelolaan armada dan kapasitas.
+- Penentuan rute pengangkutan.
+- Penugasan petugas kepada permintaan tertentu.
+- Pencatatan berat dan jenis sampah.
+- Dokumentasi pengambilan.
+- Pengelolaan tempat pengumpulan sementara.
+- Penggabungan sampah dari beberapa rumah tangga.
+- Pengajuan penjualan atau pengiriman ke pabrik.
+- Pencatatan pendapatan dan biaya operasional.
+- Penilaian terhadap rumah tangga dan pabrik.
+
+Komunitas memiliki peran penting dalam menyetujui jadwal. Jadwal tidak boleh dibuat hanya berdasarkan permintaan rumah tangga atau pabrik, tetapi juga harus memperhitungkan kapasitas armada, jumlah petugas, jarak tempuh, dan kemampuan pengangkutan.
+
+### C. Pabrik Pengolah Sampah
+
+Pabrik berperan sebagai penerima, pembeli, dan pengolah sampah atau material daur ulang.
+
+Fitur yang dibutuhkan:
+
+- Membuat permintaan bahan baku sampah.
+- Menentukan jenis material yang dibutuhkan.
+- Menentukan jumlah kebutuhan.
+- Menentukan standar kualitas.
+- Menentukan jadwal penerimaan.
+- Menentukan lokasi pengiriman.
+- Menyampaikan harga beli atau rentang harga.
+- Menerima penawaran dari komunitas.
+- Memeriksa kualitas dan berat sampah.
+- Mengonfirmasi penerimaan.
+- Memberikan penilaian terhadap komunitas.
+- Melihat riwayat pasokan.
+- Mengelola kontrak pasokan berulang.
+
+Contoh permintaan pabrik:
+
+> Pabrik membutuhkan 2.000 kilogram botol PET bening dengan tingkat kontaminasi maksimal 5 persen untuk dikirim paling lambat tanggal tertentu.
+
+Komunitas dapat mengajukan kemampuan pasokan berdasarkan jumlah yang berhasil dikumpulkan dari rumah tangga di wilayahnya.
+
+## 4. Jenis Layanan Pengangkutan
+
+### A. Pengangkutan Reguler
+
+Pengangkutan reguler merupakan jadwal rutin yang ditetapkan berdasarkan wilayah dan disetujui oleh komunitas.
+
+Contohnya:
+
+| Hari | Jenis Sampah | Wilayah |
+|---|---|---|
+| Senin | Organik | RW 01 dan RW 02 |
+| Rabu | Plastik dan kardus | RW 01 dan RW 02 |
+| Jumat | Residu | RW 01 dan RW 02 |
+
+Jadwal reguler harus mempertimbangkan:
+
+- Jumlah rumah tangga.
+- Perkiraan volume sampah.
+- Kapasitas kendaraan.
+- Ketersediaan anggota komunitas.
+- Jarak dan waktu tempuh.
+- Frekuensi agar sampah tidak menumpuk.
+- Jadwal penerimaan pabrik.
+
+Rumah tangga memperoleh notifikasi sebelum jadwal pengangkutan. Mereka juga dapat mengonfirmasi apakah memiliki sampah yang siap diangkut.
+
+### B. Pengangkutan Khusus dari Rumah Tangga
+
+Rumah tangga dapat membuat permintaan khusus apabila memiliki sampah dalam jumlah besar atau jenis tertentu.
+
+Contohnya:
+
+- Perabotan bekas.
+- Kardus dalam jumlah besar.
+- Sampah elektronik.
+- Minyak jelantah.
+- Sampah kebun.
+- Sampah setelah acara.
+- Material bangunan ringan.
+
+Alurnya:
+
+1. Rumah tangga membuat permintaan.
+2. Rumah tangga mengisi jenis, perkiraan berat, foto, dan lokasi.
+3. Sistem meneruskan permintaan kepada komunitas di wilayah tersebut.
+4. Komunitas memeriksa kapasitas dan menentukan biaya atau imbalan.
+5. Rumah tangga menyetujui jadwal dan biaya.
+6. Petugas mengambil sampah.
+7. Berat aktual dicatat.
+8. Transaksi diselesaikan.
+
+### C. Permintaan Khusus dari Pabrik
+
+Pabrik dapat membuat permintaan bahan baku tertentu.
+
+Alurnya:
+
+1. Pabrik membuat permintaan material.
+2. Komunitas menerima notifikasi.
+3. Komunitas mengajukan jumlah yang dapat disediakan.
+4. Sistem mencocokkan pasokan komunitas dengan kebutuhan pabrik.
+5. Kedua pihak menyepakati harga, kualitas, dan jadwal.
+6. Komunitas mengumpulkan material dari rumah tangga.
+7. Material dikirim ke pabrik.
+8. Pabrik memeriksa dan mengonfirmasi penerimaan.
+9. Pembayaran atau pembagian pendapatan dilakukan.
+
+## 5. Alur Bisnis Utama
+
+### Alur Reguler
+
+1. Admin atau komunitas membuat rancangan jadwal angkut.
+2. Rumah tangga di wilayah terkait menerima jadwal.
+3. Rumah tangga memilah sampah sesuai kategori.
+4. Rumah tangga mengonfirmasi sampah yang siap diangkut.
+5. Komunitas mengangkut sampah sesuai rute.
+6. Petugas menimbang dan mencatat jenis sampah.
+7. Sampah dibawa ke tempat pengumpulan atau langsung ke pabrik.
+8. Pabrik memeriksa material yang diterima.
+9. Sistem mencatat transaksi, insentif, dan performa.
+
+### Alur Permintaan Pabrik
+
+1. Pabrik membuat permintaan material.
+2. Komunitas mengajukan kesanggupan.
+3. Sistem menampilkan estimasi ketersediaan.
+4. Komunitas mengumpulkan sampah dari rumah tangga.
+5. Material dikonsolidasikan dan diperiksa.
+6. Material dikirim ke pabrik.
+7. Pabrik melakukan pemeriksaan kualitas dan berat.
+8. Pabrik mengonfirmasi penerimaan.
+9. Pembayaran dilakukan sesuai hasil pemeriksaan.
+
+## 6. Model Ekonomi Sirkular
+
+Platform dapat menggunakan beberapa sumber pendapatan dan insentif sekaligus. Jangan hanya mengandalkan penjualan sampah, karena harga material daur ulang dapat berubah dan belum tentu cukup untuk membiayai seluruh kegiatan operasional.
+
+### A. Pendapatan Komunitas
+
+Komunitas dapat memperoleh pendapatan dari:
+
+- Iuran layanan bulanan rumah tangga.
+- Biaya pengangkutan khusus.
+- Margin penjualan material kepada pabrik.
+- Biaya konsolidasi dan pemilahan.
+- Biaya penyimpanan sementara.
+- Kontrak layanan dengan pabrik.
+- Dukungan pemerintah atau lembaga lingkungan.
+- Sponsorship perusahaan.
+- Pembayaran berbasis dampak lingkungan.
+
+Iuran rumah tangga dapat digunakan untuk menjamin keberlanjutan pengangkutan reguler, sedangkan penjualan sampah menjadi pendapatan tambahan.
+
+### B. Insentif Rumah Tangga
+
+Rumah tangga dapat menerima:
+
+- Pembayaran tunai berdasarkan berat dan jenis material.
+- Poin lingkungan.
+- Voucher belanja.
+- Potongan iuran pengangkutan.
+- Potongan pembayaran layanan tertentu.
+- Hadiah untuk konsistensi pemilahan.
+- Bonus berdasarkan kualitas sampah.
+- Peringkat atau penghargaan lingkungan tingkat RT/RW.
+
+Model yang paling aman adalah memberikan insentif setelah komunitas memverifikasi berat dan kualitas sampah. Pendekatan pembayaran atau poin setelah serah terima terverifikasi telah digunakan dalam beberapa platform pengumpulan sampah digital. [plasticsmartcities](https://plasticsmartcities.org/digitalising-recyclable-waste-management-through-mobile-application-in-hue-city/)
+
+### C. Pendapatan Pabrik
+
+Pabrik mendapatkan manfaat dari:
+
+- Pasokan bahan baku yang lebih stabil.
+- Material yang sudah dipilah.
+- Pengurangan biaya sortir.
+- Data asal dan kualitas material.
+- Kontrak pasokan berulang.
+- Pengurangan risiko kekurangan bahan baku.
+- Pelaporan keberlanjutan dan dampak lingkungan.
+
+### D. Contoh Pembagian Nilai
+
+Misalnya, komunitas menjual plastik terpilah kepada pabrik dengan nilai Rp3.000 per kilogram.
+
+Nilai tersebut dapat dibagi secara transparan, misalnya:
+
+- Bagian rumah tangga: insentif pemilahan.
+- Bagian komunitas: jasa pengangkutan dan pemilahan.
+- Biaya operasional: bahan bakar, perawatan, dan administrasi.
+- Dana lingkungan: edukasi dan kegiatan kebersihan.
+- Margin pengelola platform.
+- Bagian pabrik atau mitra logistik, jika ada.
+
+Persentase pembagian tidak harus sama untuk semua jenis sampah. Material bernilai tinggi dapat memiliki skema bagi hasil berbeda dari sampah yang memerlukan biaya pengolahan besar.
+
+## 7. Model Harga dan Transparansi
+
+Untuk platform ini, terdapat dua model yang dapat digunakan.
+
+### Model Transparansi Terbatas
+
+Setiap pihak melihat nilai yang berhubungan langsung dengannya:
+
+- Rumah tangga melihat insentif dari sampah yang diserahkan.
+- Komunitas melihat pembayaran dari rumah tangga dan harga jual kepada pabrik.
+- Pabrik melihat harga pembelian dari komunitas.
+- Margin internal pihak lain tidak ditampilkan.
+
+Model ini mirip dengan rantai pasok ikan sebelumnya dan cocok jika setiap pihak ingin menjaga kerahasiaan harga.
+
+### Model Transparansi Penuh
+
+Semua pihak dapat melihat:
+
+- Harga beli pabrik.
+- Biaya pengangkutan.
+- Insentif rumah tangga.
+- Biaya operasional.
+- Pembagian pendapatan.
+- Margin setiap pihak.
+
+Model ini lebih mudah dipahami dan dapat meningkatkan kepercayaan, tetapi mungkin kurang fleksibel bagi komunitas atau pengelola usaha.
+
+Untuk tahap awal, disarankan menggunakan transparansi terbatas dengan ringkasan pembagian nilai. Rumah tangga tidak harus melihat seluruh margin, tetapi perlu mengetahui cara insentifnya dihitung.
+
+## 8. Sistem Penilaian dan Pengendalian
+
+Penilaian perlu diberikan oleh tiga pihak:
+
+- Rumah tangga menilai komunitas.
+- Komunitas menilai rumah tangga.
+- Pabrik menilai komunitas.
+- Komunitas dapat menilai pabrik.
+
+### Parameter Rumah Tangga
+
+- Sampah sudah dipilah.
+- Sampah sesuai deskripsi.
+- Sampah tersedia saat dijemput.
+- Akses lokasi jelas.
+- Tidak melakukan pembatalan berulang.
+
+### Parameter Komunitas
+
+- Ketepatan waktu.
+- Sampah benar-benar diangkut.
+- Timbangan akurat.
+- Petugas bersikap baik.
+- Sampah tidak tercampur kembali.
+- Permintaan diselesaikan sesuai kesepakatan.
+
+### Parameter Pabrik
+
+- Pembayaran tepat waktu.
+- Spesifikasi permintaan jelas.
+- Pemeriksaan kualitas objektif.
+- Tidak membatalkan secara sepihak.
+- Kapasitas penerimaan sesuai informasi.
+
+### Contoh Penanganan Pelanggaran
+
+| Masalah | Tindakan Awal | Tindakan Lanjutan |
+|---|---|---|
+| Sampah tidak dipilah | Edukasi dan peringatan | Pengurangan insentif atau biaya sortir |
+| Rumah tangga berulang kali membatalkan | Catatan performa | Pembatasan permintaan khusus |
+| Komunitas terlambat mengangkut | Penjadwalan ulang | Pengurangan skor layanan |
+| Berat tidak sesuai | Verifikasi ulang | Penyesuaian pembayaran |
+| Pabrik menolak tanpa alasan jelas | Pemeriksaan bukti | Mediasi atau pembatasan transaksi |
+| Manipulasi timbangan atau bukti | Pembekuan transaksi | Penonaktifan akun dan audit |
+
+Sistem penalti sebaiknya tidak langsung menghukum rumah tangga yang belum memahami pemilahan. Pada tahap awal, pendekatan edukasi dan peringatan lebih sesuai. Penalti yang lebih berat diterapkan jika pelanggaran dilakukan berulang kali atau terdapat indikasi penipuan.
+
+## 9. Fitur Utama Platform
+
+### Fitur Rumah Tangga
+
+- Dashboard jadwal pengangkutan.
+- Kalender angkut.
+- Materi edukasi.
+- Panduan pemilahan berdasarkan jenis sampah.
+- Pengajuan pengangkutan khusus.
+- Upload foto sampah.
+- Riwayat penyerahan.
+- Saldo poin atau pendapatan.
+- Penukaran poin.
+- Notifikasi.
+- Penilaian komunitas.
+
+### Fitur Komunitas
+
+- Dashboard wilayah layanan.
+- Daftar rumah tangga.
+- Kalender pengangkutan.
+- Manajemen rute.
+- Penugasan petugas.
+- Pengelolaan armada.
+- Penerimaan permintaan khusus.
+- Pencatatan timbangan.
+- Upload bukti pengambilan.
+- Konsolidasi material.
+- Penawaran kepada pabrik.
+- Laporan operasional.
+- Pengelolaan pendapatan.
+
+### Fitur Pabrik
+
+- Pembuatan permintaan bahan baku.
+- Pengaturan spesifikasi material.
+- Penawaran harga.
+- Pemilihan komunitas pemasok.
+- Jadwal penerimaan.
+- Verifikasi berat dan kualitas.
+- Konfirmasi penerimaan.
+- Riwayat pasokan.
+- Kontrak pasokan.
+- Laporan volume material.
+
+### Fitur Admin
+
+- Verifikasi pengguna.
+- Verifikasi komunitas.
+- Pengaturan wilayah.
+- Pengaturan jenis sampah.
+- Pengaturan harga referensi.
+- Pengaturan jadwal umum.
+- Moderasi komplain.
+- Audit transaksi.
+- Laporan dampak lingkungan.
+- Pengaturan program insentif.
+
+## 10. Status Permintaan dan Pengangkutan
+
+Contoh status yang dapat digunakan:
+
+1. Permintaan dibuat.
+2. Menunggu persetujuan komunitas.
+3. Jadwal disepakati.
+4. Menunggu pengambilan.
+5. Dalam perjalanan.
+6. Sampah berhasil diambil.
+7. Sedang ditimbang dan diverifikasi.
+8. Menunggu pengiriman ke pabrik.
+9. Dalam proses pengiriman.
+10. Diterima pabrik.
+11. Pembayaran diproses.
+12. Selesai.
+13. Bermasalah atau dalam sengketa.
+14. Dibatalkan.
+
+## 11. Rekomendasi Teknologi
+
+Karena platform ini memiliki konsep serupa dengan platform rantai pasok ikan, teknologi yang digunakan dapat dibuat konsisten:
+
+- Backend: Laravel.
+- Frontend: Blade, Livewire, Vue, atau Inertia.js.
+- Styling: Tailwind CSS.
+- Interaksi ringan: Alpine.js.
+- Database: MySQL atau PostgreSQL.
+- Peta dan rute: OpenStreetMap atau layanan peta yang sesuai.
+- Notifikasi: Web Push, email, atau WhatsApp.
+- Akses Android: PWA.
+- Penyimpanan bukti foto: object storage.
+- Pembayaran: payment gateway atau saldo internal.
+- Laporan: dashboard berbasis grafik.
+
+Laravel tetap cocok karena backend berjalan di server, bukan diinstal langsung pada Android. Rumah tangga, komunitas, dan pabrik dapat mengakses sistem melalui browser atau PWA yang dipasang di perangkat masing-masing.
+
+## 12. Tahapan Pengembangan
+
+### Tahap 1: MVP
+
+Fokus pada:
+
+- Registrasi tiga jenis stakeholder.
+- Profil dan alamat.
+- Edukasi pemilahan sampah.
+- Jadwal angkut reguler.
+- Konfirmasi kesiapan rumah tangga.
+- Persetujuan komunitas.
+- Pencatatan pengangkutan.
+- Penilaian layanan.
+- Riwayat aktivitas.
+
+### Tahap 2: Pengangkutan Khusus
+
+Tambahkan:
+
+- Permintaan khusus rumah tangga.
+- Permintaan bahan dari pabrik.
+- Penjadwalan dan penugasan petugas.
+- Pencatatan berat dan foto.
+- Bukti serah terima.
+- Perhitungan biaya dan insentif.
+
+### Tahap 3: Ekonomi Sirkular
+
+Tambahkan:
+
+- Saldo rumah tangga dan komunitas.
+- Poin lingkungan.
+- Penukaran hadiah.
+- Penawaran material ke pabrik.
+- Kontrak pasokan.
+- Pembayaran digital.
+- Pelaporan pembagian nilai.
+- Dashboard dampak lingkungan.
+
+### Tahap 4: Optimasi
+
+Tambahkan:
+
+- Optimasi rute.
+- Prediksi volume sampah.
+- Rekomendasi jadwal.
+- Integrasi sensor atau timbangan digital.
+- Klasifikasi sampah berbasis gambar.
+- Integrasi mitra UMKM dan toko lokal.
+- Sistem penilaian berbasis histori transaksi.
+
+## 13. Rekomendasi Konsep Utama
+
+Konsep terbaik untuk platform ini adalah:
+
+> **Platform digital ekonomi sirkular berbasis komunitas yang menghubungkan rumah tangga, komunitas pengangkut sampah, dan pabrik pengolah sampah melalui edukasi, jadwal pengangkutan, permintaan logistik, verifikasi material, dan sistem insentif.**
+
+Platform tidak hanya menjawab pertanyaan “kapan sampah diangkut”, tetapi juga:
+
+- Sampah apa yang harus dipilah?
+- Siapa yang bertugas mengangkut?
+- Berapa berat dan kualitasnya?
+- Ke mana sampah tersebut dikirim?
+- Berapa nilai ekonominya?
+- Bagaimana pendapatan dibagi?
+- Apa dampaknya terhadap lingkungan?
+
+Dengan rancangan tersebut, rumah tangga berperan sebagai pemilah dan pemasok material, komunitas sebagai pengelola layanan serta konsolidator, dan pabrik sebagai pembeli atau pengolah material. Sistem insentif berbasis hasil, ditambah iuran layanan dasar, dapat membantu platform tetap berjalan secara operasional dan tidak hanya bergantung pada hibah atau program sosial.

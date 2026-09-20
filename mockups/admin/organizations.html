@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Organisasi - Admin Wasman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {"50":"#ecfdf5","100":"#d1fae5","200":"#a7f3d0","300":"#6ee7b7","400":"#34d399","500":"#10b981","600":"#059669","700":"#047857","800":"#065f46","900":"#064e3b"},
+                        secondary: {"50":"#f0fdf4","100":"#dcfce7","200":"#bbf7d0","300":"#86efac","400":"#4ade80","500":"#22c55e","600":"#16a34a","700":"#15803d","800":"#166534","900":"#14532d"},
+                        accent: {"50":"#fffbeb","100":"#fef3c7","200":"#fde68a","300":"#fcd34d","400":"#fbbf24","500":"#f59e0b","600":"#d97706","700":"#b45309","800":"#92400e","900":"#78350f"},
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .bottom-nav-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+    </style>
+</head>
+<body class="h-full flex text-gray-800" x-data="{ mobileMenuOpen: false, activeTab: 'semua', verifyModalOpen: false }">
+
+    <!-- Desktop Sidebar -->
+    <aside class="hidden md:flex flex-col w-64 bg-white border-r border-gray-200 fixed h-full z-20">
+        <div class="p-4 border-b border-gray-200 flex items-center gap-3">
+            <div class="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-shield-halved text-white text-sm"></i>
+            </div>
+            <div>
+                <span class="font-bold text-gray-800 text-lg block">Wasman</span>
+                <span class="text-xs text-rose-600 font-medium">Administrator</span>
+            </div>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-6">
+            <div>
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Utama</h3>
+                <a href="dashboard.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                    <i class="fas fa-home w-5 text-center"></i> Dashboard
+                </a>
+            </div>
+            <div>
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Pengguna</h3>
+                <a href="users.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                    <i class="fas fa-users w-5 text-center"></i> Kelola Pengguna
+                </a>
+                <a href="organizations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-rose-50 text-rose-700 font-medium">
+                    <i class="fas fa-building w-5 text-center"></i> Organisasi
+                </a>
+            </div>
+            <div>
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Master Data</h3>
+                <a href="waste-categories.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                    <i class="fas fa-layer-group w-5 text-center"></i> Kategori Sampah
+                </a>
+                <a href="waste-materials.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                    <i class="fas fa-box w-5 text-center"></i> Material Sampah
+                </a>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 md:ml-64 pb-16 md:pb-0 flex flex-col min-h-screen">
+        <!-- Top Bar -->
+        <header class="bg-white shadow-sm border-b border-rose-100 sticky top-0 z-30">
+            <div class="flex items-center justify-between px-4 h-14 md:h-16">
+                <!-- Mobile Logo -->
+                <div class="flex md:hidden items-center gap-2">
+                    <div class="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shield-halved text-white text-sm"></i>
+                    </div>
+                    <span class="font-bold text-gray-800">Admin</span>
+                </div>
+                
+                <!-- Desktop Breadcrumb -->
+                <div class="hidden md:flex items-center gap-2 text-sm">
+                    <span class="text-gray-400">Pengguna</span>
+                    <i class="fas fa-chevron-right text-gray-300 text-[10px]"></i>
+                    <span class="font-semibold text-gray-800">Organisasi</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="flex-1 p-4 md:p-6 space-y-4">
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <h1 class="text-xl font-bold text-gray-900">Kelola Organisasi</h1>
+                <div class="flex gap-2">
+                    <div class="bg-white px-3 py-1.5 rounded-lg border border-gray-200 text-sm">
+                        <span class="text-gray-500">Total:</span> <span class="font-bold">11</span>
+                    </div>
+                    <div class="bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-100 text-sm">
+                        <span class="text-amber-700">Menunggu:</span> <span class="font-bold text-amber-700">2</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-2 overflow-x-auto">
+                <div class="flex min-w-max gap-2">
+                    <button @click="activeTab = 'semua'" :class="{'bg-rose-50 text-rose-700 font-medium': activeTab === 'semua', 'text-gray-500 hover:bg-gray-50': activeTab !== 'semua'}" class="px-4 py-2 rounded-lg text-sm transition-colors">Semua Organisasi</button>
+                    <button @click="activeTab = 'komunitas'" :class="{'bg-rose-50 text-rose-700 font-medium': activeTab === 'komunitas', 'text-gray-500 hover:bg-gray-50': activeTab !== 'komunitas'}" class="px-4 py-2 rounded-lg text-sm transition-colors">Komunitas (8)</button>
+                    <button @click="activeTab = 'pabrik'" :class="{'bg-rose-50 text-rose-700 font-medium': activeTab === 'pabrik', 'text-gray-500 hover:bg-gray-50': activeTab !== 'pabrik'}" class="px-4 py-2 rounded-lg text-sm transition-colors">Pabrik (3)</button>
+                    <button @click="activeTab = 'menunggu'" :class="{'bg-amber-50 text-amber-700 font-medium': activeTab === 'menunggu', 'text-gray-500 hover:bg-gray-50': activeTab !== 'menunggu'}" class="px-4 py-2 rounded-lg text-sm transition-colors flex items-center gap-2">
+                        Menunggu Verifikasi <span class="w-5 h-5 bg-amber-500 text-white rounded-full flex items-center justify-center text-[10px]">2</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                <!-- Pending Card -->
+                <div x-show="activeTab === 'semua' || activeTab === 'menunggu'" class="bg-white rounded-xl p-4 shadow-sm border border-amber-200">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold text-lg">KB</div>
+                            <div>
+                                <h3 class="font-bold text-gray-900">Komunitas Berseri</h3>
+                                <span class="inline-block mt-1 px-2 py-0.5 bg-green-100 text-green-700 text-[10px] rounded-full font-medium">Komunitas</span>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 bg-amber-100 text-amber-800 text-[10px] rounded-full font-medium flex items-center gap-1">
+                            <i class="fas fa-clock"></i> Menunggu
+                        </span>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600 mb-4">
+                        <p><i class="fas fa-envelope w-5 text-gray-400"></i> berseri@komunitas.id</p>
+                        <p><i class="fas fa-phone w-5 text-gray-400"></i> 081223344556</p>
+                        <p><i class="fas fa-users w-5 text-gray-400"></i> 0 Anggota</p>
+                        <p><i class="fas fa-calendar w-5 text-gray-400"></i> Daftar: 18 Sep 2023</p>
+                    </div>
+                    <div class="pt-4 border-t border-gray-100 grid grid-cols-2 gap-2">
+                        <button @click="verifyModalOpen = true" class="bg-rose-600 text-white py-2 rounded-lg text-sm font-medium hover:bg-rose-700">Verifikasi</button>
+                        <button class="bg-gray-100 text-gray-700 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">Detail</button>
+                    </div>
+                </div>
+
+                <!-- Verified Community -->
+                <div x-show="activeTab === 'semua' || activeTab === 'komunitas'" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold text-lg">KH</div>
+                            <div>
+                                <h3 class="font-bold text-gray-900">Komunitas Hijau Sejahtera</h3>
+                                <span class="inline-block mt-1 px-2 py-0.5 bg-green-100 text-green-700 text-[10px] rounded-full font-medium">Komunitas</span>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 bg-emerald-100 text-emerald-700 text-[10px] rounded-full font-medium flex items-center gap-1">
+                            <i class="fas fa-check-circle"></i> Terverifikasi
+                        </span>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600 mb-4">
+                        <p><i class="fas fa-envelope w-5 text-gray-400"></i> info@hijau.id</p>
+                        <p><i class="fas fa-phone w-5 text-gray-400"></i> 081199887766</p>
+                        <p><i class="fas fa-users w-5 text-gray-400"></i> 45 Anggota (RT)</p>
+                        <p><i class="fas fa-calendar w-5 text-gray-400"></i> Daftar: 01 Jan 2023</p>
+                    </div>
+                    <div class="pt-4 border-t border-gray-100 flex gap-2">
+                        <button class="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">Detail</button>
+                        <button class="w-10 h-10 flex items-center justify-center border border-gray-200 text-gray-500 rounded-lg hover:bg-gray-50"><i class="fas fa-ellipsis-v"></i></button>
+                    </div>
+                </div>
+
+                <!-- Verified Factory -->
+                <div x-show="activeTab === 'semua' || activeTab === 'pabrik'" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-lg">PT</div>
+                            <div>
+                                <h3 class="font-bold text-gray-900">PT. Plastik Nusantara</h3>
+                                <span class="inline-block mt-1 px-2 py-0.5 bg-purple-100 text-purple-700 text-[10px] rounded-full font-medium">Pabrik</span>
+                            </div>
+                        </div>
+                        <span class="px-2 py-1 bg-emerald-100 text-emerald-700 text-[10px] rounded-full font-medium flex items-center gap-1">
+                            <i class="fas fa-check-circle"></i> Terverifikasi
+                        </span>
+                    </div>
+                    <div class="space-y-2 text-sm text-gray-600 mb-4">
+                        <p><i class="fas fa-envelope w-5 text-gray-400"></i> cs@plastiknusantara.com</p>
+                        <p><i class="fas fa-phone w-5 text-gray-400"></i> (022) 7654321</p>
+                        <p><i class="fas fa-box w-5 text-gray-400"></i> 12 Material Diterima</p>
+                        <p><i class="fas fa-calendar w-5 text-gray-400"></i> Daftar: 15 Mar 2023</p>
+                    </div>
+                    <div class="pt-4 border-t border-gray-100 flex gap-2">
+                        <button class="flex-1 bg-gray-100 text-gray-700 py-2 rounded-lg text-sm font-medium hover:bg-gray-200">Detail</button>
+                        <button class="w-10 h-10 flex items-center justify-center border border-gray-200 text-gray-500 rounded-lg hover:bg-gray-50"><i class="fas fa-ellipsis-v"></i></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Verification Modal -->
+    <div x-show="verifyModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div x-show="verifyModalOpen" x-transition.opacity class="fixed inset-0 bg-gray-900 bg-opacity-50" @click="verifyModalOpen = false"></div>
+            
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+            
+            <div x-show="verifyModalOpen" x-transition.translate class="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <h3 class="text-lg leading-6 font-bold text-gray-900 mb-4">Verifikasi Organisasi</h3>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                        <h4 class="font-bold text-gray-900">Komunitas Berseri</h4>
+                        <p class="text-sm text-gray-500 mb-2">Pendaftaran Komunitas</p>
+                        <div class="text-sm space-y-1">
+                            <p><span class="text-gray-500 inline-block w-24">Penanggung Jawab:</span> Bpk. Ridwan</p>
+                            <p><span class="text-gray-500 inline-block w-24">Dokumen:</span> <a href="#" class="text-blue-600 hover:underline">SK_Komunitas.pdf</a></p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Catatan Admin (Opsional)</label>
+                            <textarea rows="3" class="w-full border border-gray-300 rounded-lg p-2 text-sm focus:ring-rose-500 focus:border-rose-500" placeholder="Tambahkan catatan terkait keputusan verifikasi..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-4 py-3 sm:px-6 flex flex-col sm:flex-row-reverse gap-2">
+                    <button type="button" @click="verifyModalOpen = false" class="w-full inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-emerald-600 text-base font-medium text-white hover:bg-emerald-700 sm:ml-3 sm:w-auto sm:text-sm">
+                        Terima & Aktifkan
+                    </button>
+                    <button type="button" @click="verifyModalOpen = false" class="w-full inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-rose-600 hover:bg-gray-50 sm:ml-3 sm:w-auto sm:text-sm">
+                        Tolak
+                    </button>
+                    <button @click="verifyModalOpen = false" type="button" class="mt-3 w-full inline-flex justify-center rounded-lg border border-transparent px-4 py-2 text-base font-medium text-gray-500 hover:text-gray-700 sm:mt-0 sm:w-auto sm:text-sm">
+                        Batal
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="md:hidden fixed bottom-0 w-full bg-white border-t border-gray-200 z-40 bottom-nav-safe">
+        <div class="flex justify-around items-center h-16">
+            <a href="dashboard.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600">
+                <i class="fas fa-home text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Beranda</span>
+            </a>
+            <a href="users.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600">
+                <i class="fas fa-users text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Pengguna</span>
+            </a>
+            <a href="waste-categories.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600">
+                <i class="fas fa-database text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Data</span>
+            </a>
+            <button @click="mobileMenuOpen = !mobileMenuOpen" class="flex flex-col items-center justify-center w-full h-full text-rose-600">
+                <i class="fas fa-bars text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Menu</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile More Menu Overlay -->
+    <div x-show="mobileMenuOpen" x-transition.opacity class="md:hidden fixed inset-0 z-50 bg-gray-900/50 backdrop-blur-sm flex items-end" x-cloak>
+        <div @click.outside="mobileMenuOpen = false" x-show="mobileMenuOpen" x-transition.translate class="w-full bg-white rounded-t-2xl pb-safe">
+            <div class="p-4 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="font-bold text-gray-900">Menu Lainnya</h3>
+                <button @click="mobileMenuOpen = false" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-4 grid grid-cols-4 gap-4">
+                <a href="organizations.html" class="flex flex-col items-center text-center gap-2">
+                    <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center text-rose-600 border border-rose-200">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <span class="text-[10px] font-bold text-rose-700">Organisasi</span>
+                </a>
+                <a href="waste-categories.html" class="flex flex-col items-center text-center gap-2">
+                    <div class="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-600">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-gray-700">Kategori Sampah</span>
+                </a>
+                <a href="waste-materials.html" class="flex flex-col items-center text-center gap-2">
+                    <div class="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-600">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-gray-700">Material Sampah</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

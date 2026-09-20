@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Pabrik - Wasman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {"50":"#ecfdf5","100":"#d1fae5","200":"#a7f3d0","300":"#6ee7b7","400":"#34d399","500":"#10b981","600":"#059669","700":"#047857","800":"#065f46","900":"#064e3b"},
+                        secondary: {"50":"#f0fdf4","100":"#dcfce7","200":"#bbf7d0","300":"#86efac","400":"#4ade80","500":"#22c55e","600":"#16a34a","700":"#15803d","800":"#166534","900":"#14532d"},
+                        accent: {"50":"#fffbeb","100":"#fef3c7","200":"#fde68a","300":"#fcd34d","400":"#fbbf24","500":"#f59e0b","600":"#d97706","700":"#b45309","800":"#92400e","900":"#78350f"},
+                        factory: {"50":"#faf5ff","100":"#f3e8ff","200":"#e9d5ff","300":"#d8b4fe","400":"#c084fc","500":"#a855f7","600":"#9333ea","700":"#7e22ce","800":"#6b21a8","900":"#581c87"}
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .bottom-nav-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+    </style>
+</head>
+<body class="h-full font-sans antialiased text-gray-800" x-data="{ 
+    notificationModal: false, 
+    editCompanyModal: false,
+    editMaterialsModal: false,
+    editCapacityModal: false,
+    editQualityModal: false,
+    editScheduleModal: false,
+    changePasswordModal: false,
+    logoutModal: false,
+    toastMessage: '',
+    showToast: false,
+    triggerToast(msg) {
+        this.toastMessage = msg;
+        this.showToast = true;
+        setTimeout(() => { this.showToast = false; }, 3000);
+    }
+}">
+    <div class="min-h-full flex flex-col md:flex-row">
+
+        <!-- ================= DESKTOP SIDEBAR (md+) ================= -->
+        <aside class="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 bg-white border-r border-gray-200 z-40">
+            <!-- Brand / Logo -->
+            <div class="h-16 flex items-center justify-between px-5 border-b border-gray-100">
+                <a href="../index.html" class="flex items-center gap-2.5 group">
+                    <div class="w-9 h-9 bg-primary-500 rounded-xl flex items-center justify-center shadow-sm shadow-primary-200 group-hover:scale-105 transition-transform">
+                        <i class="fas fa-recycle text-white text-base"></i>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-gray-900 text-lg tracking-tight">Wasman</span>
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-factory-100 text-factory-700 ml-1">Pabrik</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Factory Overview Snippet -->
+            <div class="px-4 py-3 mx-3 my-3 bg-gradient-to-r from-factory-50 to-purple-50 rounded-xl border border-factory-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-factory-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <p class="text-xs font-bold text-gray-900 truncate">PT. Plastik Daur Ulang</p>
+                        <p class="text-[11px] text-factory-700 font-medium flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span> Terverifikasi
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
+                <p class="px-3 pt-2 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Menu Pabrik</p>
+
+                <!-- Dashboard -->
+                <a href="dashboard.html" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-colors">
+                    <div class="w-7 h-7 rounded-lg bg-gray-100 text-gray-500 flex items-center justify-center text-xs">
+                        <i class="fas fa-th-large"></i>
+                    </div>
+                    <span>Dashboard</span>
+                </a>
+
+                <!-- Riwayat Pasokan -->
+                <a href="supply.html" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-colors">
+                    <div class="w-7 h-7 rounded-lg bg-gray-100 text-gray-500 flex items-center justify-center text-xs">
+                        <i class="fas fa-boxes-stacked"></i>
+                    </div>
+                    <span>Riwayat Pasokan</span>
+                </a>
+
+                <!-- Notifikasi -->
+                <button @click="notificationModal = true" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-colors text-left">
+                    <div class="w-7 h-7 rounded-lg bg-gray-100 text-gray-500 flex items-center justify-center text-xs relative">
+                        <i class="fas fa-bell"></i>
+                        <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                    </div>
+                    <span>Notifikasi</span>
+                    <span class="ml-auto inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-700">3</span>
+                </button>
+
+                <!-- Profil Pabrik (Active) -->
+                <a href="profile.html" class="flex items-center gap-3 px-3 py-2.5 text-sm font-semibold rounded-xl bg-factory-50 text-factory-700 border border-factory-200 shadow-sm">
+                    <div class="w-7 h-7 rounded-lg bg-factory-600 text-white flex items-center justify-center text-xs shadow-sm">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <span>Profil Pabrik</span>
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-factory-600"></span>
+                </a>
+
+                <div class="pt-4 mt-4 border-t border-gray-100">
+                    <p class="px-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Navigasi Lain</p>
+                    <a href="../index.html" class="flex items-center gap-3 px-3 py-2 text-xs font-medium text-gray-500 hover:text-primary-600 rounded-lg transition-colors">
+                        <i class="fas fa-arrow-left text-gray-400"></i>
+                        <span>Kembali ke Mockup Hub</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- User Footer in Sidebar -->
+            <div class="p-3 border-t border-gray-200">
+                <div class="flex items-center justify-between p-2 rounded-xl hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="w-9 h-9 rounded-full bg-factory-100 border border-factory-300 flex items-center justify-center text-factory-700 font-bold text-xs shrink-0">
+                            PN
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-bold text-gray-800 truncate">Hendra Gunawan</p>
+                            <p class="text-[11px] text-gray-500 truncate">Manajer Logistik</p>
+                        </div>
+                    </div>
+                    <button @click="logoutModal = true" title="Keluar" class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                        <i class="fas fa-arrow-right-from-bracket text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ================= MAIN CONTENT WRAPPER ================= -->
+        <div class="flex-1 md:pl-64 flex flex-col min-h-screen">
+
+            <!-- MOBILE TOP BAR (<md) -->
+            <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30 md:hidden">
+                <div class="flex items-center justify-between px-4 h-14">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center shadow-sm">
+                            <i class="fas fa-recycle text-white text-sm"></i>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-bold text-gray-900 text-base">Wasman</span>
+                            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-factory-100 text-factory-700">Pabrik</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button @click="notificationModal = true" class="relative p-2 text-gray-600 hover:text-gray-900 rounded-lg">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
+                        </button>
+                        <div class="w-8 h-8 bg-factory-600 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                            PN
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- DESKTOP TOP BAR (md+) -->
+            <header class="hidden md:flex bg-white border-b border-gray-200 sticky top-0 z-30 h-16 items-center justify-between px-8">
+                <div class="flex items-center gap-3">
+                    <nav class="flex items-center text-xs text-gray-500 space-x-2">
+                        <span class="text-gray-400">Pabrik</span>
+                        <i class="fas fa-chevron-right text-[10px] text-gray-300"></i>
+                        <span class="font-semibold text-gray-800">Profil & Konfigurasi Penerimaan</span>
+                    </nav>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        <i class="fas fa-circle-check text-emerald-500 text-xs"></i>
+                        Profil Publik Terbuka untuk Komunitas
+                    </div>
+
+                    <button @click="notificationModal = true" class="relative p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors">
+                        <i class="fas fa-bell text-sm"></i>
+                        <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+
+                    <button @click="changePasswordModal = true" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg transition-colors">
+                        <i class="fas fa-key text-xs text-gray-500"></i>
+                        <span>Ubah Password</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Toast Notification -->
+            <div x-show="showToast" x-cloak 
+                 x-transition:enter="transition ease-out duration-300 transform"
+                 x-transition:enter-start="opacity-0 translate-y-2"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-200 transform"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 translate-y-2"
+                 class="fixed top-20 right-6 z-50 bg-gray-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-2 text-xs font-medium">
+                <i class="fas fa-circle-check text-emerald-400 text-sm"></i>
+                <span x-text="toastMessage"></span>
+            </div>
+
+            <!-- ================= PAGE CONTENT ================= -->
+            <main class="flex-1 p-4 md:p-8 space-y-6 pb-24 md:pb-8">
+
+                <!-- Company Banner & Large Logo Header -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="h-32 md:h-44 bg-gradient-to-r from-factory-700 via-purple-700 to-indigo-800 relative">
+                        <div class="absolute inset-0 bg-black/10"></div>
+                        <div class="absolute top-4 right-4 flex items-center gap-2">
+                            <span class="px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-white text-xs font-semibold">
+                                <i class="fas fa-shield-alt mr-1"></i> Izin Pabrik Daur Ulang Aktif
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="px-6 pb-6 pt-0 relative">
+                        <div class="flex flex-col sm:flex-row sm:items-end justify-between -mt-16 sm:-mt-14 mb-4 gap-4">
+                            <!-- Large Logo Placeholder -->
+                            <div class="flex items-end gap-4">
+                                <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-white p-2 shadow-lg border-2 border-white shrink-0">
+                                    <div class="w-full h-full rounded-xl bg-gradient-to-br from-factory-600 to-purple-800 flex flex-col items-center justify-center text-white shadow-inner">
+                                        <i class="fas fa-industry text-3xl sm:text-4xl mb-1"></i>
+                                        <span class="text-[9px] font-black tracking-widest uppercase">NUSANTARA</span>
+                                    </div>
+                                </div>
+                                <div class="mb-1">
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <h1 class="text-xl sm:text-2xl font-extrabold text-gray-900">PT. Plastik Daur Ulang Nusantara</h1>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">
+                                            <i class="fas fa-check-circle mr-1 text-[10px]"></i> Terverifikasi Wasman
+                                        </span>
+                                    </div>
+                                    <p class="text-xs sm:text-sm text-gray-500 mt-0.5">
+                                        Pengolahan, Pencacahan Flakes & Manufaktur Daur Ulang Polimer
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Edit Master Button -->
+                            <button @click="editCompanyModal = true" class="px-4 py-2 bg-factory-600 hover:bg-factory-700 text-white text-xs font-bold rounded-xl shadow-sm shadow-factory-200 transition-colors flex items-center justify-center gap-2 self-start sm:self-end">
+                                <i class="fas fa-pen-to-square"></i>
+                                <span>Edit Informasi Perusahaan</span>
+                            </button>
+                        </div>
+
+                        <!-- Quick Badges -->
+                        <div class="flex flex-wrap gap-2 pt-2 border-t border-gray-100 text-xs text-gray-600">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-50 rounded-lg">
+                                <i class="fas fa-id-card text-gray-400"></i> NIB: <strong>9120003418902</strong>
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-gray-50 rounded-lg">
+                                <i class="fas fa-calendar-check text-gray-400"></i> Terdaftar: <strong>Januari 2024</strong>
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-50 text-factory-700 rounded-lg font-medium">
+                                <i class="fas fa-star text-amber-500"></i> Rating Mitra: <strong>4.8 / 5.0 (98 Ulasan)</strong>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid Layout: Info Card + Kapasitas & Standar Kualitas -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                    <!-- LEFT COLUMN (2 Cols) -->
+                    <div class="lg:col-span-2 space-y-6">
+
+                        <!-- 1. Company Info Card -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                            <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+                                <div>
+                                    <h2 class="text-base font-bold text-gray-900 flex items-center gap-2">
+                                        <i class="fas fa-building text-factory-600"></i>
+                                        Informasi Perusahaan & Kontak
+                                    </h2>
+                                    <p class="text-xs text-gray-500 mt-0.5">Detail legalitas pabrik, PIC logistik, dan alamat pengiriman armada</p>
+                                </div>
+                                <button @click="editCompanyModal = true" class="p-2 text-gray-400 hover:text-factory-600 hover:bg-factory-50 rounded-lg transition-colors" title="Edit Data Perusahaan">
+                                    <i class="fas fa-pen text-xs"></i>
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5 text-xs">
+                                <div class="space-y-1">
+                                    <p class="text-gray-400 font-medium">Nama Perusahaan Resmi</p>
+                                    <p class="font-bold text-gray-900 text-sm">PT. Plastik Daur Ulang Nusantara</p>
+                                </div>
+                                <div class="space-y-1">
+                                    <p class="text-gray-400 font-medium">Email Pengadaan (Procurement)</p>
+                                    <p class="font-bold text-gray-900">procurement@plastiknusantara.co.id</p>
+                                </div>
+                                <div class="space-y-1">
+                                    <p class="text-gray-400 font-medium">Telepon / WhatsApp Kantor</p>
+                                    <p class="font-bold text-gray-900">+62 21 8983 4567 / +62 812-9876-5432</p>
+                                </div>
+                                <div class="space-y-1">
+                                    <p class="text-gray-400 font-medium">Penanggung Jawab (PIC QC & Logistik)</p>
+                                    <p class="font-bold text-gray-900">Ir. Hendra Gunawan</p>
+                                </div>
+                                <div class="sm:col-span-2 space-y-1 bg-gray-50 p-3.5 rounded-xl border border-gray-100">
+                                    <div class="flex items-center justify-between">
+                                        <p class="text-gray-500 font-medium">Alamat Pabrik & Gerbang Timbangan</p>
+                                        <span class="text-[11px] font-bold text-factory-700">Pintu Masuk Barat (Gate B)</span>
+                                    </div>
+                                    <p class="font-semibold text-gray-800 leading-relaxed mt-1">
+                                        Kawasan Industri Jababeka II, Blok JJ No. 18, Desa Pasirsari, Cikarang Selatan, Kabupaten Bekasi, Jawa Barat 17530
+                                    </p>
+                                    <div class="flex items-center gap-3 pt-2 text-[11px] text-gray-500">
+                                        <span><i class="fas fa-location-crosshairs text-factory-600 mr-1"></i> Koordinat: -6.31584, 107.15231</span>
+                                        <span>•</span>
+                                        <a href="https://maps.google.com" target="_blank" class="text-factory-600 hover:underline font-semibold flex items-center gap-1">
+                                            <span>Buka di Google Maps</span>
+                                            <i class="fas fa-arrow-up-right-from-square text-[10px]"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2. 'Material yang Diterima' Section -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                            <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+                                <div>
+                                    <h2 class="text-base font-bold text-gray-900 flex items-center gap-2">
+                                        <i class="fas fa-recycle text-factory-600"></i>
+                                        Material yang Diterima & Standar Harga Acuan
+                                    </h2>
+                                    <p class="text-xs text-gray-500 mt-0.5">Jenis limbah yang diterima dan dibeli oleh pabrik saat ini</p>
+                                </div>
+                                <button @click="editMaterialsModal = true" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-factory-700 bg-factory-50 hover:bg-factory-100 rounded-lg transition-colors">
+                                    <i class="fas fa-sliders text-xs"></i>
+                                    <span>Kelola Material</span>
+                                </button>
+                            </div>
+
+                            <!-- Accepted Grid -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mt-4">
+                                <!-- Material 1 -->
+                                <div class="p-3 rounded-xl border border-emerald-200 bg-emerald-50/40 relative group">
+                                    <div class="flex items-center justify-between mb-1.5">
+                                        <span class="w-6 h-6 rounded-md bg-emerald-500 text-white flex items-center justify-center text-xs font-bold">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                        <span class="text-[10px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded">PET #1</span>
+                                    </div>
+                                    <p class="text-xs font-bold text-gray-900">Botol PET Bening</p>
+                                    <p class="text-[11px] text-gray-500 mt-0.5">Air mineral, minuman teh</p>
+                                    <div class="mt-2 pt-2 border-t border-emerald-100 flex items-center justify-between text-xs">
+                                        <span class="text-gray-500">Harga Acuan:</span>
+                                        <span class="font-extrabold text-emerald-700">Rp 5.000/kg</span>
+                                    </div>
+                                </div>
+
+                                <!-- Material 2 -->
+                                <div class="p-3 rounded-xl border border-emerald-200 bg-emerald-50/40 relative group">
+                                    <div class="flex items-center justify-between mb-1.5">
+                                        <span class="w-6 h-6 rounded-md bg-emerald-500 text-white flex items-center justify-center text-xs font-bold">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                        <span class="text-[10px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded">HDPE #2</span>
+                                    </div>
+                                    <p class="text-xs font-bold text-gray-900">HDPE Tutup Botol & Jeriken</p>
+                                    <p class="text-[11px] text-gray-500 mt-0.5">Tutup botol, botol sampo</p>
+                                    <div class="mt-2 pt-2 border-t border-emerald-100 flex items-center justify-between text-xs">
+                                        <span class="text-gray-500">Harga Acuan:</span>
+                                        <span class="font-extrabold text-emerald-700">Rp 4.800/kg</span>
+                                    </div>
+                                </div>
+
+                                <!-- Material 3 -->
+                                <div class="p-3 rounded-xl border border-emerald-200 bg-emerald-50/40 relative group">
+                                    <div class="flex items-center justify-between mb-1.5">
+                                        <span class="w-6 h-6 rounded-md bg-emerald-500 text-white flex items-center justify-center text-xs font-bold">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                        <span class="text-[10px] font-bold px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded">Kardus</span>
+                                    </div>
+                                    <p class="text-xs font-bold text-gray-900">Kardus & Karton Box</p>
+                                    <p class="text-[11px] text-gray-500 mt-0.5">Karton slop kering tanpa lakban</p>
+                                    <div class="mt-2 pt-2 border-t border-emerald-100 flex items-center justify-between text-xs">
+                                        <span class="text-gray-500">Harga Acuan:</span>
+                                        <span class="font-extrabold text-emerald-700">Rp 2.500/kg</span>
+                                    </div>
+                                </div>
+
+                                <!-- Material 4 -->
+                                <div class="p-3 rounded-xl border border-emerald-200 bg-emerald-50/40 relative group">
+                                    <div class="flex items-center justify-between mb-1.5">
+                                        <span class="w-6 h-6 rounded-md bg-emerald-500 text-white flex items-center justify-center text-xs font-bold">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                        <span class="text-[10px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded">PP #5</span>
+                                    </div>
+                                    <p class="text-xs font-bold text-gray-900">PP Gelas Minuman Bening</p>
+                                    <p class="text-[11px] text-gray-500 mt-0.5">Cup boba, gelas air mineral</p>
+                                    <div class="mt-2 pt-2 border-t border-emerald-100 flex items-center justify-between text-xs">
+                                        <span class="text-gray-500">Harga Acuan:</span>
+                                        <span class="font-extrabold text-emerald-700">Rp 3.800/kg</span>
+                                    </div>
+                                </div>
+
+                                <!-- Material 5 -->
+                                <div class="p-3 rounded-xl border border-emerald-200 bg-emerald-50/40 relative group">
+                                    <div class="flex items-center justify-between mb-1.5">
+                                        <span class="w-6 h-6 rounded-md bg-emerald-500 text-white flex items-center justify-center text-xs font-bold">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                        <span class="text-[10px] font-bold px-1.5 py-0.5 bg-amber-100 text-amber-800 rounded">Logam</span>
+                                    </div>
+                                    <p class="text-xs font-bold text-gray-900">Kaleng Aluminium Minuman</p>
+                                    <p class="text-[11px] text-gray-500 mt-0.5">Kaleng soda press / bersih</p>
+                                    <div class="mt-2 pt-2 border-t border-emerald-100 flex items-center justify-between text-xs">
+                                        <span class="text-gray-500">Harga Acuan:</span>
+                                        <span class="font-extrabold text-emerald-700">Rp 14.000/kg</span>
+                                    </div>
+                                </div>
+
+                                <!-- Material 6 -->
+                                <div class="p-3 rounded-xl border border-emerald-200 bg-emerald-50/40 relative group">
+                                    <div class="flex items-center justify-between mb-1.5">
+                                        <span class="w-6 h-6 rounded-md bg-emerald-500 text-white flex items-center justify-center text-xs font-bold">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                        <span class="text-[10px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded">LDPE #4</span>
+                                    </div>
+                                    <p class="text-xs font-bold text-gray-900">Plastik Bening (Film/Wrap)</p>
+                                    <p class="text-[11px] text-gray-500 mt-0.5">Plastik packing bening bersih</p>
+                                    <div class="mt-2 pt-2 border-t border-emerald-100 flex items-center justify-between text-xs">
+                                        <span class="text-gray-500">Harga Acuan:</span>
+                                        <span class="font-extrabold text-emerald-700">Rp 3.200/kg</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Prohibited Materials Tags -->
+                            <div class="mt-4 pt-3 border-t border-gray-100">
+                                <p class="text-[11px] font-bold text-red-600 mb-2 flex items-center gap-1.5">
+                                    <i class="fas fa-triangle-exclamation"></i>
+                                    Material yang DITOLAK / Tidak Diterima:
+                                </p>
+                                <div class="flex flex-wrap gap-1.5 text-[11px]">
+                                    <span class="px-2.5 py-1 bg-red-50 text-red-700 border border-red-200 rounded-md">
+                                        <i class="fas fa-ban mr-1"></i> Plastik Sachet Multi-layer
+                                    </span>
+                                    <span class="px-2.5 py-1 bg-red-50 text-red-700 border border-red-200 rounded-md">
+                                        <i class="fas fa-ban mr-1"></i> Styrofoam (PS)
+                                    </span>
+                                    <span class="px-2.5 py-1 bg-red-50 text-red-700 border border-red-200 rounded-md">
+                                        <i class="fas fa-ban mr-1"></i> Pipa PVC & Selang
+                                    </span>
+                                    <span class="px-2.5 py-1 bg-red-50 text-red-700 border border-red-200 rounded-md">
+                                        <i class="fas fa-ban mr-1"></i> Limbah Medis / B3 Berbahaya
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. 'Standar Kualitas' Card -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                            <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+                                <div>
+                                    <h2 class="text-base font-bold text-gray-900 flex items-center gap-2">
+                                        <i class="fas fa-award text-factory-600"></i>
+                                        Standar Kualitas & Kriteria Grading
+                                    </h2>
+                                    <p class="text-xs text-gray-500 mt-0.5">Batas toleransi kontaminasi dan skema penetapan harga mutu di timbangan</p>
+                                </div>
+                                <button @click="editQualityModal = true" class="p-2 text-gray-400 hover:text-factory-600 hover:bg-factory-50 rounded-lg transition-colors" title="Edit Standar Kualitas">
+                                    <i class="fas fa-pen text-xs"></i>
+                                </button>
+                            </div>
+
+                            <div class="mt-4 space-y-3 text-xs">
+                                <!-- General Tolerance -->
+                                <div class="p-3 bg-purple-50 rounded-xl border border-purple-100 flex items-center justify-between">
+                                    <div>
+                                        <p class="font-bold text-purple-950">Toleransi Kontaminasi Maksimal</p>
+                                        <p class="text-[11px] text-purple-700 mt-0.5">Residu cairan, debu pasir, label non-compatible, atau campuran material lain.</p>
+                                    </div>
+                                    <span class="text-lg font-black text-purple-900 bg-white px-3 py-1 rounded-lg border border-purple-200 shadow-sm">
+                                        &le; 5%
+                                    </span>
+                                </div>
+
+                                <!-- Grading Levels -->
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+                                    <!-- Grade A -->
+                                    <div class="p-3.5 rounded-xl border border-emerald-200 bg-emerald-50/40">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500 text-white">Grade A</span>
+                                            <span class="text-emerald-700 font-bold text-[11px]">Kemurnian &ge; 95%</span>
+                                        </div>
+                                        <p class="font-bold text-gray-800 text-xs">Kualitas Prima</p>
+                                        <p class="text-[11px] text-gray-600 mt-1 leading-relaxed">
+                                            Botol bersih tanpa label PVC, bebas cairan atau minyak.
+                                        </p>
+                                        <p class="text-[11px] font-bold text-emerald-700 mt-2">
+                                            <i class="fas fa-plus mr-1"></i> Bonus Harga +5%
+                                        </p>
+                                    </div>
+
+                                    <!-- Grade B -->
+                                    <div class="p-3.5 rounded-xl border border-blue-200 bg-blue-50/40">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-blue-500 text-white">Grade B</span>
+                                            <span class="text-blue-700 font-bold text-[11px]">Kemurnian 85 - 94%</span>
+                                        </div>
+                                        <p class="font-bold text-gray-800 text-xs">Kualitas Standar</p>
+                                        <p class="text-[11px] text-gray-600 mt-1 leading-relaxed">
+                                            Terdapat label merek, berdebu tipis, bebas sisa cairan pekat.
+                                        </p>
+                                        <p class="text-[11px] font-bold text-blue-700 mt-2">
+                                            <i class="fas fa-check mr-1"></i> Harga Normal Acuan
+                                        </p>
+                                    </div>
+
+                                    <!-- Grade C -->
+                                    <div class="p-3.5 rounded-xl border border-amber-200 bg-amber-50/40">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-500 text-white">Grade C</span>
+                                            <span class="text-amber-700 font-bold text-[11px]">Kemurnian 75 - 84%</span>
+                                        </div>
+                                        <p class="font-bold text-gray-800 text-xs">Perlu Sortir Ulang</p>
+                                        <p class="text-[11px] text-gray-600 mt-1 leading-relaxed">
+                                            Tercampur kotoran, perlu sortir manual oleh pekerja pabrik.
+                                        </p>
+                                        <p class="text-[11px] font-bold text-amber-700 mt-2">
+                                            <i class="fas fa-minus mr-1"></i> Biaya Sortir Rp 500/kg
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- RIGHT COLUMN (1 Col) -->
+                    <div class="space-y-6">
+
+                        <!-- 4. 'Kapasitas Penerimaan' Card -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                            <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                                <h2 class="text-base font-bold text-gray-900 flex items-center gap-2">
+                                    <i class="fas fa-gauge-high text-factory-600"></i>
+                                    Kapasitas Penerimaan
+                                </h2>
+                                <button @click="editCapacityModal = true" class="p-1.5 text-gray-400 hover:text-factory-600 hover:bg-factory-50 rounded-lg transition-colors" title="Edit Kapasitas">
+                                    <i class="fas fa-pen text-xs"></i>
+                                </button>
+                            </div>
+
+                            <div class="mt-4 space-y-4 text-xs">
+                                <div>
+                                    <div class="flex items-center justify-between mb-1 text-gray-600">
+                                        <span>Kapasitas Maksimal Harian:</span>
+                                        <span class="font-bold text-gray-900">15.000 kg (15 ton)</span>
+                                    </div>
+                                    <div class="flex items-center justify-between mb-1 text-gray-600">
+                                        <span>Kapasitas Maksimal Mingguan:</span>
+                                        <span class="font-bold text-gray-900">90.000 kg (90 ton)</span>
+                                    </div>
+                                    <div class="flex items-center justify-between mb-1 text-gray-600">
+                                        <span>Minimum Muatan Armada:</span>
+                                        <span class="font-bold text-gray-900">500 kg / tiket</span>
+                                    </div>
+                                </div>
+
+                                <div class="pt-3 border-t border-gray-100">
+                                    <div class="flex items-center justify-between mb-1.5">
+                                        <span class="font-semibold text-gray-700">Kapasitas Silo Penyimpanan</span>
+                                        <span class="font-extrabold text-factory-700">102 / 150 ton (68%)</span>
+                                    </div>
+                                    <div class="w-full bg-gray-100 h-3 rounded-full overflow-hidden">
+                                        <div class="bg-gradient-to-r from-factory-500 to-factory-600 h-full rounded-full" style="width: 68%;"></div>
+                                    </div>
+                                    <p class="text-[11px] text-gray-400 mt-1.5">Ruang penampungan tersisa aman untuk &plusmn; 48 ton material.</p>
+                                </div>
+
+                                <div class="bg-gray-50 p-3 rounded-xl border border-gray-100">
+                                    <p class="font-bold text-gray-800 text-[11px] mb-1">Spesifikasi Jembatan Timbang</p>
+                                    <p class="text-[11px] text-gray-500">Merek Avery Berkel, Kapasitas maks 40 ton, Panjang platform 12 meter (Truk Engkel, Fuso, Tronton).</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 5. 'Jadwal Penerimaan' Section -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                            <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                                <h2 class="text-base font-bold text-gray-900 flex items-center gap-2">
+                                    <i class="fas fa-clock text-factory-600"></i>
+                                    Jadwal Penerimaan
+                                </h2>
+                                <button @click="editScheduleModal = true" class="p-1.5 text-gray-400 hover:text-factory-600 hover:bg-factory-50 rounded-lg transition-colors" title="Edit Jadwal">
+                                    <i class="fas fa-pen text-xs"></i>
+                                </button>
+                            </div>
+
+                            <div class="mt-4 space-y-2.5 text-xs">
+                                <!-- Senin - Jumat -->
+                                <div class="p-2.5 rounded-lg bg-gray-50 flex items-center justify-between">
+                                    <div>
+                                        <p class="font-bold text-gray-800">Senin - Jumat</p>
+                                        <p class="text-[11px] text-gray-500">Istirahat: 12:00 - 13:00 WIB</p>
+                                    </div>
+                                    <span class="font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                                        08:00 - 17:00
+                                    </span>
+                                </div>
+
+                                <!-- Sabtu -->
+                                <div class="p-2.5 rounded-lg bg-gray-50 flex items-center justify-between">
+                                    <div>
+                                        <p class="font-bold text-gray-800">Sabtu</p>
+                                        <p class="text-[11px] text-gray-500">Operasional setengah hari</p>
+                                    </div>
+                                    <span class="font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                                        08:00 - 14:00
+                                    </span>
+                                </div>
+
+                                <!-- Minggu -->
+                                <div class="p-2.5 rounded-lg bg-gray-50 flex items-center justify-between">
+                                    <div>
+                                        <p class="font-bold text-gray-800">Minggu & Hari Libur</p>
+                                        <p class="text-[11px] text-gray-500">Tutup operasional umum</p>
+                                    </div>
+                                    <span class="font-semibold text-red-600 bg-red-50 px-2 py-0.5 rounded border border-red-200">
+                                        Tutup
+                                    </span>
+                                </div>
+
+                                <div class="p-3 rounded-xl bg-purple-50/70 border border-purple-100 mt-3">
+                                    <p class="text-[11px] text-purple-900 leading-relaxed font-medium">
+                                        <i class="fas fa-calendar-check mr-1 text-factory-600"></i>
+                                        <strong>Ketentuan Booking:</strong> Komunitas wajib mengajukan jadwal pengiriman armada minimal H-1 di platform Wasman sebelum tiba di pintu timbangan.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 6. Akun & Keamanan (Password & Logout) -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                            <h3 class="text-sm font-bold text-gray-900 mb-3 flex items-center gap-2">
+                                <i class="fas fa-shield-halved text-gray-500"></i>
+                                Pengaturan Akun & Keamanan
+                            </h3>
+                            <div class="space-y-2">
+                                <button @click="changePasswordModal = true" class="w-full flex items-center justify-between p-2.5 text-xs font-semibold text-gray-700 hover:bg-gray-50 rounded-lg border border-gray-200 transition-colors">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fas fa-lock text-gray-400"></i>
+                                        <span>Ubah Password Akun</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-gray-300 text-[10px]"></i>
+                                </button>
+
+                                <button @click="logoutModal = true" class="w-full flex items-center justify-between p-2.5 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-lg border border-red-200 transition-colors">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fas fa-right-from-bracket"></i>
+                                        <span>Keluar dari Akun (Logout)</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-red-300 text-[10px]"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </main>
+
+            <!-- ================= BOTTOM NAVIGATION (MOBILE ONLY) ================= -->
+            <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 bottom-nav-safe">
+                <div class="grid grid-cols-4 h-16">
+                    <!-- Beranda -->
+                    <a href="dashboard.html" class="flex flex-col items-center justify-center text-gray-400 hover:text-gray-600 font-medium">
+                        <i class="fas fa-home text-lg mb-0.5"></i>
+                        <span class="text-[10px]">Beranda</span>
+                    </a>
+
+                    <!-- Pasokan -->
+                    <a href="supply.html" class="flex flex-col items-center justify-center text-gray-400 hover:text-gray-600 font-medium">
+                        <i class="fas fa-boxes-stacked text-lg mb-0.5"></i>
+                        <span class="text-[10px]">Pasokan</span>
+                    </a>
+
+                    <!-- Notifikasi -->
+                    <button @click="notificationModal = true" class="flex flex-col items-center justify-center text-gray-400 hover:text-gray-600 font-medium relative">
+                        <div class="relative">
+                            <i class="fas fa-bell text-lg mb-0.5"></i>
+                            <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </div>
+                        <span class="text-[10px]">Notifikasi</span>
+                    </button>
+
+                    <!-- Profil (Active) -->
+                    <a href="profile.html" class="flex flex-col items-center justify-center text-factory-600 font-bold">
+                        <i class="fas fa-building text-lg mb-0.5"></i>
+                        <span class="text-[10px]">Profil</span>
+                    </a>
+                </div>
+            </nav>
+
+        </div>
+    </div>
+
+    <!-- ================= MODAL: EDIT INFORMASI PERUSAHAAN ================= -->
+    <div x-show="editCompanyModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" @click="editCompanyModal = false"></div>
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-lg w-full p-6">
+                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <h3 class="font-bold text-gray-900 text-base flex items-center gap-2">
+                        <i class="fas fa-pen-to-square text-factory-600"></i> Edit Informasi Perusahaan
+                    </h3>
+                    <button @click="editCompanyModal = false" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <form @submit.prevent="editCompanyModal = false; triggerToast('Informasi perusahaan berhasil diperbarui!')" class="mt-4 space-y-3.5 text-xs">
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Nama Perusahaan</label>
+                        <input type="text" value="PT. Plastik Daur Ulang Nusantara" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-factory-500 focus:outline-none">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Email Pengadaan</label>
+                            <input type="email" value="procurement@plastiknusantara.co.id" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-factory-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Nomor Telepon/WA</label>
+                            <input type="text" value="+62 812-9876-5432" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-factory-500 focus:outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Nama PIC Operasional</label>
+                        <input type="text" value="Ir. Hendra Gunawan (Manajer QC & Logistik)" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-factory-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Alamat Lengkap Pabrik</label>
+                        <textarea rows="3" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-factory-500 focus:outline-none">Kawasan Industri Jababeka II, Blok JJ No. 18, Desa Pasirsari, Cikarang Selatan, Kab. Bekasi, Jawa Barat 17530</textarea>
+                    </div>
+
+                    <div class="mt-5 pt-3 border-t border-gray-100 flex justify-end gap-2">
+                        <button type="button" @click="editCompanyModal = false" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 font-semibold text-gray-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-4 py-2 bg-factory-600 hover:bg-factory-700 text-white font-bold rounded-xl shadow-sm">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: EDIT MATERIAL DITERIMA ================= -->
+    <div x-show="editMaterialsModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" @click="editMaterialsModal = false"></div>
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-lg w-full p-6">
+                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <h3 class="font-bold text-gray-900 text-base flex items-center gap-2">
+                        <i class="fas fa-recycle text-factory-600"></i> Kelola Jenis Material Diterima
+                    </h3>
+                    <button @click="editMaterialsModal = false" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <form @submit.prevent="editMaterialsModal = false; triggerToast('Daftar material diterima berhasil diperbarui!')" class="mt-4 space-y-3 text-xs">
+                    <p class="text-gray-500">Centang jenis material yang bersedia dibeli oleh pabrik serta perbarui harga acuan per kilogram:</p>
+                    
+                    <div class="space-y-2.5 max-h-60 overflow-y-auto pr-1">
+                        <div class="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-factory-600 rounded">
+                                <span class="font-bold text-gray-800">Botol PET Bening</span>
+                            </label>
+                            <input type="text" value="Rp 5.000 / kg" class="w-28 px-2 py-1 text-right border border-gray-200 rounded text-xs">
+                        </div>
+                        <div class="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-factory-600 rounded">
+                                <span class="font-bold text-gray-800">HDPE Tutup Botol / Jeriken</span>
+                            </label>
+                            <input type="text" value="Rp 4.800 / kg" class="w-28 px-2 py-1 text-right border border-gray-200 rounded text-xs">
+                        </div>
+                        <div class="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-factory-600 rounded">
+                                <span class="font-bold text-gray-800">Kardus & Karton Box</span>
+                            </label>
+                            <input type="text" value="Rp 2.500 / kg" class="w-28 px-2 py-1 text-right border border-gray-200 rounded text-xs">
+                        </div>
+                        <div class="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-factory-600 rounded">
+                                <span class="font-bold text-gray-800">PP Gelas Minuman Bening</span>
+                            </label>
+                            <input type="text" value="Rp 3.800 / kg" class="w-28 px-2 py-1 text-right border border-gray-200 rounded text-xs">
+                        </div>
+                        <div class="flex items-center justify-between p-2.5 bg-gray-50 rounded-lg">
+                            <label class="flex items-center gap-2 cursor-pointer">
+                                <input type="checkbox" checked class="w-4 h-4 text-factory-600 rounded">
+                                <span class="font-bold text-gray-800">Kaleng Aluminium Minuman</span>
+                            </label>
+                            <input type="text" value="Rp 14.000 / kg" class="w-28 px-2 py-1 text-right border border-gray-200 rounded text-xs">
+                        </div>
+                    </div>
+
+                    <div class="mt-5 pt-3 border-t border-gray-100 flex justify-end gap-2">
+                        <button type="button" @click="editMaterialsModal = false" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 font-semibold text-gray-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-4 py-2 bg-factory-600 hover:bg-factory-700 text-white font-bold rounded-xl shadow-sm">Simpan Material</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: EDIT KAPASITAS PENERIMAAN ================= -->
+    <div x-show="editCapacityModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" @click="editCapacityModal = false"></div>
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md w-full p-6">
+                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <h3 class="font-bold text-gray-900 text-base flex items-center gap-2">
+                        <i class="fas fa-gauge-high text-factory-600"></i> Edit Kapasitas Penerimaan
+                    </h3>
+                    <button @click="editCapacityModal = false" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <form @submit.prevent="editCapacityModal = false; triggerToast('Kapasitas penerimaan berhasil disesuaikan!')" class="mt-4 space-y-3.5 text-xs">
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Kapasitas Maksimal Harian (kg)</label>
+                        <input type="number" value="15000" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-factory-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Kapasitas Maksimal Mingguan (kg)</label>
+                        <input type="number" value="90000" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-factory-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Kapasitas Silo / Gudang Total (ton)</label>
+                        <input type="number" value="150" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-factory-500 focus:outline-none">
+                    </div>
+
+                    <div class="mt-5 pt-3 border-t border-gray-100 flex justify-end gap-2">
+                        <button type="button" @click="editCapacityModal = false" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 font-semibold text-gray-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-4 py-2 bg-factory-600 hover:bg-factory-700 text-white font-bold rounded-xl shadow-sm">Simpan Kapasitas</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: EDIT STANDAR KUALITAS ================= -->
+    <div x-show="editQualityModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" @click="editQualityModal = false"></div>
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md w-full p-6">
+                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <h3 class="font-bold text-gray-900 text-base flex items-center gap-2">
+                        <i class="fas fa-award text-factory-600"></i> Edit Standar Kualitas
+                    </h3>
+                    <button @click="editQualityModal = false" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <form @submit.prevent="editQualityModal = false; triggerToast('Standar toleransi kualitas berhasil diperbarui!')" class="mt-4 space-y-3.5 text-xs">
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Toleransi Kontaminasi Maksimal (%)</label>
+                        <input type="number" step="0.5" value="5" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-factory-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Insentif Harga Grade A (%)</label>
+                        <input type="number" value="5" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-factory-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Potongan Biaya Sortir Grade C (Rp/kg)</label>
+                        <input type="number" value="500" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-factory-500 focus:outline-none">
+                    </div>
+
+                    <div class="mt-5 pt-3 border-t border-gray-100 flex justify-end gap-2">
+                        <button type="button" @click="editQualityModal = false" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 font-semibold text-gray-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-4 py-2 bg-factory-600 hover:bg-factory-700 text-white font-bold rounded-xl shadow-sm">Simpan Standar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: EDIT JADWAL PENERIMAAN ================= -->
+    <div x-show="editScheduleModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" @click="editScheduleModal = false"></div>
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md w-full p-6">
+                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <h3 class="font-bold text-gray-900 text-base flex items-center gap-2">
+                        <i class="fas fa-clock text-factory-600"></i> Edit Jadwal Penerimaan
+                    </h3>
+                    <button @click="editScheduleModal = false" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <form @submit.prevent="editScheduleModal = false; triggerToast('Jadwal operasional penerimaan berhasil diperbarui!')" class="mt-4 space-y-3.5 text-xs">
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Jam Buka (Senin - Jumat)</label>
+                            <input type="time" value="08:00" class="w-full px-3 py-2 border border-gray-200 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Jam Tutup (Senin - Jumat)</label>
+                            <input type="time" value="17:00" class="w-full px-3 py-2 border border-gray-200 rounded-lg">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Jam Buka (Sabtu)</label>
+                            <input type="time" value="08:00" class="w-full px-3 py-2 border border-gray-200 rounded-lg">
+                        </div>
+                        <div>
+                            <label class="block font-bold text-gray-700 mb-1">Jam Tutup (Sabtu)</label>
+                            <input type="time" value="14:00" class="w-full px-3 py-2 border border-gray-200 rounded-lg">
+                        </div>
+                    </div>
+
+                    <div class="mt-5 pt-3 border-t border-gray-100 flex justify-end gap-2">
+                        <button type="button" @click="editScheduleModal = false" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 font-semibold text-gray-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-4 py-2 bg-factory-600 hover:bg-factory-700 text-white font-bold rounded-xl shadow-sm">Simpan Jadwal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: UBAH PASSWORD ================= -->
+    <div x-show="changePasswordModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" @click="changePasswordModal = false"></div>
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md w-full p-6">
+                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <h3 class="font-bold text-gray-900 text-base flex items-center gap-2">
+                        <i class="fas fa-lock text-factory-600"></i> Ubah Password Akun Pabrik
+                    </h3>
+                    <button @click="changePasswordModal = false" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <form @submit.prevent="changePasswordModal = false; triggerToast('Password akun berhasil diubah!')" class="mt-4 space-y-3.5 text-xs">
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Password Saat Ini</label>
+                        <input type="password" placeholder="••••••••" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-factory-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Password Baru</label>
+                        <input type="password" placeholder="Minimal 8 karakter" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-factory-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 mb-1">Konfirmasi Password Baru</label>
+                        <input type="password" placeholder="Ulangi password baru" class="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-factory-500 focus:outline-none">
+                    </div>
+
+                    <div class="mt-5 pt-3 border-t border-gray-100 flex justify-end gap-2">
+                        <button type="button" @click="changePasswordModal = false" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 font-semibold text-gray-700 rounded-xl">Batal</button>
+                        <button type="submit" class="px-4 py-2 bg-factory-600 hover:bg-factory-700 text-white font-bold rounded-xl shadow-sm">Ubah Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: LOGOUT CONFIRMATION ================= -->
+    <div x-show="logoutModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" @click="logoutModal = false"></div>
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-sm w-full p-6 text-center">
+                <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-3 text-xl">
+                    <i class="fas fa-arrow-right-from-bracket"></i>
+                </div>
+                <h3 class="font-bold text-gray-900 text-base">Keluar dari Akun?</h3>
+                <p class="text-xs text-gray-500 mt-1">Anda harus login kembali untuk mengakses data operasional pabrik.</p>
+
+                <div class="mt-5 flex items-center justify-center gap-2">
+                    <button type="button" @click="logoutModal = false" class="flex-1 py-2 bg-gray-100 hover:bg-gray-200 text-xs font-semibold text-gray-700 rounded-xl">
+                        Batal
+                    </button>
+                    <a href="../auth/login.html" class="flex-1 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl text-center">
+                        Ya, Keluar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: NOTIFIKASI ================= -->
+    <div x-show="notificationModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" @click="notificationModal = false"></div>
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md w-full p-6">
+                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-factory-100 text-factory-700 flex items-center justify-center text-sm">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 text-base">Notifikasi Pabrik</h3>
+                    </div>
+                    <button @click="notificationModal = false" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="mt-4 space-y-3">
+                    <div class="p-3 bg-purple-50/60 rounded-xl border border-purple-100 flex items-start gap-3">
+                        <span class="w-2 h-2 rounded-full bg-factory-600 mt-1.5 shrink-0"></span>
+                        <div>
+                            <p class="text-xs font-bold text-gray-900">Armada Baru Tiba di Jembatan Timbang</p>
+                            <p class="text-[11px] text-gray-600 mt-0.5">Truk B 9482 TDB (Bank Sampah Berseri) membawa 1.250 kg Botol PET siap ditimbang.</p>
+                            <span class="text-[10px] text-gray-400 mt-1 inline-block">10 menit yang lalu</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-blue-50/60 rounded-xl border border-blue-100 flex items-start gap-3">
+                        <span class="w-2 h-2 rounded-full bg-blue-500 mt-1.5 shrink-0"></span>
+                        <div>
+                            <p class="text-xs font-bold text-gray-900">Hasil Inspeksi QC Selesai</p>
+                            <p class="text-[11px] text-gray-600 mt-0.5">Tiket DO-2026-0918-004 telah lolos uji lab dengan Grade B (92% bersih).</p>
+                            <span class="text-[10px] text-gray-400 mt-1 inline-block">1 jam yang lalu</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-emerald-50/60 rounded-xl border border-emerald-100 flex items-start gap-3">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0"></span>
+                        <div>
+                            <p class="text-xs font-bold text-gray-900">Pembayaran Berhasil Ditransfer</p>
+                            <p class="text-[11px] text-gray-600 mt-0.5">Transfer Rp 3.500.000 ke TPS3R Maju Mandiri telah diverifikasi bank.</p>
+                            <span class="text-[10px] text-gray-400 mt-1 inline-block">Kemarin</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5 pt-3 border-t border-gray-100">
+                    <button @click="notificationModal = false" class="w-full py-2 bg-gray-100 hover:bg-gray-200 text-xs font-bold text-gray-700 rounded-xl transition-colors">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

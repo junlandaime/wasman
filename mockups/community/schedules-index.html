@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal - Wasman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { primary: {"50":"#ecfdf5","100":"#d1fae5","200":"#a7f3d0","300":"#6ee7b7","400":"#34d399","500":"#10b981","600":"#059669","700":"#047857","800":"#065f46","900":"#064e3b"} } } } }
+    </script>
+    <style>[x-cloak] { display: none !important; } .bottom-nav-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }</style>
+</head>
+<body class="h-full overflow-hidden flex bg-gray-50" x-data="{ menuOpen: false }">
+    
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
+            <div class="flex items-center justify-between px-4 h-14 md:px-6 md:h-16">
+                <h1 class="font-bold text-gray-800 text-lg md:text-xl">Jadwal Reguler</h1>
+                <a href="schedules-create.html" class="bg-primary-500 text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-2">
+                    <i class="fas fa-plus"></i> <span class="hidden md:inline">Buat Jadwal</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 pb-24 md:pb-6">
+            <div class="max-w-7xl mx-auto space-y-6">
+                
+                <!-- Calendar Simple View -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <button class="p-1"><i class="fas fa-chevron-left text-gray-500"></i></button>
+                        <h2 class="font-bold text-gray-800">September 2026</h2>
+                        <button class="p-1"><i class="fas fa-chevron-right text-gray-500"></i></button>
+                    </div>
+                    <div class="grid grid-cols-7 gap-1 text-center mb-2 text-xs font-medium text-gray-500">
+                        <div>Sen</div><div>Sel</div><div>Rab</div><div>Kam</div><div>Jum</div><div>Sab</div><div>Min</div>
+                    </div>
+                    <div class="grid grid-cols-7 gap-1 text-center text-sm">
+                        <div class="p-2 text-gray-300">31</div>
+                        <div class="p-2">1</div>
+                        <div class="p-2 relative">2<div class="w-1 h-1 bg-primary-500 rounded-full mx-auto mt-1"></div></div>
+                        <div class="p-2">3</div>
+                        <div class="p-2">4</div>
+                        <div class="p-2 relative">5<div class="w-1 h-1 bg-primary-500 rounded-full mx-auto mt-1"></div></div>
+                        <div class="p-2">6</div>
+                        <!-- ... other days simplified ... -->
+                        <div class="p-2">17</div>
+                        <div class="p-2">18</div>
+                        <div class="p-2 bg-primary-500 text-white rounded-lg font-bold">19</div>
+                        <div class="p-2">20</div>
+                    </div>
+                </div>
+
+                <!-- Schedule Rules List -->
+                <div>
+                    <h3 class="font-bold text-gray-800 mb-3">Aturan Jadwal Aktif</h3>
+                    <div class="space-y-3">
+                        <!-- Rule 1 -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-0.5 rounded">Setiap Selasa</span>
+                                        <span class="text-sm font-bold text-gray-900">08:00 - 11:00</span>
+                                    </div>
+                                    <h4 class="font-medium text-gray-800 mt-2">RW 01 & RW 02 Sukamaju</h4>
+                                    <p class="text-xs text-gray-500 mt-1">Sampah Anorganik (Plastik, Kertas)</p>
+                                </div>
+                                <div x-data="{ on: true }" @click="on = !on" class="w-11 h-6 bg-primary-500 rounded-full relative cursor-pointer transition-colors" :class="{'bg-gray-300': !on, 'bg-primary-500': on}">
+                                    <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform" :class="{'translate-x-5': on}"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Rule 2 -->
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <div class="flex items-center gap-2 mb-1">
+                                        <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-0.5 rounded">Setiap Jumat</span>
+                                        <span class="text-sm font-bold text-gray-900">13:00 - 16:00</span>
+                                    </div>
+                                    <h4 class="font-medium text-gray-800 mt-2">RW 03 Sukamaju</h4>
+                                    <p class="text-xs text-gray-500 mt-1">Semua Jenis Sampah</p>
+                                </div>
+                                <div x-data="{ on: true }" @click="on = !on" class="w-11 h-6 bg-primary-500 rounded-full relative cursor-pointer transition-colors" :class="{'bg-gray-300': !on, 'bg-primary-500': on}">
+                                    <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform" :class="{'translate-x-5': on}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation (active Jadwal) -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 bottom-nav-safe z-40">
+        <div class="flex justify-around items-center h-16">
+            <a href="dashboard.html" class="flex flex-col items-center justify-center w-full h-full text-gray-500"><i class="fas fa-home text-lg mb-1"></i><span class="text-[10px] font-medium">Beranda</span></a>
+            <a href="tasks.html" class="flex flex-col items-center justify-center w-full h-full text-gray-500"><i class="fas fa-clipboard-list text-lg mb-1"></i><span class="text-[10px] font-medium">Tugas</span></a>
+            <a href="collections-index.html" class="flex flex-col items-center justify-center w-full h-full text-gray-500"><i class="fas fa-truck text-lg mb-1"></i><span class="text-[10px] font-medium">Angkut</span></a>
+            <a href="schedules-index.html" class="flex flex-col items-center justify-center w-full h-full text-primary-600"><i class="fas fa-calendar text-lg mb-1"></i><span class="text-[10px] font-medium">Jadwal</span></a>
+            <button @click="menuOpen = true" class="flex flex-col items-center justify-center w-full h-full text-gray-500"><i class="fas fa-bars text-lg mb-1"></i><span class="text-[10px] font-medium">Menu</span></button>
+        </div>
+    </nav>
+</body>
+</html>

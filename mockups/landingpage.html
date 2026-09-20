@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wasman — Platform Pengelolaan Sampah Berbasis Komunitas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {"50":"#ecfdf5","100":"#d1fae5","200":"#a7f3d0","300":"#6ee7b7","400":"#34d399","500":"#10b981","600":"#059669","700":"#047857","800":"#065f46","900":"#064e3b"},
+                        accent: {"50":"#fffbeb","100":"#fef3c7","200":"#fde68a","300":"#fcd34d","400":"#fbbf24","500":"#f59e0b","600":"#d97706","700":"#b45309","800":"#92400e","900":"#78350f"},
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .hero-pattern {
+            background-image: radial-gradient(circle at 20% 50%, rgba(16,185,129,0.08) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 20%, rgba(245,158,11,0.06) 0%, transparent 50%),
+                              radial-gradient(circle at 60% 80%, rgba(16,185,129,0.05) 0%, transparent 50%);
+        }
+        .float-animation { animation: float 6s ease-in-out infinite; }
+        .float-animation-delay { animation: float 6s ease-in-out 2s infinite; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #059669, #10b981, #047857);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-white" x-data="{ mobileMenu: false, faqOpen: null }">
+
+    <!-- ========== NAVBAR ========== -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100 transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 md:h-18">
+                <!-- Logo -->
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 bg-primary-500 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/20">
+                        <i class="fas fa-recycle text-white text-sm"></i>
+                    </div>
+                    <span class="font-bold text-xl text-gray-900">Wasman</span>
+                </div>
+
+                <!-- Desktop Nav -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="#fitur" class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Fitur</a>
+                    <a href="#cara-kerja" class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Cara Kerja</a>
+                    <a href="#stakeholder" class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Untuk Siapa</a>
+                    <a href="#dampak" class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">Dampak</a>
+                    <a href="#faq" class="text-sm font-medium text-gray-600 hover:text-primary-600 transition-colors">FAQ</a>
+                </div>
+
+                <!-- CTA Buttons -->
+                <div class="hidden md:flex items-center gap-3">
+                    <a href="auth/login.html" class="text-sm font-medium text-gray-700 hover:text-primary-600 px-4 py-2 transition-colors">Masuk</a>
+                    <a href="auth/register.html" class="text-sm font-semibold text-white bg-primary-600 hover:bg-primary-700 px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-primary-600/20 hover:shadow-primary-600/30">Daftar Gratis</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button @click="mobileMenu = !mobileMenu" class="md:hidden p-2 -mr-2 text-gray-600">
+                    <i x-show="!mobileMenu" class="fas fa-bars text-xl"></i>
+                    <i x-show="mobileMenu" x-cloak class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenu" x-cloak x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-2" class="md:hidden bg-white border-b border-gray-100 shadow-lg">
+            <div class="px-4 py-3 space-y-1">
+                <a @click="mobileMenu = false" href="#fitur" class="block px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50">Fitur</a>
+                <a @click="mobileMenu = false" href="#cara-kerja" class="block px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50">Cara Kerja</a>
+                <a @click="mobileMenu = false" href="#stakeholder" class="block px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50">Untuk Siapa</a>
+                <a @click="mobileMenu = false" href="#dampak" class="block px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50">Dampak</a>
+                <a @click="mobileMenu = false" href="#faq" class="block px-3 py-2.5 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-50">FAQ</a>
+                <div class="border-t border-gray-100 pt-3 mt-3 flex flex-col gap-2">
+                    <a href="auth/login.html" class="block text-center px-4 py-2.5 text-sm font-medium text-gray-700 border border-gray-200 rounded-xl hover:bg-gray-50">Masuk</a>
+                    <a href="auth/register.html" class="block text-center px-4 py-2.5 text-sm font-semibold text-white bg-primary-600 rounded-xl hover:bg-primary-700 shadow-lg shadow-primary-600/20">Daftar Gratis</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== HERO ========== -->
+    <section class="hero-pattern relative overflow-hidden pt-24 pb-16 md:pt-32 md:pb-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                <!-- Text -->
+                <div class="text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-50 border border-primary-100 rounded-full mb-6">
+                        <span class="w-2 h-2 bg-primary-500 rounded-full animate-pulse"></span>
+                        <span class="text-xs font-semibold text-primary-700">Platform Ekonomi Sirkular #1 Indonesia</span>
+                    </div>
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
+                        Kelola Sampah,
+                        <span class="gradient-text">Ciptakan Nilai</span>
+                        untuk Semua
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-600 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
+                        Hubungkan rumah tangga, komunitas pengangkut, dan pabrik pengolah dalam satu platform digital. Dari pemilahan sampai daur ulang — transparan, terukur, dan berdampak.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                        <a href="auth/register.html" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl shadow-xl shadow-primary-600/25 hover:shadow-primary-600/35 transition-all text-base">
+                            Mulai Sekarang — Gratis
+                            <i class="fas fa-arrow-right text-sm"></i>
+                        </a>
+                        <a href="#cara-kerja" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white border border-gray-200 hover:border-primary-300 text-gray-700 hover:text-primary-700 font-semibold rounded-xl transition-all text-base">
+                            <i class="fas fa-play-circle"></i>
+                            Lihat Cara Kerja
+                        </a>
+                    </div>
+                    <!-- Trust badges -->
+                    <div class="mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm text-gray-400">
+                        <div class="flex items-center gap-1.5">
+                            <i class="fas fa-shield-check text-primary-500"></i>
+                            <span>Terverifikasi</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <i class="fas fa-lock text-primary-500"></i>
+                            <span>Data Aman</span>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <i class="fas fa-mobile-alt text-primary-500"></i>
+                            <span>PWA Mobile</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Illustration (CSS art) -->
+                <div class="relative hidden lg:block">
+                    <div class="relative w-full max-w-md mx-auto">
+                        <!-- Phone mockup -->
+                        <div class="float-animation bg-white rounded-3xl shadow-2xl shadow-gray-900/10 border border-gray-100 p-3 w-64 mx-auto">
+                            <div class="bg-gray-50 rounded-2xl overflow-hidden">
+                                <!-- Status bar -->
+                                <div class="bg-primary-600 px-4 py-3 flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fas fa-recycle text-white text-xs"></i>
+                                        <span class="text-white text-xs font-bold">Wasman</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <i class="fas fa-bell text-white/70 text-xs"></i>
+                                        <div class="w-5 h-5 bg-white/20 rounded-full"></div>
+                                    </div>
+                                </div>
+                                <!-- Content -->
+                                <div class="p-3 space-y-2.5">
+                                    <div class="text-xs font-bold text-gray-800">Selamat Pagi! 👋</div>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div class="bg-primary-50 rounded-lg p-2">
+                                            <div class="text-xs text-primary-600 font-medium">Penyerahan</div>
+                                            <div class="text-lg font-bold text-primary-700">24x</div>
+                                        </div>
+                                        <div class="bg-accent-50 rounded-lg p-2">
+                                            <div class="text-xs text-accent-600 font-medium">Poin</div>
+                                            <div class="text-lg font-bold text-accent-700">1,230</div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white rounded-lg border border-gray-100 p-2">
+                                        <div class="text-xs text-gray-500">Jadwal Berikutnya</div>
+                                        <div class="flex items-center gap-1.5 mt-1">
+                                            <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                            <span class="text-xs font-semibold text-gray-800">Senin — Organik</span>
+                                        </div>
+                                    </div>
+                                    <div class="bg-white rounded-lg border border-gray-100 p-2">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-xs font-medium text-gray-700">WAS-001</span>
+                                            <span class="text-[10px] bg-green-100 text-green-700 px-1.5 py-0.5 rounded-full font-medium">Selesai</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Bottom nav -->
+                                <div class="border-t border-gray-100 flex justify-around py-2">
+                                    <div class="text-center"><i class="fas fa-home text-primary-500 text-xs"></i><div class="text-[8px] text-primary-600 mt-0.5">Beranda</div></div>
+                                    <div class="text-center"><i class="fas fa-calendar text-gray-300 text-xs"></i><div class="text-[8px] text-gray-400 mt-0.5">Jadwal</div></div>
+                                    <div class="text-center"><i class="fas fa-truck text-gray-300 text-xs"></i><div class="text-[8px] text-gray-400 mt-0.5">Angkut</div></div>
+                                    <div class="text-center"><i class="fas fa-book text-gray-300 text-xs"></i><div class="text-[8px] text-gray-400 mt-0.5">Edukasi</div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Floating cards -->
+                        <div class="float-animation-delay absolute -left-8 top-16 bg-white rounded-xl shadow-lg border border-gray-100 p-3 w-44">
+                            <div class="flex items-center gap-2 mb-1">
+                                <div class="w-7 h-7 bg-green-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-leaf text-green-600 text-xs"></i>
+                                </div>
+                                <span class="text-xs font-bold text-gray-800">Organik</span>
+                            </div>
+                            <div class="text-[10px] text-gray-500">12.5 kg terkumpul hari ini</div>
+                        </div>
+                        <div class="float-animation absolute -right-4 bottom-24 bg-white rounded-xl shadow-lg border border-gray-100 p-3 w-40">
+                            <div class="flex items-center gap-2 mb-1">
+                                <div class="w-7 h-7 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i class="fas fa-bottle-water text-blue-600 text-xs"></i>
+                                </div>
+                                <span class="text-xs font-bold text-gray-800">Plastik PET</span>
+                            </div>
+                            <div class="text-[10px] text-gray-500">Rp 3.000/kg</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== STATS BAR ========== -->
+    <section class="bg-primary-600 py-8 md:py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 text-center">
+                <div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-white">2,400+</div>
+                    <div class="text-primary-200 text-sm mt-1">Rumah Tangga</div>
+                </div>
+                <div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-white">45</div>
+                    <div class="text-primary-200 text-sm mt-1">Komunitas Aktif</div>
+                </div>
+                <div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-white">128 ton</div>
+                    <div class="text-primary-200 text-sm mt-1">Sampah Terkelola</div>
+                </div>
+                <div>
+                    <div class="text-3xl md:text-4xl font-extrabold text-white">12</div>
+                    <div class="text-primary-200 text-sm mt-1">Pabrik Mitra</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FITUR UTAMA ========== -->
+    <section id="fitur" class="py-16 md:py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary-50 rounded-full mb-4">
+                    <span class="text-xs font-semibold text-primary-700">Fitur Unggulan</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Satu Platform, Seluruh Ekosistem</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">Dari edukasi pemilahan sampai pembayaran material — semua terintegrasi dalam satu platform yang mudah digunakan.</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-100 transition-all group">
+                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors">
+                        <i class="fas fa-calendar-check text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Jadwal Angkut Otomatis</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Jadwal reguler per wilayah dan jenis sampah. Rumah tangga mendapat notifikasi dan bisa mengonfirmasi kesiapan sampah.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-100 transition-all group">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors">
+                        <i class="fas fa-truck text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Permintaan Khusus</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Punya sampah besar atau jenis tertentu? Ajukan permintaan khusus langsung dari aplikasi, lengkap dengan foto.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-100 transition-all group">
+                    <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-amber-200 transition-colors">
+                        <i class="fas fa-coins text-amber-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Sistem Insentif</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Dapatkan poin, uang, atau voucher dari setiap sampah terpilah yang diserahkan. Semakin rajin memilah, semakin banyak reward.</p>
+                </div>
+                <!-- Feature 4 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-100 transition-all group">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors">
+                        <i class="fas fa-weight-scale text-purple-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Pencatatan Digital</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Berat, jenis, kualitas, dan asal sampah tercatat digital. Tidak ada lagi manipulasi timbangan atau data yang hilang.</p>
+                </div>
+                <!-- Feature 5 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-100 transition-all group">
+                    <div class="w-12 h-12 bg-rose-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-rose-200 transition-colors">
+                        <i class="fas fa-book-open text-rose-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Edukasi Interaktif</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Panduan pemilahan sampah yang mudah dipahami, tips pengurangan limbah, dan informasi daur ulang.</p>
+                </div>
+                <!-- Feature 6 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md hover:border-primary-100 transition-all group">
+                    <div class="w-12 h-12 bg-cyan-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-cyan-200 transition-colors">
+                        <i class="fas fa-chart-line text-cyan-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Dashboard & Laporan</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">Pantau volume sampah, performa pengangkutan, dan dampak lingkungan melalui dashboard yang informatif.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CARA KERJA ========== -->
+    <section id="cara-kerja" class="py-16 md:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary-50 rounded-full mb-4">
+                    <span class="text-xs font-semibold text-primary-700">Cara Kerja</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Semudah 4 Langkah</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">Alur sederhana dari rumah tangga sampai pabrik pengolah</p>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-6 md:gap-4 relative">
+                <!-- Connecting line (desktop) -->
+                <div class="hidden md:block absolute top-16 left-[12.5%] right-[12.5%] h-0.5 bg-primary-100"></div>
+
+                <!-- Step 1 -->
+                <div class="text-center relative">
+                    <div class="w-14 h-14 bg-primary-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary-500/20 relative z-10">
+                        <span class="text-white text-xl font-bold">1</span>
+                    </div>
+                    <div class="bg-primary-50 rounded-2xl p-5">
+                        <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center mx-auto mb-3 shadow-sm">
+                            <i class="fas fa-hand-holding-droplet text-primary-600 text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Pilah Sampah</h3>
+                        <p class="text-sm text-gray-600">Rumah tangga memilah sampah berdasarkan panduan yang tersedia di aplikasi</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="text-center relative">
+                    <div class="w-14 h-14 bg-primary-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary-500/20 relative z-10">
+                        <span class="text-white text-xl font-bold">2</span>
+                    </div>
+                    <div class="bg-blue-50 rounded-2xl p-5">
+                        <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center mx-auto mb-3 shadow-sm">
+                            <i class="fas fa-truck-fast text-blue-600 text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Dijemput Komunitas</h3>
+                        <p class="text-sm text-gray-600">Petugas komunitas datang sesuai jadwal, menimbang dan mencatat sampah</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="text-center relative">
+                    <div class="w-14 h-14 bg-primary-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary-500/20 relative z-10">
+                        <span class="text-white text-xl font-bold">3</span>
+                    </div>
+                    <div class="bg-purple-50 rounded-2xl p-5">
+                        <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center mx-auto mb-3 shadow-sm">
+                            <i class="fas fa-industry text-purple-600 text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Dikirim ke Pabrik</h3>
+                        <p class="text-sm text-gray-600">Material terpilah dikirim ke pabrik pengolah untuk didaur ulang</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="text-center relative">
+                    <div class="w-14 h-14 bg-primary-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary-500/20 relative z-10">
+                        <span class="text-white text-xl font-bold">4</span>
+                    </div>
+                    <div class="bg-amber-50 rounded-2xl p-5">
+                        <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center mx-auto mb-3 shadow-sm">
+                            <i class="fas fa-gift text-amber-600 text-lg"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Terima Insentif</h3>
+                        <p class="text-sm text-gray-600">Rumah tangga dan komunitas menerima insentif berdasarkan berat & kualitas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== UNTUK SIAPA ========== -->
+    <section id="stakeholder" class="py-16 md:py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary-50 rounded-full mb-4">
+                    <span class="text-xs font-semibold text-primary-700">Untuk Siapa</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Semua Pihak Diuntungkan</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">Tiga pilar ekosistem pengelolaan sampah, terhubung dalam satu platform</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+                <!-- Rumah Tangga -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all">
+                    <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-6 text-center">
+                        <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-home text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Rumah Tangga</h3>
+                        <p class="text-blue-100 text-sm mt-1">Penghasil & Pemilah Sampah</p>
+                    </div>
+                    <div class="p-6">
+                        <ul class="space-y-3">
+                            <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mt-0.5 shrink-0"></i>
+                                Jadwal penjemputan teratur, tidak perlu bingung
+                            </li>
+                            <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mt-0.5 shrink-0"></i>
+                                Panduan pemilahan sampah yang mudah dipahami
+                            </li>
+                            <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mt-0.5 shrink-0"></i>
+                                Dapatkan poin dan uang dari sampah terpilah
+                            </li>
+                            <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mt-0.5 shrink-0"></i>
+                                Ajukan penjemputan khusus kapan saja
+                            </li>
+                            <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mt-0.5 shrink-0"></i>
+                                Pantau riwayat dan dampak lingkungan Anda
+                            </li>
+                        </ul>
+                        <a href="auth/register.html" class="block w-full text-center mt-6 px-4 py-2.5 bg-blue-50 text-blue-700 font-semibold rounded-xl hover:bg-blue-100 transition-colors text-sm">
+                            Daftar sebagai Rumah Tangga →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Komunitas -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all md:scale-105">
+                    <div class="bg-gradient-to-br from-primary-500 to-primary-600 p-6 text-center relative">
+                        <div class="absolute top-3 right-3 bg-accent-400 text-accent-900 text-[10px] font-bold px-2.5 py-1 rounded-full">POPULER</div>
+                        <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-users text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Komunitas</h3>
+                        <p class="text-primary-100 text-sm mt-1">Pengangkut & Penghubung</p>
+                    </div>
+                    <div class="p-6">
+                        <ul class="space-y-3">
+                            <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mt-0.5 shrink-0"></i>
+                                Kelola jadwal dan rute pengangkutan efisien
+                            </li>
+                            <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mt-0.5 shrink-0"></i>
+                                Tugaskan petugas dan pantau armada real-time
+                            </li>
+                            <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mt-0.5 shrink-0"></i>
+                                Pencatatan timbangan digital dan bukti foto
+                            </li>
+                            <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mt-0.5 shrink-0"></i>
+                                Jual material langsung ke pabrik mitra
+                            </li>
+                            <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mt-0.5 shrink-0"></i>
+                                Laporan pendapatan dan operasional otomatis
+                            </li>
+                        </ul>
+                        <a href="auth/register.html" class="block w-full text-center mt-6 px-4 py-2.5 bg-primary-600 text-white font-semibold rounded-xl hover:bg-primary-700 transition-colors text-sm shadow-lg shadow-primary-600/20">
+                            Daftar sebagai Komunitas →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Pabrik -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all">
+                    <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-6 text-center">
+                        <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-industry text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Pabrik</h3>
+                        <p class="text-purple-100 text-sm mt-1">Pengolah & Pembeli Material</p>
+                    </div>
+                    <div class="p-6">
+                        <ul class="space-y-3">
+                            <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mt-0.5 shrink-0"></i>
+                                Pasokan bahan baku stabil dan terukur
+                            </li>
+                            <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mt-0.5 shrink-0"></i>
+                                Material sudah dipilah, kurangi biaya sortir
+                            </li>
+                            <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mt-0.5 shrink-0"></i>
+                                Data kualitas dan asal material transparan
+                            </li>
+                            <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mt-0.5 shrink-0"></i>
+                                Buat permintaan material sesuai kebutuhan
+                            </li>
+                            <li class="flex items-start gap-2.5 text-sm text-gray-600">
+                                <i class="fas fa-check-circle text-green-500 mt-0.5 shrink-0"></i>
+                                Pelaporan keberlanjutan & dampak lingkungan
+                            </li>
+                        </ul>
+                        <a href="auth/register.html" class="block w-full text-center mt-6 px-4 py-2.5 bg-purple-50 text-purple-700 font-semibold rounded-xl hover:bg-purple-100 transition-colors text-sm">
+                            Daftar sebagai Pabrik →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== JENIS SAMPAH ========== -->
+    <section class="py-16 md:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary-50 rounded-full mb-4">
+                    <span class="text-xs font-semibold text-primary-700">Kategori Material</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Kami Terima Berbagai Jenis Sampah</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto text-lg">9 kategori sampah yang bisa dikelola melalui platform</p>
+            </div>
+
+            <div class="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-9 gap-3 md:gap-4">
+                <div class="text-center group">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-2 group-hover:bg-green-200 group-hover:scale-110 transition-all">
+                        <i class="fas fa-leaf text-green-600 text-xl md:text-2xl"></i>
+                    </div>
+                    <span class="text-xs font-medium text-gray-700">Organik</span>
+                </div>
+                <div class="text-center group">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-2 group-hover:bg-blue-200 group-hover:scale-110 transition-all">
+                        <i class="fas fa-bottle-water text-blue-600 text-xl md:text-2xl"></i>
+                    </div>
+                    <span class="text-xs font-medium text-gray-700">Plastik</span>
+                </div>
+                <div class="text-center group">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-amber-100 rounded-2xl flex items-center justify-center mx-auto mb-2 group-hover:bg-amber-200 group-hover:scale-110 transition-all">
+                        <i class="fas fa-newspaper text-amber-600 text-xl md:text-2xl"></i>
+                    </div>
+                    <span class="text-xs font-medium text-gray-700">Kertas</span>
+                </div>
+                <div class="text-center group">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-gray-200 rounded-2xl flex items-center justify-center mx-auto mb-2 group-hover:bg-gray-300 group-hover:scale-110 transition-all">
+                        <i class="fas fa-wrench text-gray-600 text-xl md:text-2xl"></i>
+                    </div>
+                    <span class="text-xs font-medium text-gray-700">Logam</span>
+                </div>
+                <div class="text-center group">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-cyan-100 rounded-2xl flex items-center justify-center mx-auto mb-2 group-hover:bg-cyan-200 group-hover:scale-110 transition-all">
+                        <i class="fas fa-wine-glass text-cyan-600 text-xl md:text-2xl"></i>
+                    </div>
+                    <span class="text-xs font-medium text-gray-700">Kaca</span>
+                </div>
+                <div class="text-center group">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-pink-100 rounded-2xl flex items-center justify-center mx-auto mb-2 group-hover:bg-pink-200 group-hover:scale-110 transition-all">
+                        <i class="fas fa-shirt text-pink-600 text-xl md:text-2xl"></i>
+                    </div>
+                    <span class="text-xs font-medium text-gray-700">Tekstil</span>
+                </div>
+                <div class="text-center group">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-2 group-hover:bg-indigo-200 group-hover:scale-110 transition-all">
+                        <i class="fas fa-microchip text-indigo-600 text-xl md:text-2xl"></i>
+                    </div>
+                    <span class="text-xs font-medium text-gray-700">Elektronik</span>
+                </div>
+                <div class="text-center group">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-stone-100 rounded-2xl flex items-center justify-center mx-auto mb-2 group-hover:bg-stone-200 group-hover:scale-110 transition-all">
+                        <i class="fas fa-trash text-stone-600 text-xl md:text-2xl"></i>
+                    </div>
+                    <span class="text-xs font-medium text-gray-700">Residu</span>
+                </div>
+                <div class="text-center group">
+                    <div class="w-14 h-14 md:w-16 md:h-16 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-2 group-hover:bg-red-200 group-hover:scale-110 transition-all">
+                        <i class="fas fa-skull-crossbones text-red-600 text-xl md:text-2xl"></i>
+                    </div>
+                    <span class="text-xs font-medium text-gray-700">B3</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== DAMPAK ========== -->
+    <section id="dampak" class="py-16 md:py-24 bg-gradient-to-br from-primary-700 to-primary-900 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 w-40 h-40 border border-white/30 rounded-full"></div>
+            <div class="absolute bottom-10 right-10 w-60 h-60 border border-white/20 rounded-full"></div>
+            <div class="absolute top-1/2 left-1/2 w-80 h-80 border border-white/10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-14">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full mb-4">
+                    <span class="text-xs font-semibold text-primary-200">Dampak Lingkungan</span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-extrabold mb-4">Bersama Kita Buat Perubahan</h2>
+                <p class="text-primary-200 max-w-2xl mx-auto text-lg">Setiap kilogram sampah yang dipilah adalah langkah menuju Indonesia yang lebih bersih</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <div class="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                    <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-tree text-green-400 text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-extrabold text-white mb-1">847</div>
+                    <div class="text-primary-200 text-sm">Pohon Diselamatkan</div>
+                    <div class="text-primary-300 text-xs mt-2">Dari daur ulang kertas & kardus</div>
+                </div>
+                <div class="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                    <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-droplet text-blue-400 text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-extrabold text-white mb-1">2.4M</div>
+                    <div class="text-primary-200 text-sm">Liter Air Dihemat</div>
+                    <div class="text-primary-300 text-xs mt-2">Dari pengurangan produksi baru</div>
+                </div>
+                <div class="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                    <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-cloud text-gray-300 text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-extrabold text-white mb-1">156</div>
+                    <div class="text-primary-200 text-sm">Ton CO₂ Dicegah</div>
+                    <div class="text-primary-300 text-xs mt-2">Dari pengalihan sampah TPA</div>
+                </div>
+                <div class="text-center bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                    <div class="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-sack-dollar text-amber-400 text-2xl"></i>
+                    </div>
+                    <div class="text-3xl font-extrabold text-white mb-1">Rp 385jt</div>
+                    <div class="text-primary-200 text-sm">Nilai Ekonomi</div>
+                    <div class="text-primary-300 text-xs mt-2">Dikembalikan ke komunitas</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== TESTIMONIAL ========== -->
+    <section class="py-16 md:py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Apa Kata Mereka?</h2>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center gap-1 mb-4">
+                        <i class="fas fa-star text-amber-400"></i>
+                        <i class="fas fa-star text-amber-400"></i>
+                        <i class="fas fa-star text-amber-400"></i>
+                        <i class="fas fa-star text-amber-400"></i>
+                        <i class="fas fa-star text-amber-400"></i>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-4">"Sejak pakai Wasman, sampah di rumah jadi lebih teratur. Anak-anak juga jadi belajar memilah. Poinnya bisa ditukar voucher belanja, senang sekali!"</p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-700 text-sm font-bold">SN</span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-semibold text-gray-900">Siti Nurhaliza</div>
+                            <div class="text-xs text-gray-500">Rumah Tangga, RW 02 Sukamaju</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center gap-1 mb-4">
+                        <i class="fas fa-star text-amber-400"></i>
+                        <i class="fas fa-star text-amber-400"></i>
+                        <i class="fas fa-star text-amber-400"></i>
+                        <i class="fas fa-star text-amber-400"></i>
+                        <i class="fas fa-star text-amber-400"></i>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-4">"Dulu kami kesulitan mengatur jadwal dan rute. Sekarang semua tercatat rapi, petugas tahu harus ke mana, dan pendapatan komunitas meningkat 40%."</p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                        <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                            <span class="text-green-700 text-sm font-bold">AH</span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-semibold text-gray-900">Ahmad Hidayat</div>
+                            <div class="text-xs text-gray-500">Ketua Komunitas Hijau Sejahtera</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 3 -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                    <div class="flex items-center gap-1 mb-4">
+                        <i class="fas fa-star text-amber-400"></i>
+                        <i class="fas fa-star text-amber-400"></i>
+                        <i class="fas fa-star text-amber-400"></i>
+                        <i class="fas fa-star text-amber-400"></i>
+                        <i class="fas fa-star-half-alt text-amber-400"></i>
+                    </div>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-4">"Pasokan material jadi lebih konsisten dan berkualitas. Data asal material juga membantu kami dalam pelaporan sustainability ke investor."</p>
+                    <div class="flex items-center gap-3 pt-4 border-t border-gray-100">
+                        <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                            <span class="text-purple-700 text-sm font-bold">DL</span>
+                        </div>
+                        <div>
+                            <div class="text-sm font-semibold text-gray-900">Dewi Lestari</div>
+                            <div class="text-xs text-gray-500">Manajer, PT. Plastik Daur Ulang Nusantara</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FAQ ========== -->
+    <section id="faq" class="py-16 md:py-24 bg-white">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-14">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Pertanyaan yang Sering Diajukan</h2>
+            </div>
+            <div class="space-y-3">
+                <!-- FAQ 1 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden" x-data="{ open: false }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors">
+                        <span class="font-semibold text-gray-900 text-sm md:text-base pr-4">Apakah Wasman gratis untuk rumah tangga?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform" :class="open && 'rotate-180'"></i>
+                    </button>
+                    <div x-show="open" x-collapse>
+                        <div class="px-5 pb-5 text-gray-600 text-sm leading-relaxed">
+                            Ya! Pendaftaran dan penggunaan platform sepenuhnya gratis untuk rumah tangga. Anda bahkan bisa mendapatkan insentif dari sampah yang sudah dipilah dan diserahkan.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ 2 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden" x-data="{ open: false }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors">
+                        <span class="font-semibold text-gray-900 text-sm md:text-base pr-4">Bagaimana cara komunitas mendaftar?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform" :class="open && 'rotate-180'"></i>
+                    </button>
+                    <div x-show="open" x-collapse>
+                        <div class="px-5 pb-5 text-gray-600 text-sm leading-relaxed">
+                            Komunitas dapat mendaftar melalui halaman registrasi, pilih peran "Komunitas", dan lengkapi data organisasi. Tim kami akan melakukan verifikasi dalam 1-3 hari kerja.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ 3 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden" x-data="{ open: false }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors">
+                        <span class="font-semibold text-gray-900 text-sm md:text-base pr-4">Jenis sampah apa saja yang bisa diserahkan?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform" :class="open && 'rotate-180'"></i>
+                    </button>
+                    <div x-show="open" x-collapse>
+                        <div class="px-5 pb-5 text-gray-600 text-sm leading-relaxed">
+                            Wasman menerima 9 kategori sampah: organik, plastik, kertas & kardus, logam, kaca, tekstil, elektronik, residu, dan sampah B3/berbahaya. Setiap kategori memiliki panduan pemilahan di fitur Edukasi.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ 4 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden" x-data="{ open: false }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors">
+                        <span class="font-semibold text-gray-900 text-sm md:text-base pr-4">Bagaimana sistem insentif bekerja?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform" :class="open && 'rotate-180'"></i>
+                    </button>
+                    <div x-show="open" x-collapse>
+                        <div class="px-5 pb-5 text-gray-600 text-sm leading-relaxed">
+                            Setiap sampah yang diserahkan akan ditimbang dan dinilai kualitasnya. Berdasarkan berat dan jenis material, Anda akan mendapatkan poin atau uang. Poin bisa ditukar dengan voucher, potongan iuran, atau dicairkan.
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQ 5 -->
+                <div class="border border-gray-200 rounded-xl overflow-hidden" x-data="{ open: false }">
+                    <button @click="open = !open" class="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 transition-colors">
+                        <span class="font-semibold text-gray-900 text-sm md:text-base pr-4">Apakah bisa diakses dari HP Android?</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform" :class="open && 'rotate-180'"></i>
+                    </button>
+                    <div x-show="open" x-collapse>
+                        <div class="px-5 pb-5 text-gray-600 text-sm leading-relaxed">
+                            Tentu! Wasman dibangun sebagai Progressive Web App (PWA) yang bisa diinstal di HP Android langsung dari browser. Anda bisa menggunakannya seperti aplikasi biasa, bahkan bisa bekerja saat koneksi tidak stabil.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== CTA FINAL ========== -->
+    <section class="py-16 md:py-24 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="bg-gradient-to-br from-primary-600 to-primary-800 rounded-3xl p-8 md:p-14 shadow-2xl shadow-primary-900/20 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                <div class="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">Siap Bergabung?</h2>
+                    <p class="text-primary-100 text-lg max-w-xl mx-auto mb-8">Jadilah bagian dari gerakan pengelolaan sampah berbasis komunitas. Daftar sekarang dan mulai buat dampak nyata di lingkungan Anda.</p>
+                    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                        <a href="auth/register.html" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-primary-700 font-bold rounded-xl hover:bg-gray-50 transition-all text-base shadow-lg">
+                            <i class="fas fa-rocket"></i>
+                            Daftar Gratis Sekarang
+                        </a>
+                        <a href="auth/login.html" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/20 transition-all text-base border border-white/20">
+                            Sudah Punya Akun? Masuk
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="bg-gray-900 text-gray-400 py-12 md:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-10">
+                <!-- Brand -->
+                <div class="col-span-2 md:col-span-1">
+                    <div class="flex items-center gap-2.5 mb-4">
+                        <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-recycle text-white text-sm"></i>
+                        </div>
+                        <span class="font-bold text-lg text-white">Wasman</span>
+                    </div>
+                    <p class="text-sm leading-relaxed">Platform pengelolaan sampah berbasis komunitas untuk Indonesia yang lebih bersih dan berdaya.</p>
+                </div>
+                <!-- Platform -->
+                <div>
+                    <h4 class="text-white font-semibold mb-3 text-sm">Platform</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#fitur" class="hover:text-white transition-colors">Fitur</a></li>
+                        <li><a href="#cara-kerja" class="hover:text-white transition-colors">Cara Kerja</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Harga</a></li>
+                        <li><a href="#faq" class="hover:text-white transition-colors">FAQ</a></li>
+                    </ul>
+                </div>
+                <!-- Perusahaan -->
+                <div>
+                    <h4 class="text-white font-semibold mb-3 text-sm">Perusahaan</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">Tentang Kami</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Karir</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Kontak</a></li>
+                    </ul>
+                </div>
+                <!-- Legal -->
+                <div>
+                    <h4 class="text-white font-semibold mb-3 text-sm">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">Syarat & Ketentuan</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Kebijakan Privasi</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Keamanan Data</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div class="text-sm">© 2026 Wasman. Hak cipta dilindungi.</div>
+                <div class="flex items-center gap-4">
+                    <a href="#" class="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary-600 transition-colors">
+                        <i class="fab fa-instagram text-sm"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary-600 transition-colors">
+                        <i class="fab fa-twitter text-sm"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary-600 transition-colors">
+                        <i class="fab fa-facebook text-sm"></i>
+                    </a>
+                    <a href="#" class="w-9 h-9 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary-600 transition-colors">
+                        <i class="fab fa-youtube text-sm"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========== BACK TO MOCKUP INDEX ========== -->
+    <a href="index.html" class="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 bg-gray-800 hover:bg-gray-700 text-white text-xs font-medium px-3 py-2 rounded-lg shadow-lg flex items-center gap-1.5 transition-colors">
+        <i class="fas fa-th-large"></i>
+        Menu Mockup
+    </a>
+
+</body>
+</html>

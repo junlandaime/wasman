@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Wasman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {"50":"#ecfdf5","100":"#d1fae5","200":"#a7f3d0","300":"#6ee7b7","400":"#34d399","500":"#10b981","600":"#059669","700":"#047857","800":"#065f46","900":"#064e3b"},
+                        secondary: {"50":"#f0fdf4","100":"#dcfce7","200":"#bbf7d0","300":"#86efac","400":"#4ade80","500":"#22c55e","600":"#16a34a","700":"#15803d","800":"#166534","900":"#14532d"},
+                        accent: {"50":"#fffbeb","100":"#fef3c7","200":"#fde68a","300":"#fcd34d","400":"#fbbf24","500":"#f59e0b","600":"#d97706","700":"#b45309","800":"#92400e","900":"#78350f"},
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .bottom-nav-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+    </style>
+</head>
+<body class="h-full flex text-gray-800" x-data="{ mobileMenuOpen: false }">
+
+    <!-- Desktop Sidebar -->
+    <aside class="hidden md:flex flex-col w-64 bg-white border-r border-gray-200 fixed h-full z-20">
+        <div class="p-4 border-b border-gray-200 flex items-center gap-3">
+            <div class="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center">
+                <i class="fas fa-shield-halved text-white text-sm"></i>
+            </div>
+            <div>
+                <span class="font-bold text-gray-800 text-lg block">Wasman</span>
+                <span class="text-xs text-rose-600 font-medium">Administrator</span>
+            </div>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-6">
+            <div>
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Utama</h3>
+                <a href="dashboard.html" class="flex items-center gap-3 px-3 py-2 rounded-lg bg-rose-50 text-rose-700 font-medium">
+                    <i class="fas fa-home w-5 text-center"></i> Dashboard
+                </a>
+            </div>
+            <div>
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Pengguna</h3>
+                <a href="users.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                    <i class="fas fa-users w-5 text-center"></i> Kelola Pengguna
+                </a>
+                <a href="organizations.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                    <i class="fas fa-building w-5 text-center"></i> Organisasi
+                </a>
+            </div>
+            <div>
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Master Data</h3>
+                <a href="waste-categories.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                    <i class="fas fa-layer-group w-5 text-center"></i> Kategori Sampah
+                </a>
+                <a href="waste-materials.html" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                    <i class="fas fa-box w-5 text-center"></i> Material Sampah
+                </a>
+            </div>
+            <div>
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Sistem</h3>
+                <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                    <i class="fas fa-cog w-5 text-center"></i> Pengaturan
+                </a>
+                <a href="#" class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900">
+                    <i class="fas fa-list-check w-5 text-center"></i> Audit Log
+                </a>
+            </div>
+        </div>
+        <div class="p-4 border-t border-gray-200">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-rose-100 rounded-full flex items-center justify-center">
+                    <span class="text-rose-700 font-bold">AD</span>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-900">Admin Utama</p>
+                    <p class="text-xs text-gray-500">admin@wasman.id</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 md:ml-64 pb-16 md:pb-0 flex flex-col min-h-screen">
+        <!-- Top Bar -->
+        <header class="bg-white shadow-sm border-b border-rose-100 sticky top-0 z-30">
+            <div class="flex items-center justify-between px-4 h-14 md:h-16">
+                <!-- Mobile Logo -->
+                <div class="flex md:hidden items-center gap-2">
+                    <div class="w-8 h-8 bg-rose-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shield-halved text-white text-sm"></i>
+                    </div>
+                    <div>
+                        <span class="font-bold text-gray-800 leading-none block">Wasman</span>
+                        <span class="text-[10px] text-rose-600 font-bold uppercase block mt-0.5">Admin</span>
+                    </div>
+                </div>
+                
+                <!-- Desktop Breadcrumb -->
+                <div class="hidden md:flex items-center">
+                    <h1 class="text-xl font-bold text-gray-800">Admin Dashboard</h1>
+                </div>
+
+                <!-- Right Actions -->
+                <div class="flex items-center gap-3">
+                    <div class="hidden md:flex relative">
+                        <input type="text" placeholder="Cari..." class="pl-9 pr-4 py-1.5 bg-gray-100 border-transparent rounded-full text-sm focus:bg-white focus:border-rose-300 focus:ring-0">
+                        <i class="fas fa-search absolute left-3 top-2 text-gray-400 text-sm"></i>
+                    </div>
+                    <button class="relative p-2 rounded-full hover:bg-gray-100">
+                        <i class="fas fa-bell text-gray-500"></i>
+                        <span class="absolute top-1 right-1 w-2 h-2 bg-rose-500 rounded-full border border-white"></span>
+                    </button>
+                    <div class="md:hidden w-8 h-8 bg-rose-100 rounded-full flex items-center justify-center">
+                        <span class="text-rose-700 text-xs font-bold">AD</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
+            <h2 class="md:hidden text-lg font-bold text-gray-900">Admin Dashboard</h2>
+            
+            <!-- Row 1: Users Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-gray-500 font-medium">Total Pengguna</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">342</p>
+                        </div>
+                        <div class="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-gray-500 font-medium">Rumah Tangga</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">245</p>
+                        </div>
+                        <div class="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center text-green-600">
+                            <i class="fas fa-house"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-gray-500 font-medium">Komunitas</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">8</p>
+                        </div>
+                        <div class="w-10 h-10 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-600">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-gray-500 font-medium">Pabrik</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">3</p>
+                        </div>
+                        <div class="w-10 h-10 bg-purple-50 rounded-lg flex items-center justify-center text-purple-600">
+                            <i class="fas fa-industry"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Performance Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-gray-500 font-medium">Pengangkutan</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">156</p>
+                            <p class="text-[10px] text-green-600 mt-1"><i class="fas fa-arrow-up"></i> 12% bulan ini</p>
+                        </div>
+                        <div class="w-8 h-8 bg-amber-50 rounded-full flex items-center justify-center text-amber-600">
+                            <i class="fas fa-truck text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-gray-500 font-medium">Total Sampah</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">8.4 <span class="text-sm font-normal text-gray-500">ton</span></p>
+                        </div>
+                        <div class="w-8 h-8 bg-emerald-50 rounded-full flex items-center justify-center text-emerald-600">
+                            <i class="fas fa-weight-scale text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-gray-500 font-medium">Tk. Pemilahan</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">72%</p>
+                        </div>
+                        <div class="w-8 h-8 bg-blue-50 rounded-full flex items-center justify-center text-blue-600">
+                            <i class="fas fa-chart-pie text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-xs text-gray-500 font-medium">Trx Bermasalah</p>
+                            <p class="text-2xl font-bold text-rose-600 mt-1">2</p>
+                        </div>
+                        <div class="w-8 h-8 bg-rose-50 rounded-full flex items-center justify-center text-rose-600">
+                            <i class="fas fa-triangle-exclamation text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Verifications & Charts -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Perlu Verifikasi -->
+                <div class="md:col-span-1 space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-gray-900">Perlu Verifikasi</h3>
+                        <a href="organizations.html" class="text-xs text-rose-600 hover:underline">Lihat Semua</a>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-amber-200 p-4 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-amber-50 rounded-bl-full -z-0"></div>
+                        <div class="relative z-10">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-bold">
+                                        KB
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 text-sm">Komunitas Berseri</h4>
+                                        <p class="text-xs text-gray-500">Pendaftaran Komunitas</p>
+                                    </div>
+                                </div>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 text-[10px] font-medium rounded-full">Menunggu</span>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-4"><i class="fas fa-map-marker-alt text-gray-400 mr-1"></i> Kec. Sukamaju, Bandung</p>
+                            <div class="flex gap-2">
+                                <button class="flex-1 bg-emerald-600 text-white text-xs font-medium py-1.5 rounded-lg hover:bg-emerald-700">Terima</button>
+                                <button class="flex-1 bg-white border border-gray-300 text-gray-700 text-xs font-medium py-1.5 rounded-lg hover:bg-gray-50">Tolak</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-amber-200 p-4 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-amber-50 rounded-bl-full -z-0"></div>
+                        <div class="relative z-10">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-700 font-bold">
+                                        PD
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-900 text-sm">PT. Daur Ulang</h4>
+                                        <p class="text-xs text-gray-500">Pendaftaran Pabrik</p>
+                                    </div>
+                                </div>
+                                <span class="px-2 py-1 bg-amber-100 text-amber-800 text-[10px] font-medium rounded-full">Menunggu</span>
+                            </div>
+                            <p class="text-xs text-gray-600 mb-4"><i class="fas fa-map-marker-alt text-gray-400 mr-1"></i> Kec. Buahbatu, Bandung</p>
+                            <div class="flex gap-2">
+                                <button class="flex-1 bg-emerald-600 text-white text-xs font-medium py-1.5 rounded-lg hover:bg-emerald-700">Terima</button>
+                                <button class="flex-1 bg-white border border-gray-300 text-gray-700 text-xs font-medium py-1.5 rounded-lg hover:bg-gray-50">Tolak</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Placeholders -->
+                <div class="md:col-span-2 space-y-4">
+                    <h3 class="font-bold text-gray-900">Statistik Sistem</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex flex-col items-center justify-center h-48">
+                            <p class="text-sm text-gray-500 mb-2">Volume Sampah per Wilayah</p>
+                            <!-- Horizontal bars placeholder -->
+                            <div class="w-full space-y-3 px-4">
+                                <div>
+                                    <div class="flex justify-between text-xs mb-1"><span>Sukamaju</span><span>3.2t</span></div>
+                                    <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-blue-500 h-2 rounded-full" style="width: 75%"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs mb-1"><span>Cibiru</span><span>2.1t</span></div>
+                                    <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-blue-400 h-2 rounded-full" style="width: 50%"></div></div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-xs mb-1"><span>Antapani</span><span>1.5t</span></div>
+                                    <div class="w-full bg-gray-100 rounded-full h-2"><div class="bg-blue-300 h-2 rounded-full" style="width: 35%"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex flex-col items-center justify-center h-48">
+                            <p class="text-sm text-gray-500 mb-2">Material Terbanyak</p>
+                            <!-- Donut chart placeholder -->
+                            <div class="w-24 h-24 rounded-full border-8 border-gray-100 relative flex items-center justify-center">
+                                <div class="absolute inset-0 rounded-full border-8 border-emerald-500" style="clip-path: polygon(50% 50%, 100% 0, 100% 100%, 0 100%, 0 0, 50% 0);"></div>
+                                <div class="absolute inset-0 rounded-full border-8 border-amber-400" style="clip-path: polygon(50% 50%, 0 0, 50% 0);"></div>
+                                <span class="text-sm font-bold text-gray-700">8.4t</span>
+                            </div>
+                            <div class="flex gap-4 mt-4 text-[10px]">
+                                <span class="flex items-center gap-1"><div class="w-2 h-2 bg-emerald-500 rounded-full"></div>Plastik (60%)</span>
+                                <span class="flex items-center gap-1"><div class="w-2 h-2 bg-amber-400 rounded-full"></div>Kertas (20%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aktivitas Terbaru -->
+            <div>
+                <h3 class="font-bold text-gray-900 mb-4">Aktivitas Terbaru</h3>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <ul class="divide-y divide-gray-100">
+                        <li class="p-4 flex items-start gap-3 hover:bg-gray-50">
+                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mt-1 flex-shrink-0">
+                                <i class="fas fa-users text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-800"><span class="font-medium">Komunitas Hijau</span> mendaftarkan <span class="font-medium">5 RT baru</span></p>
+                                <p class="text-xs text-gray-500 mt-0.5">10 menit yang lalu</p>
+                            </div>
+                        </li>
+                        <li class="p-4 flex items-start gap-3 hover:bg-gray-50">
+                            <div class="w-8 h-8 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 mt-1 flex-shrink-0">
+                                <i class="fas fa-truck text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-800">Pengangkutan #TRX-982 dari <span class="font-medium">RT 03 Sukamaju</span> selesai</p>
+                                <p class="text-xs text-gray-500 mt-0.5">35 menit yang lalu</p>
+                            </div>
+                        </li>
+                        <li class="p-4 flex items-start gap-3 hover:bg-gray-50">
+                            <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mt-1 flex-shrink-0">
+                                <i class="fas fa-building text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-800"><span class="font-medium">PT. Daur Ulang Nusantara</span> memperbarui harga referensi material</p>
+                                <p class="text-xs text-gray-500 mt-0.5">2 jam yang lalu</p>
+                            </div>
+                        </li>
+                        <li class="p-4 flex items-start gap-3 hover:bg-gray-50">
+                            <div class="w-8 h-8 rounded-full bg-rose-100 flex items-center justify-center text-rose-600 mt-1 flex-shrink-0">
+                                <i class="fas fa-exclamation-circle text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-800">Sistem mendeteksi transaksi anomali pada #TRX-975</p>
+                                <p class="text-xs text-gray-500 mt-0.5">5 jam yang lalu</p>
+                            </div>
+                        </li>
+                        <li class="p-4 flex items-start gap-3 hover:bg-gray-50">
+                            <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 mt-1 flex-shrink-0">
+                                <i class="fas fa-check text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-800">Admin <span class="font-medium">menyetujui</span> pendaftaran Bank Sampah Berseri</p>
+                                <p class="text-xs text-gray-500 mt-0.5">Kemarin, 14:20</p>
+                            </div>
+                        </li>
+                        <li class="p-4 flex items-start gap-3 hover:bg-gray-50">
+                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mt-1 flex-shrink-0">
+                                <i class="fas fa-user-plus text-xs"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm text-gray-800">Pengguna baru <span class="font-medium">Ahmad Hidayat</span> mendaftar sebagai RT</p>
+                                <p class="text-xs text-gray-500 mt-0.5">Kemarin, 10:05</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="p-3 bg-gray-50 border-t border-gray-100 text-center">
+                        <button class="text-sm text-rose-600 font-medium hover:underline">Lihat Semua Aktivitas</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="md:hidden fixed bottom-0 w-full bg-white border-t border-gray-200 z-40 bottom-nav-safe">
+        <div class="flex justify-around items-center h-16">
+            <a href="dashboard.html" class="flex flex-col items-center justify-center w-full h-full text-rose-600">
+                <i class="fas fa-home text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Beranda</span>
+            </a>
+            <a href="users.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600">
+                <i class="fas fa-users text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Pengguna</span>
+            </a>
+            <a href="waste-categories.html" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600">
+                <i class="fas fa-database text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Data</span>
+            </a>
+            <button @click="mobileMenuOpen = !mobileMenuOpen" class="flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-gray-600">
+                <i class="fas fa-bars text-xl mb-1"></i>
+                <span class="text-[10px] font-medium">Menu</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile More Menu Overlay -->
+    <div x-show="mobileMenuOpen" x-transition.opacity class="md:hidden fixed inset-0 z-50 bg-gray-900/50 backdrop-blur-sm flex items-end" x-cloak>
+        <div @click.outside="mobileMenuOpen = false" x-show="mobileMenuOpen" x-transition.translate class="w-full bg-white rounded-t-2xl pb-safe">
+            <div class="p-4 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="font-bold text-gray-900">Menu Lainnya</h3>
+                <button @click="mobileMenuOpen = false" class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-4 grid grid-cols-4 gap-4">
+                <a href="organizations.html" class="flex flex-col items-center text-center gap-2">
+                    <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center text-rose-600">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-gray-700">Organisasi</span>
+                </a>
+                <a href="waste-categories.html" class="flex flex-col items-center text-center gap-2">
+                    <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center text-rose-600">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-gray-700">Kategori Sampah</span>
+                </a>
+                <a href="waste-materials.html" class="flex flex-col items-center text-center gap-2">
+                    <div class="w-12 h-12 rounded-full bg-rose-50 flex items-center justify-center text-rose-600">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-gray-700">Material Sampah</span>
+                </a>
+                <a href="#" class="flex flex-col items-center text-center gap-2">
+                    <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center text-gray-600">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <span class="text-[10px] font-medium text-gray-700">Pengaturan</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

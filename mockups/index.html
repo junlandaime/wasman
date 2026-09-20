@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wasman - Mockup Navigation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {"50":"#ecfdf5","100":"#d1fae5","200":"#a7f3d0","300":"#6ee7b7","400":"#34d399","500":"#10b981","600":"#059669","700":"#047857","800":"#065f46","900":"#064e3b"},
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="h-full">
+    <div class="min-h-full">
+        <!-- Header -->
+        <div class="bg-gradient-to-br from-primary-600 to-primary-800 text-white">
+            <div class="max-w-5xl mx-auto px-4 py-12 md:py-20 text-center">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-recycle text-3xl"></i>
+                </div>
+                <h1 class="text-3xl md:text-4xl font-bold mb-2">Wasman</h1>
+                <p class="text-primary-100 text-lg">Platform Pengelolaan Sampah Berbasis Komunitas</p>
+                <p class="text-primary-200 text-sm mt-2">UI Mockup Navigation</p>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="max-w-5xl mx-auto px-4 py-8 -mt-6">
+
+            <!-- Landing Page -->
+            <div class="mb-8">
+                <h2 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                    <i class="fas fa-globe text-primary-500"></i> Landing Page
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    <a href="landingpage.html" class="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl shadow-sm p-4 hover:shadow-md transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-rocket text-white"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-white">Landing Page</p>
+                                <p class="text-xs text-primary-100">Halaman utama publik</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Auth -->
+            <div class="mb-8">
+                <h2 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                    <i class="fas fa-lock text-primary-500"></i> Autentikasi
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    <a href="auth/login.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-primary-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center group-hover:bg-primary-200 transition-colors">
+                                <i class="fas fa-sign-in-alt text-primary-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-800">Login</p>
+                                <p class="text-xs text-gray-500">Halaman masuk</p>
+                            </div>
+                        </div>
+                    </a>
+                    <a href="auth/register.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-primary-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center group-hover:bg-primary-200 transition-colors">
+                                <i class="fas fa-user-plus text-primary-600"></i>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-gray-800">Register</p>
+                                <p class="text-xs text-gray-500">Halaman daftar</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Household -->
+            <div class="mb-8">
+                <h2 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                    <i class="fas fa-home text-blue-500"></i> Rumah Tangga
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    <a href="household/dashboard.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-blue-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center"><i class="fas fa-th-large text-blue-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Dashboard</p><p class="text-xs text-gray-500">Beranda RT</p></div>
+                        </div>
+                    </a>
+                    <a href="household/schedule.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-blue-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center"><i class="fas fa-calendar-alt text-blue-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Jadwal Angkut</p><p class="text-xs text-gray-500">Jadwal reguler</p></div>
+                        </div>
+                    </a>
+                    <a href="household/collections-index.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-blue-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center"><i class="fas fa-truck text-blue-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Riwayat Pengangkutan</p><p class="text-xs text-gray-500">Daftar permintaan</p></div>
+                        </div>
+                    </a>
+                    <a href="household/collections-create.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-blue-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center"><i class="fas fa-plus-circle text-blue-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Ajukan Permintaan</p><p class="text-xs text-gray-500">Permintaan khusus</p></div>
+                        </div>
+                    </a>
+                    <a href="household/collections-show.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-blue-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center"><i class="fas fa-eye text-blue-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Detail Permintaan</p><p class="text-xs text-gray-500">Status & detail</p></div>
+                        </div>
+                    </a>
+                    <a href="household/education.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-blue-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center"><i class="fas fa-book-open text-blue-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Edukasi</p><p class="text-xs text-gray-500">Panduan pemilahan</p></div>
+                        </div>
+                    </a>
+                    <a href="household/education-show.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-blue-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center"><i class="fas fa-file-alt text-blue-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Detail Edukasi</p><p class="text-xs text-gray-500">Artikel lengkap</p></div>
+                        </div>
+                    </a>
+                    <a href="household/profile.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-blue-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center"><i class="fas fa-user-cog text-blue-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Profil</p><p class="text-xs text-gray-500">Profil & alamat</p></div>
+                        </div>
+                    </a>
+                    <a href="household/notifications.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-blue-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center"><i class="fas fa-bell text-blue-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Notifikasi</p><p class="text-xs text-gray-500">Pemberitahuan</p></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Community -->
+            <div class="mb-8">
+                <h2 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                    <i class="fas fa-users text-primary-500"></i> Komunitas
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    <a href="community/dashboard.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-primary-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center"><i class="fas fa-th-large text-primary-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Dashboard</p><p class="text-xs text-gray-500">Beranda komunitas</p></div>
+                        </div>
+                    </a>
+                    <a href="community/tasks.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-primary-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center"><i class="fas fa-clipboard-list text-primary-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Tugas Hari Ini</p><p class="text-xs text-gray-500">Tugas petugas</p></div>
+                        </div>
+                    </a>
+                    <a href="community/collections-index.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-primary-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center"><i class="fas fa-truck text-primary-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Permintaan Angkut</p><p class="text-xs text-gray-500">Kelola permintaan</p></div>
+                        </div>
+                    </a>
+                    <a href="community/collections-show.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-primary-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center"><i class="fas fa-eye text-primary-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Detail Permintaan</p><p class="text-xs text-gray-500">Review & assign</p></div>
+                        </div>
+                    </a>
+                    <a href="community/schedules-index.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-primary-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center"><i class="fas fa-calendar-alt text-primary-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Jadwal Angkut</p><p class="text-xs text-gray-500">Kelola jadwal</p></div>
+                        </div>
+                    </a>
+                    <a href="community/schedules-create.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-primary-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center"><i class="fas fa-calendar-plus text-primary-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Buat Jadwal</p><p class="text-xs text-gray-500">Jadwal baru</p></div>
+                        </div>
+                    </a>
+                    <a href="community/fleet.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-primary-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center"><i class="fas fa-truck-moving text-primary-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Armada</p><p class="text-xs text-gray-500">Kelola kendaraan</p></div>
+                        </div>
+                    </a>
+                    <a href="community/officers.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-primary-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center"><i class="fas fa-id-badge text-primary-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Petugas</p><p class="text-xs text-gray-500">Kelola anggota</p></div>
+                        </div>
+                    </a>
+                    <a href="community/service-areas.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-primary-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center"><i class="fas fa-map-marked-alt text-primary-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Wilayah Layanan</p><p class="text-xs text-gray-500">Kelola wilayah</p></div>
+                        </div>
+                    </a>
+                    <a href="community/households.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-primary-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center"><i class="fas fa-home text-primary-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Rumah Tangga</p><p class="text-xs text-gray-500">Daftar RT</p></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Factory -->
+            <div class="mb-8">
+                <h2 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                    <i class="fas fa-industry text-purple-500"></i> Pabrik
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    <a href="factory/dashboard.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-purple-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center"><i class="fas fa-th-large text-purple-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Dashboard</p><p class="text-xs text-gray-500">Beranda pabrik</p></div>
+                        </div>
+                    </a>
+                    <a href="factory/profile.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-purple-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center"><i class="fas fa-building text-purple-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Profil</p><p class="text-xs text-gray-500">Profil pabrik</p></div>
+                        </div>
+                    </a>
+                    <a href="factory/supply.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-purple-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center"><i class="fas fa-boxes-stacked text-purple-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Riwayat Pasokan</p><p class="text-xs text-gray-500">Riwayat material</p></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Admin -->
+            <div class="mb-8">
+                <h2 class="text-lg font-bold text-gray-800 mb-3 flex items-center gap-2">
+                    <i class="fas fa-shield-halved text-red-500"></i> Admin
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                    <a href="admin/dashboard.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-red-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center"><i class="fas fa-th-large text-red-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Dashboard</p><p class="text-xs text-gray-500">Overview sistem</p></div>
+                        </div>
+                    </a>
+                    <a href="admin/users.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-red-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center"><i class="fas fa-users-cog text-red-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Pengguna</p><p class="text-xs text-gray-500">Kelola pengguna</p></div>
+                        </div>
+                    </a>
+                    <a href="admin/organizations.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-red-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center"><i class="fas fa-building text-red-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Organisasi</p><p class="text-xs text-gray-500">Verifikasi organisasi</p></div>
+                        </div>
+                    </a>
+                    <a href="admin/waste-categories.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-red-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center"><i class="fas fa-tags text-red-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Kategori Sampah</p><p class="text-xs text-gray-500">Master data</p></div>
+                        </div>
+                    </a>
+                    <a href="admin/waste-materials.html" class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:shadow-md hover:border-red-200 transition-all group">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center"><i class="fas fa-recycle text-red-600"></i></div>
+                            <div><p class="font-semibold text-gray-800">Material Sampah</p><p class="text-xs text-gray-500">Jenis material</p></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center py-8 text-gray-400 text-sm">
+            <p>Wasman Mockup v1.0 — UI/UX Prototype</p>
+        </div>
+    </div>
+</body>
+</html>

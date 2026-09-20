@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Akun Baru - Wasman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {"50":"#ecfdf5","100":"#d1fae5","200":"#a7f3d0","300":"#6ee7b7","400":"#34d399","500":"#10b981","600":"#059669","700":"#047857","800":"#065f46","900":"#064e3b"},
+                        secondary: {"50":"#f0fdf4","100":"#dcfce7","200":"#bbf7d0","300":"#86efac","400":"#4ade80","500":"#22c55e","600":"#16a34a","700":"#15803d","800":"#166534","900":"#14532d"},
+                        accent: {"50":"#fffbeb","100":"#fef3c7","200":"#fde68a","300":"#fcd34d","400":"#fbbf24","500":"#f59e0b","600":"#d97706","700":"#b45309","800":"#92400e","900":"#78350f"},
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .bottom-nav-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+    </style>
+</head>
+<body class="min-h-full bg-slate-50 font-sans text-gray-800 antialiased flex flex-col justify-between"
+      x-data="{
+          currentStep: 1,
+          totalSteps: 3,
+          accountType: 'household', // household, community, factory
+          
+          // Form Step 2 (Data Diri)
+          formData: {
+              fullName: 'Ahmad Hidayat',
+              email: 'ahmad.hidayat@gmail.com',
+              phone: '081234567890',
+              password: 'password123',
+              confirmPassword: 'password123',
+              agreeTerms: true
+          },
+          showPassword: false,
+          showConfirmPassword: false,
+
+          // Form Step 3: Rumah Tangga
+          household: {
+              address: 'Jl. Mawar No. 12, Kel. Sukamaju',
+              rt: '03',
+              rw: '01',
+              kelurahan: 'Sukamaju',
+              kecamatan: 'Cilodong',
+              city: 'Kota Depok',
+              memberCount: '4',
+              wasteTypes: ['Plastik PET', 'Kardus & Kertas', 'Minyak Jelantah']
+          },
+
+          // Form Step 3: Komunitas
+          community: {
+              name: 'Bank Sampah Berseri Mandiri',
+              description: 'Komunitas penggerak kebersihan dan pengelolaan bank sampah warga yang berdiri sejak 2021.',
+              serviceArea: 'Kec. Sukamaju dan Cilodong (RT 01 s/d RT 08)',
+              householdCount: '180',
+              fleetTypes: ['Motor Roda Tiga (Viar)', 'Mobil Pick Up'],
+              warehouseAddress: 'Jl. Gotong Royong No. 8, RW 01, Sukamaju'
+          },
+
+          // Form Step 3: Pabrik
+          factory: {
+              companyName: 'PT. Plastik Daur Ulang Nusantara',
+              nib: '9120008492019',
+              address: 'Kawasan Industri Sentul Blok B No. 15, Bogor',
+              materials: ['Plastik PET Bening', 'Plastik HDPE / Tutup Botol', 'Kardus & Kertas Bekas'],
+              capacity: '60 Ton / Bulan',
+              minQuality: 'Bersih, telah dipress dalam bentuk bal, kadar air di bawah 10%.'
+          },
+
+          isSubmitting: false,
+          showSuccessModal: false,
+
+          nextStep() {
+              if (this.currentStep < this.totalSteps) {
+                  this.currentStep++;
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+          },
+
+          prevStep() {
+              if (this.currentStep > 1) {
+                  this.currentStep--;
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+          },
+
+          submitForm() {
+              this.isSubmitting = true;
+              setTimeout(() => {
+                  this.isSubmitting = false;
+                  this.showSuccessModal = true;
+              }, 900);
+          },
+
+          getAccountTypeName() {
+              if (this.accountType === 'household') return 'Rumah Tangga';
+              if (this.accountType === 'community') return 'Komunitas / Bank Sampah';
+              if (this.accountType === 'factory') return 'Pabrik Pengolah';
+              return '';
+          },
+
+          toggleWasteType(type) {
+              const idx = this.household.wasteTypes.indexOf(type);
+              if (idx > -1) {
+                  this.household.wasteTypes.splice(idx, 1);
+              } else {
+                  this.household.wasteTypes.push(type);
+              }
+          },
+
+          toggleFactoryMaterial(mat) {
+              const idx = this.factory.materials.indexOf(mat);
+              if (idx > -1) {
+                  this.factory.materials.splice(idx, 1);
+              } else {
+                  this.factory.materials.push(mat);
+              }
+          },
+
+          toggleFleet(fleet) {
+              const idx = this.community.fleetTypes.indexOf(fleet);
+              if (idx > -1) {
+                  this.community.fleetTypes.splice(idx, 1);
+              } else {
+                  this.community.fleetTypes.push(fleet);
+              }
+          }
+      }">
+
+    <!-- Top Navigation Header -->
+    <header class="w-full max-w-4xl mx-auto px-4 pt-4 pb-2 flex items-center justify-between">
+        <a href="../index.html" class="inline-flex items-center gap-2 text-xs md:text-sm font-medium text-gray-500 hover:text-primary-600 transition-colors bg-white px-3 py-1.5 rounded-full border border-gray-200 shadow-sm">
+            <i class="fas fa-arrow-left text-xs"></i>
+            <span>Kembali ke Menu Mockup</span>
+        </a>
+        <div class="flex items-center gap-2 text-xs text-gray-600">
+            <span>Sudah ada akun?</span>
+            <a href="login.html" class="font-bold text-primary-600 hover:text-primary-700 hover:underline">Masuk</a>
+        </div>
+    </header>
+
+    <!-- Main Registration Container -->
+    <main class="flex-1 max-w-3xl w-full mx-auto px-4 py-6 md:py-8">
+
+        <!-- App Branding -->
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-primary-600 to-primary-400 shadow-md shadow-primary-500/20 text-white mb-2">
+                <i class="fas fa-recycle text-xl"></i>
+            </div>
+            <h1 class="text-2xl md:text-3xl font-extrabold text-gray-900 tracking-tight">Pendaftaran Akun Wasman</h1>
+            <p class="text-xs md:text-sm text-gray-500 mt-1">Bergabung dalam ekosistem ekonomi sirkular pengelolaan sampah</p>
+        </div>
+
+        <!-- Multi-Step Card -->
+        <div class="bg-white rounded-3xl shadow-xl shadow-gray-200/70 border border-gray-100 overflow-hidden">
+            
+            <!-- Step Progress Indicator -->
+            <div class="bg-gray-50/80 border-b border-gray-100 px-4 py-5 sm:px-8">
+                <div class="flex items-center justify-between relative max-w-lg mx-auto">
+                    
+                    <!-- Progress Line Background -->
+                    <div class="absolute left-6 right-6 top-1/2 -translate-y-1/2 h-1 bg-gray-200 -z-0"></div>
+                    
+                    <!-- Dynamic Progress Line -->
+                    <div class="absolute left-6 top-1/2 -translate-y-1/2 h-1 bg-primary-500 -z-0 transition-all duration-300 ease-out"
+                         :style="`width: ${(currentStep - 1) / (totalSteps - 1) * 100}%`"></div>
+
+                    <!-- Step 1 Indicator -->
+                    <div class="relative z-10 flex flex-col items-center">
+                        <button type="button" 
+                                @click="currentStep = 1"
+                                class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-200"
+                                :class="currentStep === 1 
+                                    ? 'bg-primary-600 text-white ring-4 ring-primary-100 shadow-md scale-110' 
+                                    : (currentStep > 1 
+                                        ? 'bg-emerald-500 text-white' 
+                                        : 'bg-white border-2 border-gray-300 text-gray-400')">
+                            <template x-if="currentStep > 1">
+                                <i class="fas fa-check text-xs"></i>
+                            </template>
+                            <template x-if="currentStep <= 1">
+                                <span>1</span>
+                            </template>
+                        </button>
+                        <span class="mt-2 text-[11px] md:text-xs font-semibold"
+                              :class="currentStep === 1 ? 'text-primary-700 font-bold' : (currentStep > 1 ? 'text-gray-700' : 'text-gray-400')">
+                            Jenis Akun
+                        </span>
+                    </div>
+
+                    <!-- Step 2 Indicator -->
+                    <div class="relative z-10 flex flex-col items-center">
+                        <button type="button" 
+                                @click="currentStep = 2"
+                                class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-200"
+                                :class="currentStep === 2 
+                                    ? 'bg-primary-600 text-white ring-4 ring-primary-100 shadow-md scale-110' 
+                                    : (currentStep > 2 
+                                        ? 'bg-emerald-500 text-white' 
+                                        : 'bg-white border-2 border-gray-300 text-gray-400')">
+                            <template x-if="currentStep > 2">
+                                <i class="fas fa-check text-xs"></i>
+                            </template>
+                            <template x-if="currentStep <= 2">
+                                <span>2</span>
+                            </template>
+                        </button>
+                        <span class="mt-2 text-[11px] md:text-xs font-semibold"
+                              :class="currentStep === 2 ? 'text-primary-700 font-bold' : (currentStep > 2 ? 'text-gray-700' : 'text-gray-400')">
+                            Data Diri
+                        </span>
+                    </div>
+
+                    <!-- Step 3 Indicator -->
+                    <div class="relative z-10 flex flex-col items-center">
+                        <button type="button" 
+                                @click="if (formData.fullName && formData.email) currentStep = 3"
+                                class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-xs transition-all duration-200"
+                                :class="currentStep === 3 
+                                    ? 'bg-primary-600 text-white ring-4 ring-primary-100 shadow-md scale-110' 
+                                    : 'bg-white border-2 border-gray-300 text-gray-400'">
+                            <span>3</span>
+                        </button>
+                        <span class="mt-2 text-[11px] md:text-xs font-semibold"
+                              :class="currentStep === 3 ? 'text-primary-700 font-bold' : 'text-gray-400'">
+                            Detail Profil
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Form Body -->
+            <form @submit.prevent="currentStep === 3 ? submitForm() : nextStep()" class="p-5 sm:p-8">
+                
+                <!-- ============================================== -->
+                <!-- STEP 1: PILIH JENIS AKUN                      -->
+                <!-- ============================================== -->
+                <div x-show="currentStep === 1" x-cloak 
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 translate-y-2"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     class="space-y-5">
+                    
+                    <div class="text-center max-w-md mx-auto mb-6">
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-primary-100 text-primary-800 mb-2">
+                            Langkah 1 dari 3
+                        </span>
+                        <h2 class="text-xl font-bold text-gray-900">Pilih Peran & Jenis Akun</h2>
+                        <p class="text-xs text-gray-500 mt-1">
+                            Pilih jenis akun yang paling sesuai dengan aktivitas pengelolaan sampah Anda di platform Wasman.
+                        </p>
+                    </div>
+
+                    <!-- 3 Account Selection Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        
+                        <!-- Option 1: Rumah Tangga -->
+                        <div @click="accountType = 'household'" 
+                             class="relative p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between"
+                             :class="accountType === 'household' 
+                                ? 'border-primary-500 bg-primary-50/50 shadow-md ring-2 ring-primary-500/20' 
+                                : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'">
+                            
+                            <!-- Selection Radio Check -->
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-colors"
+                                     :class="accountType === 'household' ? 'bg-primary-500 text-white' : 'bg-emerald-100 text-emerald-700'">
+                                    <i class="fas fa-house-chimney text-xl"></i>
+                                </div>
+                                <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors"
+                                     :class="accountType === 'household' ? 'border-primary-600 bg-primary-600 text-white' : 'border-gray-300 bg-white'">
+                                    <i class="fas fa-check text-[10px]" x-show="accountType === 'household'"></i>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <h3 class="font-bold text-gray-900 text-base">Rumah Tangga</h3>
+                                </div>
+                                <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-semibold bg-emerald-100 text-emerald-800 mb-2.5">
+                                    Penghasil Sampah
+                                </span>
+                                <p class="text-xs text-gray-600 leading-relaxed">
+                                    Pilah sampah dari rumah, ikuti jadwal pengangkutan reguler, dan dapatkan poin serta insentif reward bernilai ekonomis.
+                                </p>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-t border-gray-200/60 text-[11px] text-gray-500 space-y-1">
+                                <div class="flex items-center gap-1.5 text-gray-700">
+                                    <i class="fas fa-check-circle text-primary-500 text-xs"></i>
+                                    <span>Jadwal angkut rutin</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-gray-700">
+                                    <i class="fas fa-check-circle text-primary-500 text-xs"></i>
+                                    <span>Tukar sampah jadi poin/uang</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-gray-700">
+                                    <i class="fas fa-check-circle text-primary-500 text-xs"></i>
+                                    <span>Panduan pilah praktis</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Option 2: Komunitas -->
+                        <div @click="accountType = 'community'" 
+                             class="relative p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between"
+                             :class="accountType === 'community' 
+                                ? 'border-primary-500 bg-primary-50/50 shadow-md ring-2 ring-primary-500/20' 
+                                : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'">
+                            
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-colors"
+                                     :class="accountType === 'community' ? 'bg-primary-500 text-white' : 'bg-blue-100 text-blue-700'">
+                                    <i class="fas fa-people-group text-xl"></i>
+                                </div>
+                                <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors"
+                                     :class="accountType === 'community' ? 'border-primary-600 bg-primary-600 text-white' : 'border-gray-300 bg-white'">
+                                    <i class="fas fa-check text-[10px]" x-show="accountType === 'community'"></i>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <h3 class="font-bold text-gray-900 text-base">Komunitas</h3>
+                                </div>
+                                <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-semibold bg-blue-100 text-blue-800 mb-2.5">
+                                    Pengumpul & Pengangkut
+                                </span>
+                                <p class="text-xs text-gray-600 leading-relaxed">
+                                    Kelola rute pengangkutan sampah warga, catat timbangan digital, dan salurkan material bernilai ke mitra pabrik.
+                                </p>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-t border-gray-200/60 text-[11px] text-gray-500 space-y-1">
+                                <div class="flex items-center gap-1.5 text-gray-700">
+                                    <i class="fas fa-check-circle text-primary-500 text-xs"></i>
+                                    <span>Manajemen armada & rute</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-gray-700">
+                                    <i class="fas fa-check-circle text-primary-500 text-xs"></i>
+                                    <span>Pencatatan timbangan akurat</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-gray-700">
+                                    <i class="fas fa-check-circle text-primary-500 text-xs"></i>
+                                    <span>Akses suplai ke pabrik mitra</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Option 3: Pabrik -->
+                        <div @click="accountType = 'factory'" 
+                             class="relative p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 flex flex-col justify-between"
+                             :class="accountType === 'factory' 
+                                ? 'border-primary-500 bg-primary-50/50 shadow-md ring-2 ring-primary-500/20' 
+                                : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'">
+                            
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="w-12 h-12 rounded-xl flex items-center justify-center transition-colors"
+                                     :class="accountType === 'factory' ? 'bg-primary-500 text-white' : 'bg-amber-100 text-amber-700'">
+                                    <i class="fas fa-industry text-xl"></i>
+                                </div>
+                                <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors"
+                                     :class="accountType === 'factory' ? 'border-primary-600 bg-primary-600 text-white' : 'border-gray-300 bg-white'">
+                                    <i class="fas fa-check text-[10px]" x-show="accountType === 'factory'"></i>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <h3 class="font-bold text-gray-900 text-base">Pabrik Pengolah</h3>
+                                </div>
+                                <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-semibold bg-amber-100 text-amber-800 mb-2.5">
+                                    Penerima & Daur Ulang
+                                </span>
+                                <p class="text-xs text-gray-600 leading-relaxed">
+                                    Terima pasokan material daur ulang terpilah berstandar industri dengan transparansi harga dan jadwal kirim terjamin.
+                                </p>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-t border-gray-200/60 text-[11px] text-gray-500 space-y-1">
+                                <div class="flex items-center gap-1.5 text-gray-700">
+                                    <i class="fas fa-check-circle text-primary-500 text-xs"></i>
+                                    <span>Bahan baku terpilah stabil</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-gray-700">
+                                    <i class="fas fa-check-circle text-primary-500 text-xs"></i>
+                                    <span>Verifikasi kualitas muatan</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 text-gray-700">
+                                    <i class="fas fa-check-circle text-primary-500 text-xs"></i>
+                                    <span>Pencatatan pasokan transparan</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- ============================================== -->
+                <!-- STEP 2: DATA DIRI                             -->
+                <!-- ============================================== -->
+                <div x-show="currentStep === 2" x-cloak 
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 translate-y-2"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     class="space-y-5">
+                    
+                    <div class="text-center max-w-md mx-auto mb-6">
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-primary-100 text-primary-800 mb-2">
+                            Langkah 2 dari 3
+                        </span>
+                        <h2 class="text-xl font-bold text-gray-900">Informasi & Data Diri</h2>
+                        <p class="text-xs text-gray-500 mt-1">
+                            Lengkapi data diri penanggung jawab akun untuk keperluan autentikasi dan komunikasi.
+                        </p>
+                    </div>
+
+                    <!-- Role Reminder Banner -->
+                    <div class="p-3.5 bg-primary-50/70 border border-primary-200 rounded-2xl flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-xl bg-primary-500 text-white flex items-center justify-center shrink-0">
+                                <i class="fas" :class="accountType === 'household' ? 'fa-house' : (accountType === 'community' ? 'fa-users' : 'fa-industry')"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs text-gray-500">Mendaftar sebagai:</p>
+                                <p class="text-sm font-bold text-primary-900" x-text="getAccountTypeName()"></p>
+                            </div>
+                        </div>
+                        <button type="button" @click="currentStep = 1" class="text-xs font-semibold text-primary-600 hover:text-primary-700 underline">
+                            Ubah Peran
+                        </button>
+                    </div>
+
+                    <div class="space-y-4">
+                        
+                        <!-- Nama Lengkap -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                <span x-show="accountType === 'household'">Nama Lengkap Kepala Keluarga / Warga</span>
+                                <span x-show="accountType === 'community'">Nama Ketua / Koordinator Komunitas</span>
+                                <span x-show="accountType === 'factory'">Nama Penanggung Jawab / PIC Pabrik</span>
+                                <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <input type="text" 
+                                       x-model="formData.fullName" 
+                                       required
+                                       placeholder="Contoh: Ahmad Hidayat" 
+                                       class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition">
+                            </div>
+                        </div>
+
+                        <!-- Email & Telepon Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Email -->
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                    Alamat Email Aktif <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                    <input type="email" 
+                                           x-model="formData.email" 
+                                           required
+                                           placeholder="nama@domain.com" 
+                                           class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition">
+                                </div>
+                                <p class="text-[11px] text-gray-400 mt-1">Digunakan untuk notifikasi dan bukti transaksi.</p>
+                            </div>
+
+                            <!-- Phone -->
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                    Nomor WhatsApp / HP <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                        <i class="fab fa-whatsapp"></i>
+                                    </span>
+                                    <input type="tel" 
+                                           x-model="formData.phone" 
+                                           required
+                                           placeholder="Contoh: 081234567890" 
+                                           class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition">
+                                </div>
+                                <p class="text-[11px] text-gray-400 mt-1">Untuk koordinasi penjemputan armada.</p>
+                            </div>
+                        </div>
+
+                        <!-- Password & Confirm Password Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Password -->
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                    Kata Sandi <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                    <input :type="showPassword ? 'text' : 'password'" 
+                                           x-model="formData.password" 
+                                           required
+                                           placeholder="Minimal 8 karakter" 
+                                           class="w-full pl-10 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition">
+                                    <button type="button" 
+                                            @click="showPassword = !showPassword" 
+                                            class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none">
+                                        <i class="fas" :class="showPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                    Konfirmasi Kata Sandi <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                        <i class="fas fa-lock-open"></i>
+                                    </span>
+                                    <input :type="showConfirmPassword ? 'text' : 'password'" 
+                                           x-model="formData.confirmPassword" 
+                                           required
+                                           placeholder="Ulangi kata sandi" 
+                                           class="w-full pl-10 pr-10 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition">
+                                    <button type="button" 
+                                            @click="showConfirmPassword = !showConfirmPassword" 
+                                            class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-gray-600 focus:outline-none">
+                                        <i class="fas" :class="showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Password Match Hint -->
+                        <div x-show="formData.password && formData.confirmPassword" class="text-xs">
+                            <span x-show="formData.password === formData.confirmPassword" class="text-emerald-600 flex items-center gap-1 font-medium">
+                                <i class="fas fa-check-circle"></i> Kata sandi cocok
+                            </span>
+                            <span x-show="formData.password !== formData.confirmPassword" class="text-red-500 flex items-center gap-1 font-medium">
+                                <i class="fas fa-times-circle"></i> Kata sandi belum sesuai
+                            </span>
+                        </div>
+
+                        <!-- Terms Checkbox -->
+                        <div class="pt-2">
+                            <label class="flex items-start gap-2.5 cursor-pointer select-none">
+                                <input type="checkbox" 
+                                       x-model="formData.agreeTerms" 
+                                       required
+                                       class="w-4 h-4 mt-0.5 rounded text-primary-600 border-gray-300 focus:ring-primary-500">
+                                <span class="text-xs text-gray-600 leading-relaxed">
+                                    Saya menyetujui <a href="#" class="text-primary-600 hover:underline font-semibold">Syarat & Ketentuan Penggunaan Layanan</a> serta <a href="#" class="text-primary-600 hover:underline font-semibold">Kebijakan Privasi Wasman</a>.
+                                </span>
+                            </label>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ============================================== -->
+                <!-- STEP 3: DETAIL PROFIL (DYNAMIC PER ACCOUNT)    -->
+                <!-- ============================================== -->
+                <div x-show="currentStep === 3" x-cloak 
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 translate-y-2"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     class="space-y-5">
+                    
+                    <div class="text-center max-w-md mx-auto mb-6">
+                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-primary-100 text-primary-800 mb-2">
+                            Langkah 3 dari 3
+                        </span>
+                        <h2 class="text-xl font-bold text-gray-900">Detail Profil & Operasional</h2>
+                        <p class="text-xs text-gray-500 mt-1">
+                            Lengkapi rincian operasional untuk memfasilitasi logistik dan koordinasi pengolahan sampah.
+                        </p>
+                    </div>
+
+                    <!-- CASE A: DETAIL RUMAH TANGGA -->
+                    <div x-show="accountType === 'household'" class="space-y-4">
+                        
+                        <!-- Alamat Lengkap -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                Alamat Lengkap Rumah <span class="text-red-500">*</span>
+                            </label>
+                            <textarea x-model="household.address" 
+                                      rows="2" 
+                                      required
+                                      placeholder="Nama jalan, nomor rumah, gang, atau patokan lokasi..."
+                                      class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition"></textarea>
+                        </div>
+
+                        <!-- RT, RW, Kelurahan, Kecamatan Grid -->
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5">RT <span class="text-red-500">*</span></label>
+                                <input type="text" x-model="household.rt" placeholder="03" class="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5">RW <span class="text-red-500">*</span></label>
+                                <input type="text" x-model="household.rw" placeholder="01" class="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5">Kelurahan <span class="text-red-500">*</span></label>
+                                <input type="text" x-model="household.kelurahan" placeholder="Sukamaju" class="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5">Kecamatan <span class="text-red-500">*</span></label>
+                                <input type="text" x-model="household.kecamatan" placeholder="Cilodong" class="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Jumlah Anggota & Kota -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5">Kota / Kabupaten</label>
+                                <input type="text" x-model="household.city" placeholder="Kota Depok" class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                    Jumlah Anggota Keluarga (Orang) <span class="text-red-500">*</span>
+                                </label>
+                                <select x-model="household.memberCount" class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none">
+                                    <option value="1-2">1 - 2 Orang</option>
+                                    <option value="3-4">3 - 4 Orang</option>
+                                    <option value="5-6">5 - 6 Orang</option>
+                                    <option value=">6">Lebih dari 6 Orang</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Jenis Sampah yang Sering Dihasilkan -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-2">
+                                Jenis Sampah yang Sering Dihasilkan & Siap Dipilah
+                            </label>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                <template x-for="item in ['Sampah Organik', 'Plastik PET', 'Kardus & Kertas', 'Kaleng Logam', 'Botol Kaca', 'Minyak Jelantah']" :key="item">
+                                    <button type="button" 
+                                            @click="toggleWasteType(item)"
+                                            class="px-3 py-2 rounded-xl text-xs font-medium border text-left flex items-center justify-between transition-all"
+                                            :class="household.wasteTypes.includes(item) 
+                                                ? 'bg-primary-50 border-primary-500 text-primary-800 font-semibold' 
+                                                : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100'">
+                                        <span x-text="item"></span>
+                                        <i class="fas fa-check text-[10px]" x-show="household.wasteTypes.includes(item)"></i>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- CASE B: DETAIL KOMUNITAS -->
+                    <div x-show="accountType === 'community'" class="space-y-4">
+                        
+                        <!-- Nama Komunitas -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                Nama Komunitas / Bank Sampah / TPS-3R <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                    <i class="fas fa-users-rectangle"></i>
+                                </span>
+                                <input type="text" 
+                                       x-model="community.name" 
+                                       required
+                                       placeholder="Contoh: Bank Sampah Berseri Mandiri" 
+                                       class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Deskripsi Komunitas -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                Deskripsi Singkat Kegiatan & Visi Komunitas <span class="text-red-500">*</span>
+                            </label>
+                            <textarea x-model="community.description" 
+                                      rows="2" 
+                                      required
+                                      placeholder="Jelaskan sejarah singkat, aktivitas pengumpulan rutin, atau fokus kegiatan lingkungan..." 
+                                      class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none"></textarea>
+                        </div>
+
+                        <!-- Wilayah Layanan & Estimasi KK -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                    Wilayah Layanan Penjemputan <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" 
+                                       x-model="community.serviceArea" 
+                                       required
+                                       placeholder="Contoh: Kelurahan Sukamaju & Cilodong" 
+                                       class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                    Estimasi Rumah Tangga (KK) Terlayani
+                                </label>
+                                <input type="number" 
+                                       x-model="community.householdCount" 
+                                       placeholder="Contoh: 150" 
+                                       class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Armada / Fasilitas Logistik -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-2">
+                                Armada & Fasilitas Operasional yang Dimiliki
+                            </label>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                <template x-for="fleet in ['Gerobak Manual', 'Motor Roda Tiga (Viar)', 'Mobil Pick Up', 'Truk Sampah']" :key="fleet">
+                                    <button type="button" 
+                                            @click="toggleFleet(fleet)"
+                                            class="px-3 py-2 rounded-xl text-xs font-medium border text-left flex items-center justify-between transition-all"
+                                            :class="community.fleetTypes.includes(fleet) 
+                                                ? 'bg-blue-50 border-blue-500 text-blue-800 font-semibold' 
+                                                : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100'">
+                                        <span x-text="fleet"></span>
+                                        <i class="fas fa-check text-[10px]" x-show="community.fleetTypes.includes(fleet)"></i>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Alamat Gudang / Pusat Pengumpulan -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                Lokasi Gudang / Titik Kumpul Penimbangan
+                            </label>
+                            <input type="text" 
+                                   x-model="community.warehouseAddress" 
+                                   placeholder="Contoh: Jl. Gotong Royong No. 8, Sukamaju" 
+                                   class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none">
+                        </div>
+
+                    </div>
+
+                    <!-- CASE C: DETAIL PABRIK PENGOLAH -->
+                    <div x-show="accountType === 'factory'" class="space-y-4">
+                        
+                        <!-- Nama Perusahaan -->
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div class="sm:col-span-2">
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                    Nama Perusahaan / Pabrik Pengolah <span class="text-red-500">*</span>
+                                </label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                        <i class="fas fa-building"></i>
+                                    </span>
+                                    <input type="text" 
+                                           x-model="factory.companyName" 
+                                           required
+                                           placeholder="Contoh: PT. Plastik Daur Ulang Nusantara" 
+                                           class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                    Nomor Induk Berusaha (NIB)
+                                </label>
+                                <input type="text" 
+                                       x-model="factory.nib" 
+                                       placeholder="91200xxxx" 
+                                       class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Alamat Pabrik -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                Alamat Fasilitas Pengolahan / Pabrik <span class="text-red-500">*</span>
+                            </label>
+                            <textarea x-model="factory.address" 
+                                      rows="2" 
+                                      required
+                                      placeholder="Nama kawasan industri, nomor kavling, alamat lengkap..." 
+                                      class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none"></textarea>
+                        </div>
+
+                        <!-- Kapasitas Penerimaan -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                Kapasitas Penerimaan Material per Periode <span class="text-red-500">*</span>
+                            </label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                    <i class="fas fa-weight-hanging"></i>
+                                </span>
+                                <input type="text" 
+                                       x-model="factory.capacity" 
+                                       required
+                                       placeholder="Contoh: 50 Ton / Bulan atau 2 Ton / Hari" 
+                                       class="w-full pl-10 pr-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none">
+                            </div>
+                        </div>
+
+                        <!-- Jenis Material yang Diterima -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-2">
+                                Kategori Material yang Diterima & Diolah <span class="text-red-500">*</span>
+                            </label>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                <template x-for="mat in ['Plastik PET Bening', 'Plastik HDPE / Tutup Botol', 'Plastik PP / Kemasan', 'Kardus & Kertas Bekas', 'Kaleng & Logam Besi', 'Pecahan Botol Kaca']" :key="mat">
+                                    <button type="button" 
+                                            @click="toggleFactoryMaterial(mat)"
+                                            class="px-3 py-2 rounded-xl text-xs font-medium border text-left flex items-center justify-between transition-all"
+                                            :class="factory.materials.includes(mat) 
+                                                ? 'bg-amber-50 border-amber-500 text-amber-900 font-semibold' 
+                                                : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100'">
+                                        <span x-text="mat"></span>
+                                        <i class="fas fa-check text-[10px]" x-show="factory.materials.includes(mat)"></i>
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Standar Kualitas Minimum -->
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 mb-1.5">
+                                Syarat & Standar Kualitas Minimum Material
+                            </label>
+                            <input type="text" 
+                                   x-model="factory.minQuality" 
+                                   placeholder="Contoh: Bersih, telah dipress dalam bentuk bal balan, kadar air < 10%" 
+                                   class="w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 outline-none">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Navigation Action Buttons (Back & Next / Submit) -->
+                <div class="mt-8 pt-5 border-t border-gray-100 flex items-center justify-between gap-3">
+                    
+                    <!-- Back Button -->
+                    <div>
+                        <button type="button" 
+                                x-show="currentStep > 1" 
+                                @click="prevStep()" 
+                                class="inline-flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-xl text-xs font-semibold text-gray-700 bg-white hover:bg-gray-50 active:bg-gray-100 transition shadow-xs">
+                            <i class="fas fa-arrow-left text-xs"></i>
+                            <span>Kembali</span>
+                        </button>
+                        <a href="login.html" 
+                           x-show="currentStep === 1" 
+                           class="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-700 font-medium">
+                            <i class="fas fa-arrow-left text-[10px]"></i>
+                            <span>Batal & Masuk</span>
+                        </a>
+                    </div>
+
+                    <!-- Next or Submit Button -->
+                    <div>
+                        <!-- Next Button (Steps 1 & 2) -->
+                        <button type="button" 
+                                x-show="currentStep < totalSteps" 
+                                @click="nextStep()" 
+                                class="inline-flex items-center gap-2 px-5 py-2.5 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white rounded-xl text-xs font-semibold shadow-md shadow-primary-600/20 transition duration-150">
+                            <span>Lanjut ke Langkah Berikutnya</span>
+                            <i class="fas fa-arrow-right text-xs"></i>
+                        </button>
+
+                        <!-- Submit Button (Step 3) -->
+                        <button type="submit" 
+                                x-show="currentStep === totalSteps" 
+                                :disabled="isSubmitting"
+                                class="inline-flex items-center gap-2 px-6 py-2.5 bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white rounded-xl text-xs font-semibold shadow-md shadow-primary-600/25 transition duration-150 disabled:opacity-75">
+                            <template x-if="isSubmitting">
+                                <span class="inline-flex items-center gap-2">
+                                    <i class="fas fa-circle-notch fa-spin text-xs"></i>
+                                    <span>Mendaftarkan...</span>
+                                </span>
+                            </template>
+                            <template x-if="!isSubmitting">
+                                <span class="inline-flex items-center gap-2">
+                                    <i class="fas fa-check text-xs"></i>
+                                    <span>Selesaikan Pendaftaran</span>
+                                </span>
+                            </template>
+                        </button>
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 text-center text-xs text-gray-500 space-y-1">
+            <p class="font-medium text-gray-600">Platform Pengelolaan Sampah Berbasis Komunitas</p>
+            <p class="text-gray-400 text-[11px]">&copy; 2026 Wasman Indonesia &bull; Menuju Indonesia Bebas Sampah</p>
+        </div>
+
+    </main>
+
+    <!-- Registration Success Modal -->
+    <div x-show="showSuccessModal" x-cloak 
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-xs"
+         x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-gray-100 text-center"
+             x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0 scale-95"
+             x-transition:enter-end="opacity-100 scale-100">
+            
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-500 to-primary-500 text-white flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-500/30">
+                <i class="fas fa-check text-2xl"></i>
+            </div>
+            
+            <h3 class="text-xl font-bold text-gray-900">Pendaftaran Berhasil!</h3>
+            <p class="text-xs text-gray-500 mt-1">
+                Selamat, akun Anda telah berhasil terdaftar dalam jaringan Wasman.
+            </p>
+
+            <!-- Registration Summary Box -->
+            <div class="bg-gray-50 rounded-2xl p-4 my-5 text-left border border-gray-100 space-y-2 text-xs">
+                <div class="flex justify-between py-1 border-b border-gray-200/60">
+                    <span class="text-gray-500">Nama Akun:</span>
+                    <span class="font-semibold text-gray-800" x-text="formData.fullName"></span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-200/60">
+                    <span class="text-gray-500">Jenis Peran:</span>
+                    <span class="font-semibold text-primary-700" x-text="getAccountTypeName()"></span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-gray-200/60">
+                    <span class="text-gray-500">Email:</span>
+                    <span class="font-semibold text-gray-800" x-text="formData.email"></span>
+                </div>
+                <div class="flex justify-between py-1">
+                    <span class="text-gray-500">Status Akun:</span>
+                    <span class="inline-flex items-center gap-1 font-semibold text-emerald-600">
+                        <i class="fas fa-circle text-[8px]"></i> Aktif & Siap Digunakan
+                    </span>
+                </div>
+            </div>
+
+            <div class="space-y-2.5">
+                <a href="login.html" 
+                   class="w-full flex items-center justify-center gap-2 py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white font-semibold text-xs rounded-xl shadow-md shadow-primary-600/20 transition">
+                    <span>Masuk ke Akun Sekarang</span>
+                    <i class="fas fa-arrow-right text-xs"></i>
+                </a>
+                <a href="../index.html" 
+                   class="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-xs rounded-xl transition">
+                    <span>Kembali ke Menu Mockup</span>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wilayah Layanan - Wasman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { primary: {"50":"#ecfdf5","100":"#d1fae5","200":"#a7f3d0","300":"#6ee7b7","400":"#34d399","500":"#10b981","600":"#059669","700":"#047857","800":"#065f46","900":"#064e3b"} } } } }
+    </script>
+</head>
+<body class="h-full overflow-y-auto bg-gray-50 pb-20 md:pb-0">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30">
+        <div class="flex items-center justify-between px-4 h-14 md:px-6 md:h-16">
+            <div class="flex items-center gap-3">
+                <a href="dashboard.html" class="p-2 -ml-2 text-gray-500 md:hidden"><i class="fas fa-arrow-left"></i></a>
+                <h1 class="font-bold text-gray-800 text-lg md:text-xl">Wilayah Layanan</h1>
+            </div>
+            <button class="bg-primary-500 hover:bg-primary-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-2">
+                <i class="fas fa-plus"></i> <span class="hidden md:inline">Tambah Wilayah</span>
+            </button>
+        </div>
+    </header>
+
+    <main class="p-4 md:p-6 max-w-7xl mx-auto space-y-6">
+        
+        <!-- Map Placeholder -->
+        <div class="bg-primary-50 rounded-xl border border-primary-100 p-1">
+            <div class="bg-white rounded-lg h-48 md:h-64 flex flex-col items-center justify-center text-gray-400 relative overflow-hidden border border-gray-200 shadow-inner">
+                <i class="fas fa-map-marked-alt text-4xl mb-2"></i>
+                <p class="text-sm font-medium">Peta Wilayah Layanan Komunitas</p>
+                <div class="absolute inset-0 bg-primary-500/10 mix-blend-multiply"></div>
+            </div>
+        </div>
+
+        <!-- List Wilayah -->
+        <div class="space-y-4">
+            <!-- Wilayah 1 -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <h3 class="font-bold text-gray-900 text-lg">RW 01-02 Kel. Sukamaju</h3>
+                        <p class="text-sm text-gray-500 mt-1">Mencakup area perumahan utama dan sebagian area komersial di jalan raya.</p>
+                    </div>
+                    <span class="inline-block px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700 whitespace-nowrap">Aktif</span>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-3 border-y border-gray-100 mb-3">
+                    <div>
+                        <p class="text-xs text-gray-500">Total RT</p>
+                        <p class="font-bold text-gray-800">45 Rumah Tangga</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500">Jadwal Aktif</p>
+                        <p class="font-bold text-gray-800">2 Jadwal</p>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium">Edit</button>
+                    <a href="households.html" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium">Lihat RT</a>
+                </div>
+            </div>
+
+            <!-- Wilayah 2 -->
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <h3 class="font-bold text-gray-900 text-lg">RW 03 Kel. Sukamaju</h3>
+                        <p class="text-sm text-gray-500 mt-1">Area cluster perumahan baru.</p>
+                    </div>
+                    <span class="inline-block px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-700 whitespace-nowrap">Aktif</span>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-3 border-y border-gray-100 mb-3">
+                    <div>
+                        <p class="text-xs text-gray-500">Total RT</p>
+                        <p class="font-bold text-gray-800">111 Rumah Tangga</p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500">Jadwal Aktif</p>
+                        <p class="font-bold text-gray-800">1 Jadwal</p>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium">Edit</button>
+                    <a href="households.html" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-sm font-medium">Lihat RT</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</body>
+</html>

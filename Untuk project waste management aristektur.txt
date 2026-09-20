@@ -1,0 +1,730 @@
+Untuk project waste management tersebut, saya merekomendasikan **modular monolith berbasis Laravel dengan REST API, PWA offline-first, dan arsitektur event-driven ringan**. Ini lebih tepat daripada langsung memakai microservices karena stakeholder dan alur bisnisnya cukup kompleks, tetapi kemungkinan tim serta kebutuhan awal masih berada pada tahap MVP.
+
+## 1. Arsitektur yang Direkomendasikan
+
+```text
+                         ┌─────────────────────┐
+                         │ Rumah Tangga        │
+                         │ PWA Mobile/Web      │
+                         └──────────┬──────────┘
+                                    │
+                         ┌──────────▼──────────┐
+                         │ Komunitas           │
+                         │ PWA Mobile/Web      │
+                         └──────────┬──────────┘
+                                    │
+                         ┌──────────▼──────────┐
+                         │ Pabrik              │
+                         │ Web Dashboard       │
+                         └──────────┬──────────┘
+                                    │
+                         ┌──────────▼──────────┐
+                         │ Laravel Application │
+                         │ Web + REST API      │
+                         └──────────┬──────────┘
+                                    │
+       ┌────────────────────────────┼───────────────────────────┐
+       │                            │                           │
+┌──────▼──────┐             ┌───────▼──────┐             ┌──────▼──────┐
+│ PostgreSQL/ │             │ Redis        │             │ Object      │
+│ MySQL       │             │ Queue/Cache  │             │ Storage     │
+└─────────────┘             └───────┬──────┘             │ Foto/Bukti  │
+                                    │                    └─────────────┘
+                           ┌────────▼────────┐
+                           │ Worker/Queue    │
+                           │ Notification    │
+                           │ Payment/Report  │
+                           └─────────────────┘
+```
+
+### Pilihan teknologi
+
+| Lapisan | Rekomendasi |
+|---|---|
+| Backend | Laravel |
+| Frontend | Inertia.js + Vue, atau Blade + Livewire |
+| Mobile experience | PWA |
+| Styling | Tailwind CSS |
+| Database | PostgreSQL atau MySQL |
+| Cache dan queue | Redis |
+| Penyimpanan file | S3-compatible object storage |
+| Peta dan rute | OpenStreetMap dengan layanan routing |
+| Notifikasi | Web Push, email, dan WhatsApp |
+| Pembayaran | Payment gateway atau saldo internal |
+| Deployment | VPS dengan Docker atau Laravel Forge-style deployment |
+| Monitoring | Laravel logs, error tracking, dan health checks |
+
+Laravel tetap bisa digunakan sebagai backend karena aplikasi dijalankan di server. Android hanya mengaksesnya melalui browser atau PWA.
+
+## 2. Gunakan Modular Monolith
+
+Jangan memulai dengan microservices. Gunakan satu aplikasi Laravel, tetapi pisahkan kode berdasarkan modul bisnis.
+
+Struktur yang disarankan:
+
+```text
+app/
+├── Domains/
+│   ├── Identity/
+│   ├── Household/
+│   ├── Community/
+│   ├── Factory/
+│   ├── WasteCatalog/
+│   ├── Collection/
+│   ├── Scheduling/
+│   ├── Routing/
+│   ├── Marketplace/
+│   ├── Weighing/
+│   ├── Incentive/
+│   ├── Payment/
+│   ├── Rating/
+│   ├── Dispute/
+│   └── Reporting/
+├── Actions/
+├── Policies/
+├── Jobs/
+├── Events/
+└── Notifications/
+```
+
+Setiap modul sebaiknya memiliki:
+
+- Model.
+- Service atau action.
+- Policy.
+- Request validation.
+- Event dan listener.
+- Controller atau API resource.
+- Test.
+
+Contoh:
+
+```text
+app/Domains/Collection/
+├── Actions/
+│   ├── CreateCollectionRequest.php
+│   ├── ApproveCollectionRequest.php
+│   └── CompleteCollection.php
+├── Models/
+│   └── CollectionRequest.php
+├── Policies/
+│   └── CollectionRequestPolicy.php
+└── Events/
+    ├── CollectionRequested.php
+    └── CollectionCompleted.php
+```
+
+Pendekatan ini menjaga aplikasi tetap sederhana untuk dideploy, tetapi lebih mudah dipisahkan menjadi service terpisah jika skala meningkat.
+
+## 3. Pisahkan Tiga Jenis Data
+
+Salah satu keputusan penting adalah membedakan data **operasional**, **finansial**, dan **audit**.
+
+### Data operasional
+
+Berisi proses sehari-hari:
+
+- Rumah tangga.
+- Komunitas.
+- Pabrik.
+- Alamat layanan.
+- Jenis sampah.
+- Jadwal.
+- Rute.
+- Permintaan pengangkutan.
+- Penugasan petugas.
+- Status pengambilan.
+
+### Data finansial
+
+Berisi nilai ekonomi:
+
+- Harga material.
+- Biaya pengangkutan.
+- Insentif rumah tangga.
+- Komisi komunitas.
+- Pembayaran pabrik.
+- Saldo.
+- Payout.
+- Refund.
+- Biaya administrasi.
+
+### Data audit
+
+Berisi rekam jejak yang tidak boleh sembarangan diubah:
+
+- Perubahan status.
+- Perubahan berat.
+- Perubahan harga.
+- Persetujuan jadwal.
+- Bukti foto.
+- Konfirmasi penerimaan.
+- Riwayat penalti.
+- Perubahan data pengguna.
+
+Gunakan tabel `audit_logs` atau mekanisme activity log. Untuk data finansial, sebaiknya gunakan **ledger transaksi** daripada hanya menyimpan angka saldo.
+
+Contoh:
+
+```text
+wallet_transactions
+- id
+- account_id
+- type
+- amount
+- reference_type
+- reference_id
+- status
+- created_at
+```
+
+Saldo dapat dihitung dari transaksi yang telah berhasil. Ini lebih aman daripada hanya melakukan update langsung pada kolom `balance`.
+
+## 4. Modul Inti Sistem
+
+### A. Identity dan Access Control
+
+Mendukung:
+
+- Rumah tangga.
+- Komunitas.
+- Petugas komunitas.
+- Pabrik.
+- Admin.
+- Supervisor operasional.
+- Petugas keuangan.
+
+Gunakan kombinasi:
+
+- Role-based access control.
+- Policy per objek.
+- Pembatasan berdasarkan wilayah.
+- Pembatasan berdasarkan hubungan transaksi.
+
+Contoh:
+
+- Rumah tangga hanya dapat melihat permintaan miliknya sendiri.
+- Petugas komunitas hanya dapat melihat tugas yang ditugaskan.
+- Komunitas hanya dapat melihat rumah tangga di wilayah layanannya.
+- Pabrik hanya dapat melihat pasokan dan transaksi yang berhubungan dengannya.
+- Admin dapat melihat data operasional, tetapi akses finansial perlu dibatasi berdasarkan jabatan.
+
+Autorisasi harus diperiksa pada setiap objek, bukan hanya pada halaman atau route. Hal ini penting untuk mencegah risiko Broken Object Level Authorization atau BOLA yang termasuk risiko utama pada API modern. [owasp](https://owasp.org/projects/api-security-project)
+
+### B. Waste Catalog
+
+Menyimpan master data:
+
+- Jenis sampah.
+- Kategori material.
+- Satuan pengukuran.
+- Harga referensi.
+- Tingkat kualitas.
+- Toleransi kontaminasi.
+- Cara penanganan.
+- Apakah material dapat dijual, diolah, atau hanya dibuang.
+
+Contoh:
+
+```text
+waste_materials
+- id
+- name
+- category
+- unit
+- requires_separation
+- recyclable
+- hazardous
+- default_price
+- quality_rules
+```
+
+Jangan hardcode jenis sampah di dalam kode program. Pabrik atau admin kemungkinan akan menambah kategori baru.
+
+### C. Collection Management
+
+Modul ini menangani:
+
+- Permintaan pengangkutan reguler.
+- Permintaan khusus rumah tangga.
+- Permintaan material dari pabrik.
+- Persetujuan komunitas.
+- Penugasan petugas.
+- Bukti pengambilan.
+- Status pengangkutan.
+- Pembatalan dan penjadwalan ulang.
+
+Contoh state machine:
+
+```text
+requested
+→ pending_community_approval
+→ scheduled
+→ assigned
+→ en_route
+→ collected
+→ weighed
+→ delivered
+→ accepted
+→ settled
+```
+
+Jangan membiarkan status berubah secara bebas melalui update biasa. Gunakan action khusus:
+
+```php
+ApproveCollectionRequest
+AssignCollector
+StartCollection
+CompleteCollection
+AcceptMaterial
+SettleCollection
+```
+
+Dengan cara ini, setiap perubahan status dapat divalidasi, dicatat, dan diuji.
+
+### D. Scheduling dan Routing
+
+Modul jadwal menangani:
+
+- Jadwal reguler.
+- Permintaan khusus.
+- Kapasitas komunitas.
+- Kapasitas kendaraan.
+- Ketersediaan petugas.
+- Wilayah layanan.
+- Waktu pengambilan.
+- Prioritas permintaan.
+
+Untuk MVP, gunakan rute sederhana berdasarkan:
+
+- Wilayah.
+- Urutan alamat.
+- Batas kapasitas.
+- Jadwal komunitas.
+
+Pada tahap lanjut, tambahkan optimasi rute. Teknologi digital dalam pengelolaan sampah banyak digunakan untuk optimasi rute, pelacakan material, prediksi volume, dan pengelolaan pasar material sekunder. [onlinelibrary.wiley](https://onlinelibrary.wiley.com/doi/full/10.1002/bse.70943)
+
+### E. Weighing dan Quality Control
+
+Pencatatan berat merupakan sumber kebenaran transaksi.
+
+Alurnya:
+
+1. Komunitas memperkirakan berat saat permintaan dibuat.
+2. Petugas mencatat berat saat pengambilan.
+3. Komunitas melakukan penimbangan ulang jika diperlukan.
+4. Pabrik memeriksa berat dan kualitas.
+5. Sistem menghitung nilai akhir berdasarkan hasil verifikasi.
+6. Perbedaan antara estimasi dan aktual dicatat.
+
+Data yang perlu disimpan:
+
+```text
+material_batches
+- id
+- collection_id
+- material_type_id
+- estimated_weight
+- collected_weight
+- accepted_weight
+- rejected_weight
+- contamination_rate
+- quality_grade
+- measured_by
+- measured_at
+```
+
+Sebaiknya gunakan foto bukti, lokasi, waktu, dan identitas petugas untuk setiap penimbangan penting.
+
+### F. Incentive, Marketplace, dan Settlement
+
+Pisahkan tiga konsep berikut:
+
+- `price`: harga material.
+- `fee`: biaya layanan atau pengangkutan.
+- `reward`: insentif rumah tangga.
+
+Contoh perhitungan:
+
+```text
+Nilai material
+= berat diterima × harga material
+
+Pendapatan komunitas
+= nilai material - insentif rumah tangga - biaya yang disepakati
+
+Insentif rumah tangga
+= berat material memenuhi kualitas × tarif insentif
+```
+
+Perhitungan akhir sebaiknya baru dilakukan setelah pabrik mengonfirmasi berat dan kualitas. Ini mencegah pembayaran berlebih jika material ternyata basah, tercampur, atau tidak sesuai spesifikasi.
+
+## 5. PWA untuk Rumah Tangga dan Komunitas
+
+PWA cocok karena dua pengguna utama kemungkinan memakai Android:
+
+- Rumah tangga.
+- Petugas komunitas.
+
+Pabrik dan admin dapat menggunakan dashboard web desktop.
+
+### Fitur PWA yang penting
+
+- Tampilan responsif.
+- Installable dari browser.
+- Cache halaman penting.
+- Form pengambilan yang dapat bekerja sementara tanpa internet.
+- Penyimpanan data lokal sementara.
+- Sinkronisasi ketika koneksi kembali.
+- Upload foto yang dapat diantrikan.
+- Notifikasi jadwal.
+- GPS saat petugas bekerja.
+
+### Offline-first untuk petugas
+
+Petugas komunitas mungkin berada di lokasi dengan koneksi yang tidak stabil. Karena itu, data pengambilan perlu disimpan secara lokal terlebih dahulu.
+
+Contoh alur:
+
+```text
+Petugas membuka tugas
+        ↓
+Data rumah tangga disimpan di perangkat
+        ↓
+Petugas mencatat berat dan foto
+        ↓
+Status tersimpan sebagai pending_sync
+        ↓
+Koneksi kembali
+        ↓
+Data dikirim ke server
+        ↓
+Server memvalidasi dan mengubah menjadi synced
+```
+
+Tambahkan `client_uuid` untuk mencegah data ganda ketika sinkronisasi diulang.
+
+```text
+collection_records
+- id
+- client_uuid
+- server_id
+- sync_status
+- recorded_at
+- synced_at
+```
+
+Jangan mengandalkan service worker saja untuk data transaksi penting. Gunakan IndexedDB untuk data lokal dan buat mekanisme sinkronisasi yang idempotent.
+
+## 6. Event dan Queue
+
+Gunakan event untuk aktivitas penting:
+
+```text
+CollectionRequested
+CommunityApprovedCollection
+CollectionScheduled
+CollectorAssigned
+WasteCollected
+MaterialWeighed
+FactoryAcceptedMaterial
+SettlementCreated
+RewardCredited
+```
+
+Event dapat menjalankan pekerjaan lanjutan seperti:
+
+- Mengirim notifikasi.
+- Menghitung insentif.
+- Membuat invoice.
+- Memperbarui dashboard.
+- Menyusun laporan.
+- Mengirim webhook.
+- Memasukkan data analitik.
+
+Pekerjaan yang tidak perlu selesai dalam request HTTP sebaiknya masuk queue:
+
+- Pengiriman WhatsApp.
+- Pengiriman email.
+- Pemrosesan foto.
+- Perhitungan rute.
+- Pembuatan laporan.
+- Sinkronisasi pembayaran.
+- Perhitungan statistik.
+
+Gunakan Redis queue dan worker terpisah dari web server.
+
+## 7. API dan Frontend
+
+Jika menggunakan Laravel + Inertia.js, struktur ini cukup praktis:
+
+```text
+Browser/PWA
+    ↓
+Inertia Request
+    ↓
+Laravel Controller
+    ↓
+Action/Service
+    ↓
+Policy + Validation
+    ↓
+Database
+```
+
+Jika nanti ada aplikasi native atau integrasi eksternal, tambahkan REST API versioned:
+
+```text
+/api/v1/auth
+/api/v1/households
+/api/v1/communities
+/api/v1/factories
+/api/v1/collection-requests
+/api/v1/schedules
+/api/v1/material-batches
+/api/v1/wallets
+/api/v1/notifications
+```
+
+Gunakan API Resource agar data yang keluar dapat dikontrol. Jangan mengembalikan seluruh model database secara langsung.
+
+Untuk keamanan API, perhatikan:
+
+- Validasi input.
+- Rate limiting.
+- Token kadaluarsa.
+- Policy per objek.
+- Pembatasan field yang boleh diubah.
+- Versioning API.
+- Audit log.
+- Pembatasan ukuran upload.
+- Validasi file.
+- CORS yang spesifik.
+
+OWASP menempatkan masalah autentikasi, otorisasi objek, otorisasi fungsi, dan penyalahgunaan business flow sebagai risiko penting pada API. [owasp](https://owasp.org/projects/api-security-project)
+
+## 8. Database Inti
+
+Entitas minimal yang dapat digunakan:
+
+```text
+users
+roles
+organizations
+households
+communities
+factories
+addresses
+service_areas
+waste_materials
+collection_schedules
+collection_requests
+collection_assignments
+collection_records
+material_batches
+factory_orders
+quality_inspections
+price_rules
+incentive_rules
+wallet_accounts
+wallet_transactions
+payments
+ratings
+disputes
+notifications
+audit_logs
+```
+
+Relasi utamanya:
+
+```text
+Household
+  └── CollectionRequest
+        └── CollectionAssignment
+              └── CollectionRecord
+                    └── MaterialBatch
+                          └── QualityInspection
+                                └── Settlement
+```
+
+Gunakan soft delete hanya untuk data yang memang boleh diarsipkan. Untuk transaksi, penimbangan, pembayaran, dan audit, lebih baik tidak menghapus data secara fisik.
+
+## 9. Arsitektur Deployment
+
+### MVP
+
+```text
+Internet
+   ↓
+Nginx
+   ↓
+Laravel App
+   ├── Queue Worker
+   ├── Scheduler
+   └── API
+        ↓
+   MySQL/PostgreSQL
+   Redis
+   Object Storage
+```
+
+Satu VPS masih cukup untuk tahap awal, asalkan:
+
+- Database memiliki backup otomatis.
+- Queue worker berjalan terpisah.
+- File tidak hanya disimpan di disk server.
+- SSL aktif.
+- Log dipantau.
+- Server memiliki mekanisme restart.
+- Database tidak diekspos langsung ke internet.
+
+### Tahap pertumbuhan
+
+Pisahkan komponen ketika beban meningkat:
+
+```text
+Load Balancer
+├── Laravel Web Server 1
+├── Laravel Web Server 2
+├── Queue Worker
+├── Database Managed Service
+├── Redis
+└── Object Storage
+```
+
+Microservices baru dipertimbangkan jika ada kebutuhan nyata, misalnya:
+
+- Pemrosesan rute sangat berat.
+- Sistem pembayaran harus diisolasi.
+- Data IoT memiliki volume sangat tinggi.
+- Tim pengembang sudah terbagi berdasarkan service.
+- Beberapa modul harus dirilis dengan siklus berbeda.
+
+## 10. Dashboard Berdasarkan Peran
+
+### Rumah tangga
+
+Menampilkan:
+
+- Jadwal pengangkutan.
+- Sampah yang telah diserahkan.
+- Poin atau insentif.
+- Edukasi.
+- Permintaan penjemputan.
+- Status permintaan.
+
+### Komunitas
+
+Menampilkan:
+
+- Tugas hari ini.
+- Peta rute.
+- Rumah tangga yang harus dikunjungi.
+- Kapasitas kendaraan.
+- Permintaan khusus.
+- Total berat per jenis material.
+- Pendapatan dan biaya.
+- Permintaan pabrik.
+
+### Pabrik
+
+Menampilkan:
+
+- Kebutuhan material.
+- Pasokan yang sedang berjalan.
+- Estimasi waktu tiba.
+- Berat dan kualitas material.
+- Riwayat pemasok.
+- Pembayaran.
+- Kontrak pasokan.
+
+### Admin
+
+Menampilkan:
+
+- Volume sampah per wilayah.
+- Kinerja komunitas.
+- Jumlah rumah tangga aktif.
+- Tingkat pemilahan.
+- Material yang paling banyak dikumpulkan.
+- Transaksi bermasalah.
+- Nilai ekonomi dan dampak lingkungan.
+
+## 11. Roadmap Teknis
+
+### Fase 1: Operasional Dasar
+
+Bangun:
+
+- Autentikasi dan role.
+- Profil stakeholder.
+- Master jenis sampah.
+- Jadwal reguler.
+- Permintaan khusus.
+- Persetujuan komunitas.
+- Penugasan petugas.
+- Pencatatan pengambilan.
+- Dashboard dasar.
+
+### Fase 2: Verifikasi dan Ekonomi
+
+Tambahkan:
+
+- Penimbangan.
+- Foto bukti.
+- Pemeriksaan kualitas.
+- Harga material.
+- Insentif rumah tangga.
+- Ledger saldo.
+- Settlement.
+- Penilaian.
+- Komplain.
+
+### Fase 3: PWA dan Otomasi
+
+Tambahkan:
+
+- Mode offline.
+- Push notification.
+- Peta rute.
+- Sinkronisasi data.
+- Optimasi rute.
+- Laporan otomatis.
+- Integrasi WhatsApp.
+
+### Fase 4: Smart Waste Management
+
+Tambahkan jika sudah dibutuhkan:
+
+- Timbangan digital.
+- Sensor tempat sampah.
+- GPS kendaraan.
+- Prediksi volume.
+- Klasifikasi material berbasis gambar.
+- Integrasi mitra daur ulang.
+- API untuk pemerintah atau perusahaan.
+
+## Rekomendasi Akhir
+
+Untuk kondisi Anda, stack paling realistis adalah:
+
+```text
+Laravel
++ Inertia.js dan Vue
++ Tailwind CSS
++ PWA
++ PostgreSQL/MySQL
++ Redis Queue
++ Object Storage
++ REST API versioning
++ Role/Policy-based authorization
++ Modular monolith
+```
+
+Mulailah dari **modular monolith**, bukan microservices. Fokus pertama pada tiga hal yang paling menentukan keberhasilan bisnis:
+
+1. Jadwal pengangkutan yang benar-benar dapat dijalankan komunitas.
+2. Pencatatan berat dan kualitas yang dapat dipercaya.
+3. Perhitungan insentif serta pembagian nilai yang transparan.
+
+Jika ketiga bagian tersebut sudah stabil, fitur seperti optimasi rute, GPS, sensor, AI, dan aplikasi native dapat ditambahkan tanpa perlu membongkar keseluruhan sistem.

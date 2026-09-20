@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-gray-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Pasokan - Wasman</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {"50":"#ecfdf5","100":"#d1fae5","200":"#a7f3d0","300":"#6ee7b7","400":"#34d399","500":"#10b981","600":"#059669","700":"#047857","800":"#065f46","900":"#064e3b"},
+                        secondary: {"50":"#f0fdf4","100":"#dcfce7","200":"#bbf7d0","300":"#86efac","400":"#4ade80","500":"#22c55e","600":"#16a34a","700":"#15803d","800":"#166534","900":"#14532d"},
+                        accent: {"50":"#fffbeb","100":"#fef3c7","200":"#fde68a","300":"#fcd34d","400":"#fbbf24","500":"#f59e0b","600":"#d97706","700":"#b45309","800":"#92400e","900":"#78350f"},
+                        factory: {"50":"#faf5ff","100":"#f3e8ff","200":"#e9d5ff","300":"#d8b4fe","400":"#c084fc","500":"#a855f7","600":"#9333ea","700":"#7e22ce","800":"#6b21a8","900":"#581c87"}
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .bottom-nav-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+    </style>
+</head>
+<body class="h-full font-sans antialiased text-gray-800" x-data="{
+    notificationModal: false,
+    detailModal: false,
+    selectedRecord: null,
+    searchQuery: '',
+    filterCommunity: 'all',
+    filterMaterial: 'all',
+    filterStatus: 'all',
+    records: [
+        {
+            id: 'DO-2026-0919-001',
+            date: '19 Sep 2026, 09:30 WIB',
+            community: 'Bank Sampah Berseri',
+            material: 'Botol PET Bening',
+            weightReceived: 1250,
+            weightAccepted: 1250,
+            weightRejected: 0,
+            grade: 'Grade A',
+            gradeColor: 'emerald',
+            contamination: '1.2%',
+            unitPrice: 'Rp 5.000',
+            amount: 'Rp 6.250.000',
+            amountRaw: 6250000,
+            status: 'Diterima',
+            statusColor: 'emerald',
+            driver: 'Budi Santoso',
+            vehicle: 'B 9482 TDB (Pickup L300)',
+            notes: 'Botol bening bersih tanpa label PVC. Kadar air rendah (<1%). Sangat baik.',
+            paymentStatus: 'Lunas (Transfer Bank BCA)',
+            weighbridgeTicket: 'WB-20260919-08'
+        },
+        {
+            id: 'DO-2026-0918-004',
+            date: '18 Sep 2026, 14:15 WIB',
+            community: 'Komunitas Hijau Sejahtera',
+            material: 'HDPE Tutup Botol',
+            weightReceived: 850,
+            weightAccepted: 810,
+            weightRejected: 40,
+            grade: 'Grade B',
+            gradeColor: 'blue',
+            contamination: '4.7%',
+            unitPrice: 'Rp 4.800',
+            amount: 'Rp 3.888.000',
+            amountRaw: 3888000,
+            status: 'Sebagian Ditolak',
+            statusColor: 'amber',
+            driver: 'Rahmat Hidayat',
+            vehicle: 'B 9123 KCA (Truk Engkel)',
+            notes: '40 kg ditolak akibat tercampur tanah dan lumpur di dasar karung. 810 kg lolos uji sortir.',
+            paymentStatus: 'Menunggu Verifikasi QC Final',
+            weighbridgeTicket: 'WB-20260918-19'
+        },
+        {
+            id: 'DO-2026-0917-002',
+            date: '17 Sep 2026, 11:00 WIB',
+            community: 'TPS3R Maju Mandiri',
+            material: 'Kardus Bekas Slop',
+            weightReceived: 1400,
+            weightAccepted: 1400,
+            weightRejected: 0,
+            grade: 'Grade A',
+            gradeColor: 'emerald',
+            contamination: '1.5%',
+            unitPrice: 'Rp 2.500',
+            amount: 'Rp 3.500.000',
+            amountRaw: 3500000,
+            status: 'Diterima',
+            statusColor: 'emerald',
+            driver: 'Joko Supriyanto',
+            vehicle: 'B 9001 XY (Colt Diesel)',
+            notes: 'Kardus kondisi kering terlipat rapi dalam bentuk bal. Lakban telah dipisahkan.',
+            paymentStatus: 'Lunas (Transfer Bank Mandiri)',
+            weighbridgeTicket: 'WB-20260917-11'
+        },
+        {
+            id: 'DO-2026-0916-003',
+            date: '16 Sep 2026, 10:20 WIB',
+            community: 'Bank Sampah Berseri',
+            material: 'PP Gelas Minuman Bening',
+            weightReceived: 420,
+            weightAccepted: 420,
+            weightRejected: 0,
+            grade: 'Grade A',
+            gradeColor: 'emerald',
+            contamination: '2.0%',
+            unitPrice: 'Rp 3.800',
+            amount: 'Rp 1.596.000',
+            amountRaw: 1596000,
+            status: 'Diterima',
+            statusColor: 'emerald',
+            driver: 'Budi Santoso',
+            vehicle: 'B 9482 TDB (Pickup L300)',
+            notes: 'Cup gelas bersih dari sedotan dan penutup plastik sealer.',
+            paymentStatus: 'Lunas (Wasman Pay)',
+            weighbridgeTicket: 'WB-20260916-04'
+        },
+        {
+            id: 'DO-2026-0915-005',
+            date: '15 Sep 2026, 16:20 WIB',
+            community: 'Bank Sampah Berkah RW 08',
+            material: 'Botol PET Campur Warna',
+            weightReceived: 400,
+            weightAccepted: 320,
+            weightRejected: 80,
+            grade: 'Grade C',
+            gradeColor: 'amber',
+            contamination: '6.8%',
+            unitPrice: 'Rp 4.000',
+            amount: 'Rp 1.280.000',
+            amountRaw: 1280000,
+            status: 'Sebagian Ditolak',
+            statusColor: 'amber',
+            driver: 'Hasan Basri',
+            vehicle: 'B 9345 PK (Pickup Granmax)',
+            notes: '80 kg botol terkena oli mesin dan tercampur PVC keras yang tidak dapat didaur ulang.',
+            paymentStatus: 'Lunas (Transfer Bank BCA)',
+            weighbridgeTicket: 'WB-20260915-22'
+        },
+        {
+            id: 'DO-2026-0914-001',
+            date: '14 Sep 2026, 13:10 WIB',
+            community: 'Bank Sampah Berkah RW 08',
+            material: 'Plastik Campur Basah',
+            weightReceived: 300,
+            weightAccepted: 0,
+            weightRejected: 300,
+            grade: 'Grade C',
+            gradeColor: 'red',
+            contamination: '18.5%',
+            unitPrice: 'Rp 0',
+            amount: 'Rp 0',
+            amountRaw: 0,
+            status: 'Ditolak',
+            statusColor: 'red',
+            driver: 'Hasan Basri',
+            vehicle: 'B 9345 PK (Pickup Granmax)',
+            notes: 'Ditolak seluruh muatan: Kadar air >20% akibat hujan dan bercampur residu sampah dapur organik basah.',
+            paymentStatus: 'Dibatalkan (Muatan Ditolak)',
+            weighbridgeTicket: 'WB-20260914-15'
+        }
+    ],
+    get filteredRecords() {
+        return this.records.filter(item => {
+            const matchSearch = this.searchQuery === '' || 
+                item.community.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                item.id.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                item.material.toLowerCase().includes(this.searchQuery.toLowerCase());
+            
+            const matchCommunity = this.filterCommunity === 'all' || item.community === this.filterCommunity;
+            const matchMaterial = this.filterMaterial === 'all' || item.material.includes(this.filterMaterial);
+            const matchStatus = this.filterStatus === 'all' || item.status === this.filterStatus;
+
+            return matchSearch && matchCommunity && matchMaterial && matchStatus;
+        });
+    },
+    openDetail(record) {
+        this.selectedRecord = record;
+        this.detailModal = true;
+    }
+}">
+    <div class="min-h-full flex flex-col md:flex-row">
+
+        <!-- ================= DESKTOP SIDEBAR (md+) ================= -->
+        <aside class="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 bg-white border-r border-gray-200 z-40">
+            <!-- Brand / Logo -->
+            <div class="h-16 flex items-center justify-between px-5 border-b border-gray-100">
+                <a href="../index.html" class="flex items-center gap-2.5 group">
+                    <div class="w-9 h-9 bg-primary-500 rounded-xl flex items-center justify-center shadow-sm shadow-primary-200 group-hover:scale-105 transition-transform">
+                        <i class="fas fa-recycle text-white text-base"></i>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-gray-900 text-lg tracking-tight">Wasman</span>
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-factory-100 text-factory-700 ml-1">Pabrik</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Factory Overview Snippet -->
+            <div class="px-4 py-3 mx-3 my-3 bg-gradient-to-r from-factory-50 to-purple-50 rounded-xl border border-factory-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-factory-600 text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                        <i class="fas fa-industry"></i>
+                    </div>
+                    <div class="overflow-hidden">
+                        <p class="text-xs font-bold text-gray-900 truncate">PT. Plastik Daur Ulang</p>
+                        <p class="text-[11px] text-factory-700 font-medium flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block"></span> Terverifikasi
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
+                <p class="px-3 pt-2 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Menu Pabrik</p>
+
+                <!-- Dashboard -->
+                <a href="dashboard.html" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-colors">
+                    <div class="w-7 h-7 rounded-lg bg-gray-100 text-gray-500 flex items-center justify-center text-xs">
+                        <i class="fas fa-th-large"></i>
+                    </div>
+                    <span>Dashboard</span>
+                </a>
+
+                <!-- Riwayat Pasokan (Active) -->
+                <a href="supply.html" class="flex items-center gap-3 px-3 py-2.5 text-sm font-semibold rounded-xl bg-factory-50 text-factory-700 border border-factory-200 shadow-sm">
+                    <div class="w-7 h-7 rounded-lg bg-factory-600 text-white flex items-center justify-center text-xs shadow-sm">
+                        <i class="fas fa-boxes-stacked"></i>
+                    </div>
+                    <span>Riwayat Pasokan</span>
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-factory-600"></span>
+                </a>
+
+                <!-- Notifikasi -->
+                <button @click="notificationModal = true" class="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-colors text-left">
+                    <div class="w-7 h-7 rounded-lg bg-gray-100 text-gray-500 flex items-center justify-center text-xs relative">
+                        <i class="fas fa-bell"></i>
+                        <span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white"></span>
+                    </div>
+                    <span>Notifikasi</span>
+                    <span class="ml-auto inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-700">3</span>
+                </button>
+
+                <!-- Profil Pabrik -->
+                <a href="profile.html" class="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-colors">
+                    <div class="w-7 h-7 rounded-lg bg-gray-100 text-gray-500 flex items-center justify-center text-xs">
+                        <i class="fas fa-building"></i>
+                    </div>
+                    <span>Profil Pabrik</span>
+                </a>
+
+                <div class="pt-4 mt-4 border-t border-gray-100">
+                    <p class="px-3 pb-1 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Navigasi Lain</p>
+                    <a href="../index.html" class="flex items-center gap-3 px-3 py-2 text-xs font-medium text-gray-500 hover:text-primary-600 rounded-lg transition-colors">
+                        <i class="fas fa-arrow-left text-gray-400"></i>
+                        <span>Kembali ke Mockup Hub</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- User Footer in Sidebar -->
+            <div class="p-3 border-t border-gray-200">
+                <div class="flex items-center justify-between p-2 rounded-xl hover:bg-gray-50 transition-colors">
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <div class="w-9 h-9 rounded-full bg-factory-100 border border-factory-300 flex items-center justify-center text-factory-700 font-bold text-xs shrink-0">
+                            PN
+                        </div>
+                        <div class="min-w-0">
+                            <p class="text-xs font-bold text-gray-800 truncate">Hendra Gunawan</p>
+                            <p class="text-[11px] text-gray-500 truncate">Manajer Logistik</p>
+                        </div>
+                    </div>
+                    <a href="../auth/login.html" title="Keluar" class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                        <i class="fas fa-arrow-right-from-bracket text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ================= MAIN CONTENT WRAPPER ================= -->
+        <div class="flex-1 md:pl-64 flex flex-col min-h-screen">
+
+            <!-- MOBILE TOP BAR (<md) -->
+            <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-30 md:hidden">
+                <div class="flex items-center justify-between px-4 h-14">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center shadow-sm">
+                            <i class="fas fa-recycle text-white text-sm"></i>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-bold text-gray-900 text-base">Wasman</span>
+                            <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-factory-100 text-factory-700">Pabrik</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button @click="notificationModal = true" class="relative p-2 text-gray-600 hover:text-gray-900 rounded-lg">
+                            <i class="fas fa-bell"></i>
+                            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
+                        </button>
+                        <a href="profile.html" class="w-8 h-8 bg-factory-100 border border-factory-200 rounded-full flex items-center justify-center text-factory-700 text-xs font-bold">
+                            PN
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <!-- DESKTOP TOP BAR (md+) -->
+            <header class="hidden md:flex bg-white border-b border-gray-200 sticky top-0 z-30 h-16 items-center justify-between px-8">
+                <div class="flex items-center gap-3">
+                    <nav class="flex items-center text-xs text-gray-500 space-x-2">
+                        <span class="text-gray-400">Pabrik</span>
+                        <i class="fas fa-chevron-right text-[10px] text-gray-300"></i>
+                        <span class="font-semibold text-gray-800">Riwayat Pasokan Material</span>
+                    </nav>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button onclick="window.print()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-semibold rounded-lg shadow-sm transition-colors">
+                        <i class="fas fa-print text-gray-400 text-xs"></i>
+                        <span>Cetak Laporan</span>
+                    </button>
+
+                    <button @click="alert('Data pasokan Q3 berhasil diekspor ke format Excel (.xlsx)')" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors">
+                        <i class="fas fa-file-excel text-xs"></i>
+                        <span>Ekspor Excel</span>
+                    </button>
+
+                    <button @click="notificationModal = true" class="relative p-2 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors">
+                        <i class="fas fa-bell text-sm"></i>
+                        <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- ================= PAGE CONTENT ================= -->
+            <main class="flex-1 p-4 md:p-8 space-y-6 pb-24 md:pb-8">
+
+                <!-- Header Title & Subtitle -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight flex items-center gap-2.5">
+                            <span>Riwayat Pasokan Material</span>
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-factory-100 text-factory-700">Timbangan Q3</span>
+                        </h1>
+                        <p class="text-xs text-gray-500 mt-1">
+                            Pencatatan penimbangan jembatan timbang, penilaian mutu QC (grading), toleransi kontaminasi, dan penyelesaian pembayaran.
+                        </p>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        <div class="px-3 py-1.5 bg-white border border-gray-200 rounded-xl text-xs text-gray-600 shadow-sm flex items-center gap-2">
+                            <i class="far fa-calendar-alt text-factory-600"></i>
+                            <span class="font-bold text-gray-800">1 Sep - 19 Sep 2026</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3 Summary Stat Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <!-- Stat 1: Total Diterima -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:border-emerald-200 transition-all">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-medium text-gray-500">Total Material Diterima</p>
+                                <div class="flex items-baseline gap-2 mt-1">
+                                    <p class="text-2xl md:text-3xl font-bold text-emerald-600">4.200 kg</p>
+                                    <span class="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                                        97.2%
+                                    </span>
+                                </div>
+                                <p class="text-[11px] text-gray-400 mt-1">Lolos inspeksi sortir & timbangan</p>
+                            </div>
+                            <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 shrink-0">
+                                <i class="fas fa-circle-check text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stat 2: Total Ditolak -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:border-red-200 transition-all">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-medium text-gray-500">Total Material Ditolak</p>
+                                <div class="flex items-baseline gap-2 mt-1">
+                                    <p class="text-2xl md:text-3xl font-bold text-red-600">120 kg</p>
+                                    <span class="text-xs font-semibold text-red-700 bg-red-50 px-2 py-0.5 rounded-full">
+                                        2.8%
+                                    </span>
+                                </div>
+                                <p class="text-[11px] text-gray-400 mt-1">Residu lumpur, PVC & oli</p>
+                            </div>
+                            <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center text-red-600 shrink-0">
+                                <i class="fas fa-triangle-exclamation text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stat 3: Total Pembayaran -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 hover:border-purple-200 transition-all">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs font-medium text-gray-500">Total Nilai Pembayaran</p>
+                                <div class="flex items-baseline gap-2 mt-1">
+                                    <p class="text-2xl md:text-3xl font-bold text-factory-700">Rp 12.500.000</p>
+                                </div>
+                                <p class="text-[11px] text-gray-400 mt-1">Lunas disalurkan ke rekening mitra</p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-factory-600 shrink-0">
+                                <i class="fas fa-money-bill-wave text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Section -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-2">
+                            <i class="fas fa-filter text-factory-600"></i> Filter Pencarian Pasokan
+                        </h2>
+                        <button @click="searchQuery = ''; filterCommunity = 'all'; filterMaterial = 'all'; filterStatus = 'all'" class="text-xs font-semibold text-gray-500 hover:text-factory-700 transition-colors">
+                            Reset Filter
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                        <!-- Search Query -->
+                        <div>
+                            <label class="block text-gray-600 font-semibold mb-1">Cari Tiket / Komunitas</label>
+                            <div class="relative">
+                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                <input type="text" x-model="searchQuery" placeholder="Contoh: DO-2026, Berseri..." class="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-factory-500">
+                            </div>
+                        </div>
+
+                        <!-- Community Select -->
+                        <div>
+                            <label class="block text-gray-600 font-semibold mb-1">Komunitas Pemasok</label>
+                            <select x-model="filterCommunity" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-factory-500">
+                                <option value="all">Semua Komunitas</option>
+                                <option value="Bank Sampah Berseri">Bank Sampah Berseri</option>
+                                <option value="Komunitas Hijau Sejahtera">Komunitas Hijau Sejahtera</option>
+                                <option value="TPS3R Maju Mandiri">TPS3R Maju Mandiri</option>
+                                <option value="Bank Sampah Berkah RW 08">Bank Sampah Berkah RW 08</option>
+                            </select>
+                        </div>
+
+                        <!-- Material Type Select -->
+                        <div>
+                            <label class="block text-gray-600 font-semibold mb-1">Jenis Material</label>
+                            <select x-model="filterMaterial" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-factory-500">
+                                <option value="all">Semua Jenis Material</option>
+                                <option value="Botol PET">Botol PET</option>
+                                <option value="HDPE">HDPE Tutup Botol</option>
+                                <option value="Kardus">Kardus Bekas</option>
+                                <option value="PP Gelas">PP Gelas Minuman</option>
+                                <option value="Campur">Plastik Campur</option>
+                            </select>
+                        </div>
+
+                        <!-- Status Select -->
+                        <div>
+                            <label class="block text-gray-600 font-semibold mb-1">Status Penerimaan</label>
+                            <select x-model="filterStatus" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-factory-500">
+                                <option value="all">Semua Status</option>
+                                <option value="Diterima">Diterima</option>
+                                <option value="Sebagian Ditolak">Sebagian Ditolak</option>
+                                <option value="Ditolak">Ditolak</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DESKTOP TABLE VIEW (md+) -->
+                <div class="hidden md:block bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 font-bold uppercase tracking-wider">
+                                    <th class="py-3.5 px-4">Tanggal & Tiket</th>
+                                    <th class="py-3.5 px-4">Komunitas Pemasok</th>
+                                    <th class="py-3.5 px-4">Material</th>
+                                    <th class="py-3.5 px-4 text-right">Datang</th>
+                                    <th class="py-3.5 px-4 text-right">Diterima</th>
+                                    <th class="py-3.5 px-4 text-right">Ditolak</th>
+                                    <th class="py-3.5 px-4 text-center">Grade / Kontam</th>
+                                    <th class="py-3.5 px-4 text-right">Total Nilai</th>
+                                    <th class="py-3.5 px-4 text-center">Status</th>
+                                    <th class="py-3.5 px-4 text-center">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 text-gray-700">
+                                <template x-for="item in filteredRecords" :key="item.id">
+                                    <tr class="hover:bg-purple-50/20 transition-colors">
+                                        <!-- Tanggal & Tiket -->
+                                        <td class="py-3.5 px-4 whitespace-nowrap">
+                                            <p class="font-bold text-gray-900" x-text="item.id"></p>
+                                            <p class="text-[11px] text-gray-400" x-text="item.date"></p>
+                                        </td>
+                                        <!-- Komunitas -->
+                                        <td class="py-3.5 px-4 font-semibold text-gray-900 whitespace-nowrap">
+                                            <span x-text="item.community"></span>
+                                        </td>
+                                        <!-- Material -->
+                                        <td class="py-3.5 px-4 whitespace-nowrap">
+                                            <span class="font-medium text-gray-800" x-text="item.material"></span>
+                                        </td>
+                                        <!-- Berat Datang -->
+                                        <td class="py-3.5 px-4 text-right font-medium text-gray-600 whitespace-nowrap">
+                                            <span x-text="item.weightReceived.toLocaleString('id-ID') + ' kg'"></span>
+                                        </td>
+                                        <!-- Berat Diterima -->
+                                        <td class="py-3.5 px-4 text-right font-bold text-emerald-600 whitespace-nowrap">
+                                            <span x-text="item.weightAccepted.toLocaleString('id-ID') + ' kg'"></span>
+                                        </td>
+                                        <!-- Berat Ditolak -->
+                                        <td class="py-3.5 px-4 text-right whitespace-nowrap" :class="item.weightRejected > 0 ? 'text-red-600 font-bold' : 'text-gray-400'">
+                                            <span x-text="item.weightRejected.toLocaleString('id-ID') + ' kg'"></span>
+                                        </td>
+                                        <!-- Grade / Kontaminasi -->
+                                        <td class="py-3.5 px-4 text-center whitespace-nowrap">
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-bold"
+                                                  :class="{
+                                                      'bg-emerald-100 text-emerald-800': item.gradeColor === 'emerald',
+                                                      'bg-blue-100 text-blue-800': item.gradeColor === 'blue',
+                                                      'bg-amber-100 text-amber-800': item.gradeColor === 'amber',
+                                                      'bg-red-100 text-red-800': item.gradeColor === 'red'
+                                                  }"
+                                                  x-text="item.grade">
+                                            </span>
+                                            <p class="text-[10px] text-gray-400 mt-0.5" x-text="'Kontam: ' + item.contamination"></p>
+                                        </td>
+                                        <!-- Nilai Rp -->
+                                        <td class="py-3.5 px-4 text-right font-extrabold text-gray-900 whitespace-nowrap" x-text="item.amount"></td>
+                                        <!-- Status -->
+                                        <td class="py-3.5 px-4 text-center whitespace-nowrap">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-bold"
+                                                  :class="{
+                                                      'bg-emerald-100 text-emerald-800': item.statusColor === 'emerald',
+                                                      'bg-amber-100 text-amber-800': item.statusColor === 'amber',
+                                                      'bg-red-100 text-red-800': item.statusColor === 'red'
+                                                  }"
+                                                  x-text="item.status">
+                                            </span>
+                                        </td>
+                                        <!-- Aksi -->
+                                        <td class="py-3.5 px-4 text-center whitespace-nowrap">
+                                            <button @click="openDetail(item)" class="inline-flex items-center gap-1 px-3 py-1.5 bg-factory-50 hover:bg-factory-100 text-factory-700 rounded-lg font-bold text-xs transition-colors">
+                                                <i class="fas fa-eye text-xs"></i>
+                                                <span>Lihat</span>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- MOBILE CARD LIST VIEW (<md) -->
+                <div class="md:hidden space-y-3">
+                    <template x-for="item in filteredRecords" :key="item.id">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 hover:border-factory-200 transition-all">
+                            <div class="flex items-center justify-between pb-2 border-b border-gray-100 mb-2">
+                                <div>
+                                    <span class="text-xs font-bold text-gray-900" x-text="item.id"></span>
+                                    <p class="text-[10px] text-gray-400" x-text="item.date"></p>
+                                </div>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold"
+                                      :class="{
+                                          'bg-emerald-100 text-emerald-800': item.statusColor === 'emerald',
+                                          'bg-amber-100 text-amber-800': item.statusColor === 'amber',
+                                          'bg-red-100 text-red-800': item.statusColor === 'red'
+                                      }"
+                                      x-text="item.status">
+                                </span>
+                            </div>
+
+                            <div class="space-y-1.5 text-xs">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-500">Komunitas:</span>
+                                    <span class="font-bold text-gray-900" x-text="item.community"></span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-500">Material:</span>
+                                    <span class="font-semibold text-gray-800" x-text="item.material"></span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-500">Diterima / Ditolak:</span>
+                                    <span>
+                                        <strong class="text-emerald-600" x-text="item.weightAccepted.toLocaleString('id-ID') + ' kg'"></strong>
+                                        <span class="text-gray-400">/</span>
+                                        <strong class="text-red-500" x-text="item.weightRejected.toLocaleString('id-ID') + ' kg'"></strong>
+                                    </span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-gray-500">Grade Mutu:</span>
+                                    <span class="font-bold text-gray-800">
+                                        <span x-text="item.grade"></span>
+                                        <span class="text-[11px] text-gray-400 font-normal" x-text="' (' + item.contamination + ' kontam)'"></span>
+                                    </span>
+                                </div>
+                                <div class="flex items-center justify-between pt-2 border-t border-gray-50">
+                                    <span class="text-gray-500">Total Nilai:</span>
+                                    <span class="font-extrabold text-sm text-factory-700" x-text="item.amount"></span>
+                                </div>
+                            </div>
+
+                            <div class="mt-3 pt-2 border-t border-gray-100">
+                                <button @click="openDetail(item)" class="w-full py-2 bg-factory-50 hover:bg-factory-100 text-factory-700 font-bold text-xs rounded-lg flex items-center justify-center gap-1.5 transition-colors">
+                                    <i class="fas fa-file-lines"></i>
+                                    <span>Lihat Detail Lengkap & Slip Timbang</span>
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Pagination -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                    <p class="text-gray-500 text-center sm:text-left">
+                        Menampilkan <strong class="text-gray-900 font-bold" x-text="filteredRecords.length"></strong> dari <strong class="text-gray-900 font-bold">24</strong> total transaksi pasokan bulan ini
+                    </p>
+                    <div class="inline-flex items-center justify-center space-x-1">
+                        <button class="px-3 py-1.5 border border-gray-200 rounded-lg text-gray-500 hover:bg-gray-50 disabled:opacity-40">
+                            <i class="fas fa-chevron-left text-[10px] mr-1"></i> Sebelumnya
+                        </button>
+                        <button class="w-8 h-8 rounded-lg bg-factory-600 text-white font-bold">1</button>
+                        <button class="w-8 h-8 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50">2</button>
+                        <button class="w-8 h-8 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50">3</button>
+                        <button class="w-8 h-8 rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50">4</button>
+                        <button class="px-3 py-1.5 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50">
+                            Berikutnya <i class="fas fa-chevron-right text-[10px] ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </main>
+
+            <!-- ================= BOTTOM NAVIGATION (MOBILE ONLY) ================= -->
+            <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-gray-200 bottom-nav-safe">
+                <div class="grid grid-cols-4 h-16">
+                    <!-- Beranda -->
+                    <a href="dashboard.html" class="flex flex-col items-center justify-center text-gray-400 hover:text-gray-600 font-medium">
+                        <i class="fas fa-home text-lg mb-0.5"></i>
+                        <span class="text-[10px]">Beranda</span>
+                    </a>
+
+                    <!-- Pasokan (Active) -->
+                    <a href="supply.html" class="flex flex-col items-center justify-center text-factory-600 font-bold">
+                        <i class="fas fa-boxes-stacked text-lg mb-0.5"></i>
+                        <span class="text-[10px]">Pasokan</span>
+                    </a>
+
+                    <!-- Notifikasi -->
+                    <button @click="notificationModal = true" class="flex flex-col items-center justify-center text-gray-400 hover:text-gray-600 font-medium relative">
+                        <div class="relative">
+                            <i class="fas fa-bell text-lg mb-0.5"></i>
+                            <span class="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </div>
+                        <span class="text-[10px]">Notifikasi</span>
+                    </button>
+
+                    <!-- Profil -->
+                    <a href="profile.html" class="flex flex-col items-center justify-center text-gray-400 hover:text-gray-600 font-medium">
+                        <i class="fas fa-building text-lg mb-0.5"></i>
+                        <span class="text-[10px]">Profil</span>
+                    </a>
+                </div>
+            </nav>
+
+        </div>
+    </div>
+
+    <!-- ================= MODAL: DETAIL PASOKAN LENGKAP ================= -->
+    <div x-show="detailModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" @click="detailModal = false"></div>
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-2xl w-full p-6">
+                
+                <template x-if="selectedRecord">
+                    <div>
+                        <!-- Modal Header -->
+                        <div class="flex items-start justify-between pb-4 border-b border-gray-100">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <h3 class="font-extrabold text-gray-900 text-lg" x-text="'Detail Pasokan: ' + selectedRecord.id"></h3>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold"
+                                          :class="{
+                                              'bg-emerald-100 text-emerald-800': selectedRecord.statusColor === 'emerald',
+                                              'bg-amber-100 text-amber-800': selectedRecord.statusColor === 'amber',
+                                              'bg-red-100 text-red-800': selectedRecord.statusColor === 'red'
+                                          }"
+                                          x-text="selectedRecord.status">
+                                    </span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-1 flex items-center gap-2">
+                                    <span><i class="far fa-clock mr-1"></i><span x-text="selectedRecord.date"></span></span>
+                                    <span>•</span>
+                                    <span>Nomor Slip Timbang: <strong class="text-gray-700" x-text="selectedRecord.weighbridgeTicket"></strong></span>
+                                </p>
+                            </div>
+                            <button @click="detailModal = false" class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-times text-lg"></i>
+                            </button>
+                        </div>
+
+                        <!-- Modal Body Content -->
+                        <div class="mt-4 space-y-4 text-xs">
+
+                            <!-- Info Pengantar / Komunitas & Armada -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-gray-50 p-3.5 rounded-xl border border-gray-100">
+                                <div>
+                                    <p class="text-gray-400 font-medium">Komunitas Pemasok</p>
+                                    <p class="font-bold text-gray-900 text-sm mt-0.5" x-text="selectedRecord.community"></p>
+                                    <p class="text-[11px] text-emerald-600 font-medium mt-0.5"><i class="fas fa-check-circle mr-1"></i> Mitra Terverifikasi Wasman</p>
+                                </div>
+                                <div>
+                                    <p class="text-gray-400 font-medium">Armada & Supir</p>
+                                    <p class="font-bold text-gray-800 mt-0.5" x-text="selectedRecord.vehicle"></p>
+                                    <p class="text-[11px] text-gray-500 mt-0.5" x-text="'Pengemudi: ' + selectedRecord.driver"></p>
+                                </div>
+                            </div>
+
+                            <!-- Data Penimbangan Jembatan Timbang -->
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-1.5">
+                                    <i class="fas fa-scale-balanced text-factory-600"></i>
+                                    Hasil Penimbangan Jembatan Timbang
+                                </h4>
+                                <div class="grid grid-cols-3 gap-2.5 text-center">
+                                    <div class="p-2.5 rounded-lg border border-gray-200 bg-white">
+                                        <p class="text-[10px] text-gray-400 uppercase font-semibold">Berat Bersih Datang</p>
+                                        <p class="text-base font-extrabold text-gray-900 mt-0.5" x-text="selectedRecord.weightReceived.toLocaleString('id-ID') + ' kg'"></p>
+                                    </div>
+                                    <div class="p-2.5 rounded-lg border border-emerald-200 bg-emerald-50/50">
+                                        <p class="text-[10px] text-emerald-700 uppercase font-bold">Berat Lolos (Diterima)</p>
+                                        <p class="text-base font-extrabold text-emerald-700 mt-0.5" x-text="selectedRecord.weightAccepted.toLocaleString('id-ID') + ' kg'"></p>
+                                    </div>
+                                    <div class="p-2.5 rounded-lg border border-red-200 bg-red-50/50">
+                                        <p class="text-[10px] text-red-700 uppercase font-bold">Berat Residu (Ditolak)</p>
+                                        <p class="text-base font-extrabold text-red-700 mt-0.5" x-text="selectedRecord.weightRejected.toLocaleString('id-ID') + ' kg'"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Hasil QC & Grading Mutu -->
+                            <div class="p-3.5 rounded-xl border border-gray-100 bg-purple-50/40">
+                                <h4 class="font-bold text-gray-900 mb-2 flex items-center gap-1.5">
+                                    <i class="fas fa-microscope text-factory-600"></i>
+                                    Hasil Evaluasi Mutu QC & Laboratorium
+                                </h4>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-2 text-[11px]">
+                                    <div>
+                                        <span class="text-gray-500">Jenis Material:</span>
+                                        <p class="font-bold text-gray-900" x-text="selectedRecord.material"></p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-500">Tingkat Mutu:</span>
+                                        <p class="font-bold text-factory-800" x-text="selectedRecord.grade"></p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-500">Tingkat Kontaminasi:</span>
+                                        <p class="font-bold text-gray-900" x-text="selectedRecord.contamination"></p>
+                                    </div>
+                                    <div>
+                                        <span class="text-gray-500">Harga Satuan:</span>
+                                        <p class="font-bold text-emerald-700" x-text="selectedRecord.unitPrice + ' / kg'"></p>
+                                    </div>
+                                </div>
+                                <div class="pt-2 border-t border-purple-100/60 text-[11px]">
+                                    <span class="font-bold text-gray-700">Catatan Petugas Pemeriksa:</span>
+                                    <p class="text-gray-600 mt-0.5 italic" x-text="selectedRecord.notes"></p>
+                                </div>
+                            </div>
+
+                            <!-- Rincian Keuangan & Status Pembayaran -->
+                            <div class="p-3.5 rounded-xl border border-gray-200 bg-white">
+                                <div class="flex items-center justify-between text-xs mb-1">
+                                    <span class="text-gray-500">Perhitungan: <span x-text="selectedRecord.weightAccepted.toLocaleString('id-ID') + ' kg × ' + selectedRecord.unitPrice"></span></span>
+                                    <span class="font-bold text-gray-900" x-text="selectedRecord.amount"></span>
+                                </div>
+                                <div class="flex items-center justify-between text-xs pt-2 border-t border-gray-100">
+                                    <span class="font-bold text-gray-800">Status Pembayaran:</span>
+                                    <span class="font-bold text-emerald-700 flex items-center gap-1">
+                                        <i class="fas fa-circle-check text-xs"></i>
+                                        <span x-text="selectedRecord.paymentStatus"></span>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Modal Actions Footer -->
+                        <div class="mt-6 pt-3 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2">
+                            <button @click="alert('Slip timbangan digital resmi dicetak dengan barcode validasi Wasman.');" class="inline-flex items-center gap-1.5 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-xs font-bold text-gray-700 rounded-xl transition-colors">
+                                <i class="fas fa-print"></i> Cetak Slip Timbang
+                            </button>
+                            <div class="flex items-center gap-2">
+                                <button type="button" @click="detailModal = false" class="px-4 py-2 bg-factory-600 hover:bg-factory-700 text-white font-bold text-xs rounded-xl shadow-sm transition-colors">
+                                    Tutup
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL: NOTIFIKASI ================= -->
+    <div x-show="notificationModal" x-cloak class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity" @click="notificationModal = false"></div>
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="relative transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all sm:w-full sm:max-w-md w-full p-6">
+                <div class="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-factory-100 text-factory-700 flex items-center justify-center text-sm">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 text-base">Notifikasi Pabrik</h3>
+                    </div>
+                    <button @click="notificationModal = false" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="mt-4 space-y-3">
+                    <div class="p-3 bg-purple-50/60 rounded-xl border border-purple-100 flex items-start gap-3">
+                        <span class="w-2 h-2 rounded-full bg-factory-600 mt-1.5 shrink-0"></span>
+                        <div>
+                            <p class="text-xs font-bold text-gray-900">Armada Baru Tiba di Jembatan Timbang</p>
+                            <p class="text-[11px] text-gray-600 mt-0.5">Truk B 9482 TDB (Bank Sampah Berseri) membawa 1.250 kg Botol PET siap ditimbang.</p>
+                            <span class="text-[10px] text-gray-400 mt-1 inline-block">10 menit yang lalu</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-blue-50/60 rounded-xl border border-blue-100 flex items-start gap-3">
+                        <span class="w-2 h-2 rounded-full bg-blue-500 mt-1.5 shrink-0"></span>
+                        <div>
+                            <p class="text-xs font-bold text-gray-900">Hasil Inspeksi QC Selesai</p>
+                            <p class="text-[11px] text-gray-600 mt-0.5">Tiket DO-2026-0918-004 telah lolos uji lab dengan Grade B (92% bersih).</p>
+                            <span class="text-[10px] text-gray-400 mt-1 inline-block">1 jam yang lalu</span>
+                        </div>
+                    </div>
+
+                    <div class="p-3 bg-emerald-50/60 rounded-xl border border-emerald-100 flex items-start gap-3">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 mt-1.5 shrink-0"></span>
+                        <div>
+                            <p class="text-xs font-bold text-gray-900">Pembayaran Berhasil Ditransfer</p>
+                            <p class="text-[11px] text-gray-600 mt-0.5">Transfer Rp 3.500.000 ke TPS3R Maju Mandiri telah diverifikasi bank.</p>
+                            <span class="text-[10px] text-gray-400 mt-1 inline-block">Kemarin</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5 pt-3 border-t border-gray-100">
+                    <button @click="notificationModal = false" class="w-full py-2 bg-gray-100 hover:bg-gray-200 text-xs font-bold text-gray-700 rounded-xl transition-colors">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
